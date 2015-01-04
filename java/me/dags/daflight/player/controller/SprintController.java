@@ -23,24 +23,13 @@
 package me.dags.daflight.player.controller;
 
 import me.dags.daflight.minecraft.MCGame;
-import me.dags.daflight.player.DaPlayer;
 import me.dags.daflight.player.Vector;
-import me.dags.daflight.utils.Config;
 
 public class SprintController extends MCGame implements IController
 {
     @Override
     public void input(Vector v)
     {
-        if (DaPlayer.KEY_BINDS.jump.keyHeld())
-        {
-            if (onSolidBlock())
-            {
-                double yMotion = 0.42F + -getPlayer().motionY + Config.getInstance().jumpModifier * v.getSpeed();
-                getPlayer().addVelocity(0, yMotion, 0);
-            }
-        }
-
         if (v.hasLateralInput())
         {
             getPlayer().setVelocity(v.getX(), getPlayer().motionY, v.getZ());
