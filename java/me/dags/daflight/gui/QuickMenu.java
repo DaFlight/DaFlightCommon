@@ -22,7 +22,6 @@
 
 package me.dags.daflight.gui;
 
-import me.dags.daflight.minecraft.ConfigGui;
 import me.dags.daflight.minecraft.MCGame;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Mouse;

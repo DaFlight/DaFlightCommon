@@ -22,7 +22,7 @@
 
 package me.dags.daflight.gui;
 
-import me.dags.daflight.minecraft.uielements.ToolTip;
+import me.dags.daflight.gui.uielements.ToolTip;
 
 /**
  * @author dags_ <dags@dags.me>
