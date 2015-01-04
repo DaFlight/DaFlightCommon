@@ -24,9 +24,9 @@ package me.dags.daflight.gui.hud;
 
 import me.dags.daflight.LiteModDaFlight;
 import me.dags.daflight.minecraft.Colour;
+import me.dags.daflight.minecraft.MCGame;
 import me.dags.daflight.player.DaPlayer;
 import me.dags.daflight.utils.Config;
-import me.dags.daflight.utils.Tools;
 import me.dags.daflightapi.ui.DaFlightUI;
 
 import java.util.ArrayList;
@@ -134,7 +134,7 @@ public class HUD implements DaFlightUI
             return;
         }
         counter--;
-        if (Config.getInstance().showHud && Tools.getMinecraft().inGameHasFocus && !Tools.getMinecraft().gameSettings.showDebugInfo)
+        if (Config.getInstance().showHud && MCGame.getMinecraft().inGameHasFocus && !MCGame.getMinecraft().gameSettings.showDebugInfo)
         {
             int slot = 5;
             for (DFEntry d : mods)
@@ -143,11 +143,11 @@ public class HUD implements DaFlightUI
                 {
                     if (Config.getInstance().textShadow)
                     {
-                        Tools.getMinecraft().fontRendererObj.drawStringWithShadow(d.getTitle(), 5, slot, 0xFFFFFF);
+                        MCGame.getMinecraft().fontRendererObj.drawStringWithShadow(d.getTitle(), 5, slot, 0xFFFFFF);
                     }
                     else
                     {
-                        Tools.getMinecraft().fontRendererObj.drawString(d.getTitle(), 5, slot, 0xFFFFFF);
+                        MCGame.getMinecraft().fontRendererObj.drawString(d.getTitle(), 5, slot, 0xFFFFFF);
                     }
                     slot += 10;
                 }
