@@ -80,6 +80,7 @@ public abstract class ConfigGui extends GuiScreen
     protected boolean isScrollable;
     protected int maxYOffset = 0;
     protected int yOffset = 0;
+    private boolean mouseHeld = false;
 
     public ConfigGui()
     {
@@ -153,7 +154,7 @@ public abstract class ConfigGui extends GuiScreen
         uiElements.add(flySmoothing = new Slider(1, xRight, y += 21, 0F, 1F, 0.7F, 200).setDisplayString("FlySmoothing").setDefaultValue((float) config.flySmoothing));
         uiElements.add(sprintSpeed = new Slider(1, xRight, y += 21, 0F, 5F, 1F, 200).setDisplayString("SprintSpeed").setDefaultValue((float) config.sprintSpeed * 10));
         uiElements.add(sprintMultiplier = new Slider(1, xRight, y += 21, 0F, 10F, 5F, 200).setDisplayString("SprintSpeedMultiplier").setDefaultValue((float) config.sprintSpeedMult));
-        uiElements.add(jumpMultiplier = new Slider(1, xRight, y += 21, 0F, 10F, 2.0F, 200).setDisplayString("JumpMultiplier").setDefaultValue((float) config.jumpModifier));
+        uiElements.add(jumpMultiplier = new Slider(1, xRight, y += 21, 0F, 1F, 0.75F, 200).setDisplayString("JumpMultiplier").setDefaultValue((float) config.jumpModifier));
         uiElements.add(leftRightMultiplier = new Slider(1, xRight, y += 21, 0F, 1F, 0.85F, 200).setDisplayString("Left/RightMultiplier").setDefaultValue((float) config.lrModifier));
 
         uiElements.add(new Label(xRight, y += 31, "Statuses").setColour(EnumChatFormatting.DARK_AQUA));
@@ -194,7 +195,7 @@ public abstract class ConfigGui extends GuiScreen
     {
         for (UIElement e : uiElements)
             e.drawElement(x, y);
-        if (showToolTips.getToggleState())
+        if (showToolTips.getToggleState() && !mouseHeld)
             for (UIElement e : uiElements)
                 e.renderToolTips(x, y);
     }
@@ -202,6 +203,7 @@ public abstract class ConfigGui extends GuiScreen
     @Override
     public void mouseClicked(int x, int y, int f)
     {
+        mouseHeld = true;
         if (isShiftKeyDown())
         {
             for (UIElement e : uiElements)
@@ -215,6 +217,7 @@ public abstract class ConfigGui extends GuiScreen
     @Override
     public void mouseReleased(int x, int y, int f)
     {
+        mouseHeld = false;
         for (UIElement e : uiElements)
             e.mouseUnpressed(x, y);
     }
