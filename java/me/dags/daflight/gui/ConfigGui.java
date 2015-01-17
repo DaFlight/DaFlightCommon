@@ -297,6 +297,7 @@ public abstract class ConfigGui extends GuiScreen
         config.flyKey = flyKey.getValue();
         config.flyIsToggle = flyHold.getToggleState();
         config.sprintKey = sprintKey.getValue();
+        config.sprintIsToggle = sprintHold.getToggleState();
         config.speedIsToggle = sprintHold.getToggleState();
         config.speedKey = speedKey.getValue();
         config.speedIsToggle = speedHold.getToggleState();

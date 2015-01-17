@@ -106,7 +106,7 @@ public class KeyBinds extends MCGame
         jump.setToggle(false);
         updateMovementKeys();
 
-        binds = new KeyBind[]{enableFly, enableSprint, speedModifier, fullBright, cineFlight, flyUp, flyDown, speedUp, speedDown};
+        binds = new KeyBind[]{speedModifier, enableFly, enableSprint, fullBright, cineFlight, flyUp, flyDown, speedUp, speedDown};
         movementBinds = new KeyBind[]{forward, backward, left, right, flyUp, flyDown};
     }
 }

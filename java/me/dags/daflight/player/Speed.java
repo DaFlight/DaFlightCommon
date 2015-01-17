@@ -74,16 +74,20 @@ public class Speed
 
     public void incBaseSpeed()
     {
-        if (10 * (baseSpeed + 0.01) * multiplier <= maxSpeed && baseSpeed * 10 <= 4.9D)
+        if (10 * (baseSpeed + 0.01) * multiplier <= maxSpeed && baseSpeed * 10 < 5D)
         {
             baseSpeed += 0.01;
+            if (baseSpeed > 5D)
+            {
+                baseSpeed = 5D;
+            }
         }
         update();
     }
 
     public void decBaseSpeed()
     {
-        if (baseSpeed > 0.02)
+        if (baseSpeed > 0.01)
         {
             baseSpeed -= 0.01;
         }

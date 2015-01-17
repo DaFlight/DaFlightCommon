@@ -51,12 +51,12 @@ public class MovementHandler extends MCGame
         boolean b1 = false;
         boolean b2 = false;
 
+        movementVector.setSpeed(daPlayer.getSpeed());
+
         for (KeyBind kb : DaPlayer.KEY_BINDS.movementBinds)
         {
             if (kb.keyHeld())
             {
-                /////
-                movementVector.setSpeed(daPlayer.getSpeed());
                 movementVector.setHasInput(true);
 
                 double x;
