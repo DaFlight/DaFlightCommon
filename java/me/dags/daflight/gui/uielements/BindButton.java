@@ -72,7 +72,7 @@ public class BindButton extends GuiButton implements UIElement
     @Override
     public void renderToolTips(int mouseX, int mouseY)
     {
-        if (this.hovered && this.toolTip != null)
+        if (this.hovered && this.toolTip != null && !this.active)
             this.toolTip.draw(mouseX, mouseY);
     }
 

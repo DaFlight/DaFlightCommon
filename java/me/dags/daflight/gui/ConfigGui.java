@@ -14,9 +14,10 @@
 package me.dags.daflight.gui;
 
 import me.dags.daflight.LiteModDaFlight;
+import me.dags.daflight.gui.uielements.*;
 import me.dags.daflight.input.binds.KeyBinds;
 import me.dags.daflight.minecraft.MCGame;
-import me.dags.daflight.gui.uielements.*;
+import me.dags.daflight.player.DaPlayer;
 import me.dags.daflight.utils.Config;
 import me.dags.daflight.utils.GlobalConfig;
 import net.minecraft.client.gui.GuiScreen;
@@ -148,14 +149,15 @@ public abstract class ConfigGui extends GuiScreen
 
         // Right column
         y = singleColumn ? y + 31 : yTop;
+        DaPlayer daPlayer = LiteModDaFlight.DAPLAYER;
         uiElements.add(new Label(xRight, y, "Modifiers").setColour(EnumChatFormatting.DARK_AQUA));
-        uiElements.add(flySpeed = new Slider(1, xRight, y += 11, 0F, 5F, 1F, 200).setDisplayString("FlySpeed").setDefaultValue((float) config.flySpeed * 10));
-        uiElements.add(flyMultiplier = new Slider(1, xRight, y += 21, 0F, 10F, 5F, 200).setDisplayString("FlySpeedMultiplier").setDefaultValue((float) config.flySpeedMult));
-        uiElements.add(flySmoothing = new Slider(1, xRight, y += 21, 0F, 1F, 0.7F, 200).setDisplayString("FlySmoothing").setDefaultValue((float) config.flySmoothing));
-        uiElements.add(sprintSpeed = new Slider(1, xRight, y += 21, 0F, 5F, 1F, 200).setDisplayString("SprintSpeed").setDefaultValue((float) config.sprintSpeed * 10));
-        uiElements.add(sprintMultiplier = new Slider(1, xRight, y += 21, 0F, 10F, 5F, 200).setDisplayString("SprintSpeedMultiplier").setDefaultValue((float) config.sprintSpeedMult));
-        uiElements.add(jumpMultiplier = new Slider(1, xRight, y += 21, 0F, 1F, 0.75F, 200).setDisplayString("JumpMultiplier").setDefaultValue((float) config.jumpModifier));
-        uiElements.add(leftRightMultiplier = new Slider(1, xRight, y += 21, 0F, 1F, 0.85F, 200).setDisplayString("Left/RightMultiplier").setDefaultValue((float) config.lrModifier));
+        uiElements.add(flySpeed = new Slider(1, xRight, y += 11, 0F, daPlayer.flySpeed.getMaxBaseSpeed(), 1F, 200).setDisplayString("FlySpeed").setDefaultValue(config.flySpeed * 10));
+        uiElements.add(flyMultiplier = new Slider(1, xRight, y += 21, 0F, daPlayer.flySpeed.getMaxMultiplier(), 5F, 200).setDisplayString("FlySpeedMultiplier").setDefaultValue(config.flySpeedMult));
+        uiElements.add(flySmoothing = new Slider(1, xRight, y += 21, 0F, 1F, 0.7F, 200).setDisplayString("FlySmoothing").setDefaultValue(config.flySmoothing));
+        uiElements.add(sprintSpeed = new Slider(1, xRight, y += 21, 0F, daPlayer.sprintSpeed.getMaxBaseSpeed(), 1F, 200).setDisplayString("SprintSpeed").setDefaultValue(config.sprintSpeed * 10));
+        uiElements.add(sprintMultiplier = new Slider(1, xRight, y += 21, 0F, daPlayer.sprintSpeed.getMaxMultiplier(), 5F, 200).setDisplayString("SprintSpeedMultiplier").setDefaultValue(config.sprintSpeedMult));
+        uiElements.add(jumpMultiplier = new Slider(1, xRight, y += 21, 0F, 1F, 0.75F, 200).setDisplayString("JumpMultiplier").setDefaultValue(config.jumpModifier));
+        uiElements.add(leftRightMultiplier = new Slider(1, xRight, y += 21, 0F, 1F, 0.85F, 200).setDisplayString("Left/RightMultiplier").setDefaultValue(config.lrModifier));
 
         uiElements.add(new Label(xRight, y += 31, "Statuses").setColour(EnumChatFormatting.DARK_AQUA));
         uiElements.add(flyStatus = new EntryBox(xRight, y += 11, 200, 17, "Flight", "f", true).setString(config.flightStatus));
@@ -176,11 +178,23 @@ public abstract class ConfigGui extends GuiScreen
         showToolTips.addToolTip(new ToolTip("ShowToolTips", new String[]{"Show tooltips like this in the settings menu."}));
         perServer.addToolTip(new ToolTip("PerServerConfigs", new String[]{"Creates a unique settings 'profile' for each", "server that you visit."}));
         textShadow.addToolTip(new ToolTip("StatusTextShadow", new String[]{"Draw the mod statuses with or", "without text shadow."}));
+
+        flyKey.addToolTip(new ToolTip("Fly", new String[]{"Enable/Disable FlyMod with this key."}));
+        sprintKey.addToolTip(new ToolTip("Sprint", new String[]{"Enable/Disable SprintMod with this key. Is only", "active whilst FlyMod is off."}));
+        speedKey.addToolTip(new ToolTip("Speed", new String[]{"Enable/Disable the speed boost for FlyMod or", "SprintMod depending on which is active."}));
+        cineKey.addToolTip(new ToolTip("CineFly", new String[]{"Enable/Disable cinematic flight mode. Is only", "active whilst FlyMod is on."}));
+        fullBrightKey.addToolTip(new ToolTip("FullBright", new String[]{"Enable/Disable: Lights the entire world to full brightness."}));
+        flyUpKey.addToolTip(new ToolTip("FlyUp", new String[]{"The key you hold to fly upwards."}));
+        flyDownKey.addToolTip(new ToolTip("FlyDown", new String[]{"The key you hold to fly downwards."}));
+        speedUpKey.addToolTip(new ToolTip("SpeedUp", new String[]{"Hold this to increase your speed whilst in-game.", "If speed boost is enabled, it will increase the multiplier.", "FlyMod takes priority over SprintMod if both are enabled."}));
+        speedDownKey.addToolTip(new ToolTip("SpeedDown", new String[]{"Hold this to decrease your speed whilst in-game.", "If speed boost is enabled, it will increase the multiplier.", "FlyMod takes priority over SprintMod if both are enabled."}));
+
         ToolTip hold = new ToolTip("Hold/Toggle", new String[]{"Select whether this key should act as a", "toggle or if it should only be active whilst", "held down."});
         flyHold.addToolTip(hold);
         sprintHold.addToolTip(hold);
         speedHold.addToolTip(hold);
         fbHold.addToolTip(hold);
+
         flySpeed.addToolTip(new ToolTip("FlySpeed", new String[]{"Set the base fly speed."}));
         flyMultiplier.addToolTip(new ToolTip("FlySpeedMultiplier", new String[]{"Set the boosted fly speed (toggled", "by the speed key)"}));
         flySmoothing.addToolTip(new ToolTip("FlySmoothing", new String[]{"Set the amount of momentum to be applied", "when flying."}));

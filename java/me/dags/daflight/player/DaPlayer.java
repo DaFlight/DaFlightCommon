@@ -35,6 +35,7 @@ import me.dags.daflight.player.controller.IController;
 import me.dags.daflight.player.controller.SprintController;
 import me.dags.daflight.utils.Config;
 import me.dags.daflight.utils.GlobalConfig;
+import me.dags.daflight.utils.SpeedDefaults;
 
 /**
  * @author dags_ <dags@dags.me>
@@ -42,7 +43,6 @@ import me.dags.daflight.utils.GlobalConfig;
 
 public class DaPlayer extends MCGame
 {
-
     public static final KeyBinds KEY_BINDS = new KeyBinds();
     public static final DFPermissions DF_PERMISSIONS = new DFPermissions();
 
@@ -67,11 +67,13 @@ public class DaPlayer extends MCGame
         direction = new Direction();
         movementVector = new Vector();
 
-        flySpeed = new Speed();
+        SpeedDefaults speedDefaults = SpeedDefaults.loadDefaults();
+
+        flySpeed = new Speed().setMaxBaseSpeed(speedDefaults.getDefaultMaxBaseSpeed()).setMaxMultiplier(speedDefaults.getDefaultMultiplieer());
         flySpeed.setBaseSpeed(Config.getInstance().flySpeed);
         flySpeed.setMultiplier(Config.getInstance().flySpeedMult);
 
-        sprintSpeed = new Speed();
+        sprintSpeed = new Speed().setMaxBaseSpeed(speedDefaults.getDefaultMaxBaseSpeed()).setMaxMultiplier(speedDefaults.getDefaultMultiplieer());
         sprintSpeed.setBaseSpeed(Config.getInstance().sprintSpeed);
         sprintSpeed.setMultiplier(Config.getInstance().sprintSpeedMult);
     }
@@ -79,8 +81,8 @@ public class DaPlayer extends MCGame
     public void onGameJoin()
     {
         DF_PERMISSIONS.resetPermissions();
-        flySpeed.setMaxSpeed(50D);
-        sprintSpeed.setMaxSpeed(50D);
+        flySpeed.setMaxSpeed(flySpeed.getMaxBaseSpeed() * flySpeed.getMaxMultiplier());
+        sprintSpeed.setMaxSpeed(sprintSpeed.getMaxBaseSpeed() * sprintSpeed.getMaxMultiplier());
         PluginChannelUtil.dispatchPacket(PacketData.CONNECT);
     }
 

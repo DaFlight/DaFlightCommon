@@ -24,6 +24,7 @@ package me.dags.daflight.gui.uielements;
 
 import me.dags.daflight.gui.UIElement;
 import me.dags.daflight.minecraft.MCGame;
+import me.dags.daflight.utils.Tools;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiOptionSlider;
 import net.minecraft.client.settings.GameSettings;
@@ -43,7 +44,7 @@ public class Slider extends GuiOptionSlider implements UIElement
     {
         DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.ENGLISH);
         dfs.setDecimalSeparator(".".charAt(0));
-        FORMAT = new DecimalFormat("#.##", dfs);
+        FORMAT = new DecimalFormat("0.00", dfs);
     }
 
     private ToolTip toolTip;
@@ -144,9 +145,7 @@ public class Slider extends GuiOptionSlider implements UIElement
 
     private String getStringValue()
     {
-        String s = FORMAT.format(value);
-        int length = s.length();
-        return length == 1 ? s + ".00" : length == 3 ? s + "0" : s;
+        return Tools.round2Dp(value);
     }
 
     public String getName()

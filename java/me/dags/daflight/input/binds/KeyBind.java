@@ -22,12 +22,15 @@
 
 package me.dags.daflight.input.binds;
 
+import me.dags.daflight.input.actions.Action;
+import me.dags.daflight.input.actions.Dummy;
 import org.lwjgl.input.Keyboard;
 
 public class KeyBind
 {
 
     private BindType type;
+    private Action action;
     private String name;
     private int keyId;
     private boolean canHold;
@@ -46,6 +49,7 @@ public class KeyBind
         keyId = i;
         isToggle = keyIsToggle;
         canHold = false;
+        action = new Dummy();
     }
 
     public KeyBind(int i)
@@ -54,6 +58,7 @@ public class KeyBind
         keyId = i;
         isToggle = true;
         press = false;
+        action = new Dummy();
     }
 
     public KeyBind(String controlName, String keyName, BindType bt)
@@ -63,6 +68,7 @@ public class KeyBind
         keyId = Keyboard.getKeyIndex(keyName);
         isToggle = true;
         press = false;
+        action = new Dummy();
     }
 
     public KeyBind(String controlName, String keyName, BindType bt, int x, int y, int z)
@@ -75,6 +81,18 @@ public class KeyBind
         modX = x;
         modY = y;
         modZ = z;
+        action = new Dummy();
+    }
+
+    public KeyBind setAction(Action a)
+    {
+        action = a;
+        return this;
+    }
+
+    public Action getAction()
+    {
+        return action;
     }
 
     public void setName(String s)

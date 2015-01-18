@@ -23,7 +23,6 @@
 package me.dags.daflight.gui.uielements;
 
 import me.dags.daflight.gui.UIElement;
-import me.dags.daflight.gui.uielements.ToolTip;
 import me.dags.daflight.minecraft.MCGame;
 import net.minecraft.util.EnumChatFormatting;
 

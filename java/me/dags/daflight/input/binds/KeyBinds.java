@@ -22,6 +22,7 @@
 
 package me.dags.daflight.input.binds;
 
+import me.dags.daflight.input.actions.*;
 import me.dags.daflight.minecraft.MCGame;
 import me.dags.daflight.utils.Config;
 import org.lwjgl.input.Keyboard;
@@ -65,12 +66,12 @@ public class KeyBinds extends MCGame
     public void initSettings()
     {
         Config c = Config.getInstance();
-        fullBright = new KeyBind("FullBright", c.fullBrightKey, BindType.FULLBRIGHT);
+        fullBright = new KeyBind("FullBright", c.fullBrightKey, BindType.FULLBRIGHT).setAction(new ToggleFullbright());
         fullBright.setToggle(c.fullbrightIsToggle);
         fullBright.setCanHold(true);
-        speedUp = new KeyBind("Speed++", c.speedUpKey, BindType.SPEEDUP);
+        speedUp = new KeyBind("Speed++", c.speedUpKey, BindType.SPEEDUP).setAction(new SpeedIncrease());
         speedUp.setToggle(false);
-        speedDown = new KeyBind("Speed--", c.speedDownKey, BindType.SPEEDDOWN);
+        speedDown = new KeyBind("Speed--", c.speedDownKey, BindType.SPEEDDOWN).setAction(new SpeedDecrease());
         speedDown.setToggle(false);
 
         flyUp = new KeyBind("FlyUp", c.upKey, BindType.UP, 0, 1, 0);
@@ -78,16 +79,16 @@ public class KeyBinds extends MCGame
         flyDown = new KeyBind("FlyDown", c.downKey, BindType.DOWN, 0, -1, 0);
         flyDown.setToggle(false);
 
-        enableFly = new KeyBind("Fly", c.flyKey, BindType.FLY);
+        enableFly = new KeyBind("Fly", c.flyKey, BindType.FLY).setAction(new ToggleFlight());
         enableFly.setCanHold(true);
         enableFly.setToggle(c.flyIsToggle);
-        enableSprint = new KeyBind("Sprint", c.sprintKey, BindType.SPRINT);
+        enableSprint = new KeyBind("Sprint", c.sprintKey, BindType.SPRINT).setAction(new ToggleSprint());
         enableSprint.setCanHold(true);
         enableSprint.setToggle(c.sprintIsToggle);
-        speedModifier = new KeyBind("SpeedMod", c.speedKey, BindType.MODIFIER);
+        speedModifier = new KeyBind("SpeedMod", c.speedKey, BindType.MODIFIER).setAction(new ToggleSpeed());
         speedModifier.setCanHold(true);
         speedModifier.setToggle(c.speedIsToggle);
-        cineFlight = new KeyBind("CineFlight", c.cineFlyKey, BindType.CINEFLIGHT);
+        cineFlight = new KeyBind("CineFlight", c.cineFlyKey, BindType.CINEFLIGHT).setAction(new ToggleCineFlight());
 
         forward = new KeyBind("Forward", "W", BindType.MOVE, 1, 0, 1);
         forward.setCanHold(true);

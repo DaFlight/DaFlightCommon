@@ -22,37 +22,62 @@
 
 package me.dags.daflight.player;
 
+import me.dags.daflight.utils.Tools;
+
 public class Speed
 {
-
     private boolean boost;
-    private Double baseSpeed;
-    private Double multiplier;
-    private Double totalSpeed;
-    private Double maxSpeed;
+    private float baseSpeed;
+    private float multiplier;
+    private float totalSpeed;
+
+    private float maxBaseSpeed;
+    private float maxMultiplier;
+    private float maxSpeed;
 
     public Speed()
     {
-        baseSpeed = 0.11;
-        multiplier = 1.0;
-        totalSpeed = 1.0;
-        maxSpeed = 50D;
+        baseSpeed = 0.11F;
+        multiplier = 1.0F;
+        totalSpeed = 1.0F;
+        maxBaseSpeed = 5F;
+        maxMultiplier = 10F;
+        maxSpeed = 50F;
         boost = false;
     }
 
-    public Double getTotalSpeed()
+    public Speed setMaxBaseSpeed(float f)
+    {
+        maxBaseSpeed = f * 0.1F;
+        return this;
+    }
+
+    public Speed setMaxMultiplier(float f)
+    {
+        maxMultiplier = f;
+        return this;
+    }
+
+    public Speed setMaxSpeed(float f)
+    {
+        maxSpeed = f;
+        update();
+        return this;
+    }
+
+    public float getTotalSpeed()
     {
         return totalSpeed;
     }
 
-    public Double getBaseSpeed()
+    public float getMaxBaseSpeed()
     {
-        return baseSpeed;
+        return maxBaseSpeed * 10;
     }
 
-    public Double getMultiplier()
+    public float getMaxMultiplier()
     {
-        return multiplier;
+        return maxMultiplier;
     }
 
     public boolean isBoost()
@@ -72,95 +97,56 @@ public class Speed
         update();
     }
 
-    public void incBaseSpeed()
+    public float incBaseSpeed()
     {
-        if (10 * (baseSpeed + 0.01) * multiplier <= maxSpeed && baseSpeed * 10 < 5D)
-        {
-            baseSpeed += 0.01;
-            if (baseSpeed > 5D)
-            {
-                baseSpeed = 5D;
-            }
-        }
-        update();
-    }
-
-    public void decBaseSpeed()
-    {
-        if (baseSpeed > 0.01)
-        {
-            baseSpeed -= 0.01;
-        }
-        update();
-    }
-
-    public void incMultiplier()
-    {
-        if (10 * baseSpeed * (multiplier + 0.1) <= maxSpeed && multiplier <= 9.9D)
-        {
-            multiplier += 0.1;
-        }
-        update();
-    }
-
-    public void decMultiplier()
-    {
-        if (multiplier > 1.0)
-        {
-            multiplier -= 0.1;
-        }
-        update();
-    }
-
-    public void setBaseSpeed(Double d)
-    {
-        if (10 * d * multiplier <= maxSpeed)
-        {
-            baseSpeed = d;
-        }
+        float oldBase = baseSpeed;
+        baseSpeed = baseSpeed + 0.01F < maxBaseSpeed ? baseSpeed + 0.01F : maxBaseSpeed;
+        if (10F * baseSpeed * multiplier <= maxSpeed)
+            update();
         else
-        {
-            baseSpeed = 0.11;
-        }
-        update();
+            baseSpeed = oldBase;
+        return Tools.round(baseSpeed);
     }
 
-    public void setMultiplier(Double d)
+    public float decBaseSpeed()
     {
-        if (10 * baseSpeed * d <= maxSpeed)
-        {
-            multiplier = d;
-        }
+        baseSpeed = baseSpeed - 0.01F > 0.01F ? baseSpeed - 0.01F : baseSpeed;
+        update();
+        return Tools.round(baseSpeed);
+    }
+
+    public float incMultiplier()
+    {
+        float oldMult = multiplier;
+        multiplier = multiplier + 0.1F < maxMultiplier ? multiplier + 0.1F : maxMultiplier;
+        if (10F * baseSpeed * multiplier <= maxSpeed)
+            update();
         else
-        {
-            multiplier = 1.1;
-        }
+            multiplier = oldMult;
+        return Tools.round(multiplier);
+    }
+
+    public float decMultiplier()
+    {
+        multiplier = multiplier - 0.1F > 0.1F ? multiplier - 0.1F : multiplier;
+        update();
+        return Tools.round(multiplier);
+    }
+
+    public void setBaseSpeed(float f)
+    {
+        baseSpeed = 10F * f * multiplier <= maxSpeed ? f : 0.11F;
         update();
     }
 
-    public void setMaxSpeed(Double d)
+    public void setMultiplier(float f)
     {
-        maxSpeed = d;
+        multiplier = 10F * baseSpeed * f <= maxSpeed ? f : 1.1F;
         update();
     }
 
     private void update()
     {
-        if (boost)
-        {
-            totalSpeed = baseSpeed * multiplier * 5;
-        }
-        else
-        {
-            totalSpeed = baseSpeed * 5;
-        }
-
-        if (totalSpeed * 2 > maxSpeed)
-        {
-            baseSpeed = 0.11;
-            multiplier = 1.0;
-            totalSpeed = baseSpeed * 5;
-        }
+        totalSpeed = boost ? baseSpeed * multiplier * 5F : baseSpeed * 5F;
     }
-
 }

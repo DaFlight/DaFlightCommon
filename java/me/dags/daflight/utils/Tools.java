@@ -35,17 +35,15 @@ import java.util.Locale;
 public class Tools extends MCGame
 {
 
-    public static DecimalFormat df1;
-    public static DecimalFormat df2;
-    public static DecimalFormat df3;
+    private static DecimalFormat df1;
+    private static DecimalFormat df2;
 
     static
     {
         DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.ENGLISH);
         dfs.setDecimalSeparator(".".charAt(0));
-        df1 = new DecimalFormat("#.#", dfs);
-        df2 = new DecimalFormat("#.##", dfs);
-        df3 = new DecimalFormat("#.###", dfs);
+        df1 = new DecimalFormat("0.0", dfs);
+        df2 = new DecimalFormat("0.00", dfs);
     }
 
     public static void log(String msg)
@@ -53,9 +51,19 @@ public class Tools extends MCGame
         LiteLoaderLogger.info("[DaFlight] " + msg);
     }
 
-    public static double round(double d)
+    public static float round(float f)
     {
-        return Double.valueOf(df3.format(d));
+        return Float.valueOf(df2.format(f));
+    }
+
+    public static String round1Dp(float f)
+    {
+        return df1.format(f);
+    }
+
+    public static String round2Dp(float f)
+    {
+        return df2.format(f);
     }
 
     public static void tellPlayer(String msg)

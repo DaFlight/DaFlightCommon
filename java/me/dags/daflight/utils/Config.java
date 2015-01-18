@@ -104,25 +104,25 @@ public class Config extends MCGame implements Exposable
      */
     @Expose
     @SerializedName("Fly_Speed")
-    public double flySpeed = 0.1;
+    public float flySpeed = 0.1F;
     @Expose
     @SerializedName("Fly_Speed_Multiplier")
-    public double flySpeedMult = 5.0;
+    public float flySpeedMult = 5.0F;
     @Expose
     @SerializedName("Fly_Smoothing_Factor")
-    public double flySmoothing = 0.7;
+    public float flySmoothing = 0.7F;
     @Expose
     @SerializedName("Sprint_Speed")
-    public double sprintSpeed = 0.1;
+    public float sprintSpeed = 0.1F;
     @Expose
     @SerializedName("Sprint_Speed_Multiplier")
-    public double sprintSpeedMult = 5.0;
+    public float sprintSpeedMult = 5.0F;
     @Expose
     @SerializedName("Jump_Multiplier")
-    public double jumpModifier = 0.9;
+    public float jumpModifier = 0.9F;
     @Expose
     @SerializedName("Left-Right_Modifier")
-    public double lrModifier = 0.85;
+    public float lrModifier = 0.85F;
 
     /**
      * HudElements
