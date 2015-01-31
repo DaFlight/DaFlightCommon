@@ -31,7 +31,7 @@ public class ToggleSpeed implements Action
     @Override
     public boolean held(DaPlayer daPlayer)
     {
-        if (daPlayer.flyModOn && !daPlayer.flySpeed.isBoost() || daPlayer.sprintModOn && !daPlayer.sprintSpeed.isBoost())
+        if (daPlayer.flyModOn && !daPlayer.flySpeed.isBoosting() || daPlayer.sprintModOn && !daPlayer.sprintSpeed.isBoosting())
         {
             daPlayer.toggleSpeedModifier();
             return true;
@@ -42,7 +42,7 @@ public class ToggleSpeed implements Action
     @Override
     public boolean released(DaPlayer daPlayer)
     {
-        if (daPlayer.flyModOn && daPlayer.flySpeed.isBoost() || daPlayer.sprintModOn && daPlayer.sprintSpeed.isBoost())
+        if (daPlayer.flyModOn && daPlayer.flySpeed.isBoosting() || daPlayer.sprintModOn && daPlayer.sprintSpeed.isBoosting())
         {
             daPlayer.toggleSpeedModifier();
             return true;

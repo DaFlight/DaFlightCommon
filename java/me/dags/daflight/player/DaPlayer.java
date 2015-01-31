@@ -22,13 +22,10 @@
 
 package me.dags.daflight.player;
 
-import me.dags.daflight.LiteModDaFlight;
+import me.dags.daflight.DaFlight;
 import me.dags.daflight.input.KeybindHandler;
 import me.dags.daflight.input.MovementHandler;
 import me.dags.daflight.input.binds.KeyBinds;
-import me.dags.daflight.messaging.PacketData;
-import me.dags.daflight.messaging.PluginChannelUtil;
-import me.dags.daflight.minecraft.MCGame;
 import me.dags.daflight.player.controller.CineFlightController;
 import me.dags.daflight.player.controller.FlightController;
 import me.dags.daflight.player.controller.IController;
@@ -36,12 +33,13 @@ import me.dags.daflight.player.controller.SprintController;
 import me.dags.daflight.utils.Config;
 import me.dags.daflight.utils.GlobalConfig;
 import me.dags.daflight.utils.SpeedDefaults;
+import me.dags.daflight.messaging.PacketData;
 
 /**
  * @author dags_ <dags@dags.me>
  */
 
-public class DaPlayer extends MCGame
+public class DaPlayer
 {
     public static final KeyBinds KEY_BINDS = new KeyBinds();
     public static final DFPermissions DF_PERMISSIONS = new DFPermissions();
@@ -58,39 +56,41 @@ public class DaPlayer extends MCGame
     public Vector movementVector;
     private IController controller;
 
+    private boolean customSpeeds = false;
     private boolean inMenus = true;
     private boolean wasFlying = false;
     private int softFallTicks = 0;
 
     public DaPlayer()
     {
+        SpeedDefaults speedDefaults = SpeedDefaults.loadDefaults();
         direction = new Direction();
         movementVector = new Vector();
-
-        SpeedDefaults speedDefaults = SpeedDefaults.loadDefaults();
-
-        flySpeed = new Speed().setMaxBaseSpeed(speedDefaults.getDefaultMaxBaseSpeed()).setMaxMultiplier(speedDefaults.getDefaultMultiplieer());
-        flySpeed.setBaseSpeed(Config.getInstance().flySpeed);
-        flySpeed.setMultiplier(Config.getInstance().flySpeedMult);
-
-        sprintSpeed = new Speed().setMaxBaseSpeed(speedDefaults.getDefaultMaxBaseSpeed()).setMaxMultiplier(speedDefaults.getDefaultMultiplieer());
-        sprintSpeed.setBaseSpeed(Config.getInstance().sprintSpeed);
-        sprintSpeed.setMultiplier(Config.getInstance().sprintSpeedMult);
+        customSpeeds = speedDefaults.usingCustomSpeeds();
+        flySpeed = new Speed(Speed.SpeedType.FLY, speedDefaults.getDefaultMaxBaseSpeed(), speedDefaults.getDefaultMaxMultiplier());
+        flySpeed.setSpeedValues(Config.getInstance().flySpeed, Config.getInstance().flySpeedMult);
+        sprintSpeed = new Speed(Speed.SpeedType.SPRINT, speedDefaults.getDefaultMaxBaseSpeed(), speedDefaults.getDefaultMaxMultiplier());
+        sprintSpeed.setSpeedValues(Config.getInstance().sprintSpeed, Config.getInstance().sprintSpeedMult);
     }
 
     public void onGameJoin()
     {
+        flySpeed.resetMaxSpeed();
+        sprintSpeed.resetMaxSpeed();
         DF_PERMISSIONS.resetPermissions();
-        flySpeed.setMaxSpeed(flySpeed.getMaxBaseSpeed() * flySpeed.getMaxMultiplier());
-        sprintSpeed.setMaxSpeed(sprintSpeed.getMaxBaseSpeed() * sprintSpeed.getMaxMultiplier());
-        PluginChannelUtil.dispatchPacket(PacketData.CONNECT);
+        DaFlight.getChannelMessaging().dispatchMessage(PacketData.CONNECT);
+        if (customSpeeds)
+        {
+            DaFlight.getMC().tellPlayer("WARNING - Using extreme speeds can cause your game to lag, or even crash!");
+            customSpeeds = false;
+        }
     }
 
     public void tickUpdate()
     {
-        if (getMinecraft().inGameHasFocus)
+        if (DaFlight.getMC().getMinecraft().inGameHasFocus)
         {
-            if (wasFlying && onSolidBlock())
+            if (wasFlying && DaFlight.getMC().onSolidBlock())
             {
                 wasFlying = false;
                 softFallTicks = 5;
@@ -101,7 +101,7 @@ public class DaPlayer extends MCGame
 
     public void update()
     {
-        if (getMinecraft().inGameHasFocus)
+        if (DaFlight.getMC().getMinecraft().inGameHasFocus)
         {
             if (inMenus)
             {
@@ -112,7 +112,7 @@ public class DaPlayer extends MCGame
             if (isModOn() && controller != null)
             {
                 MovementHandler.handleMovementInput(this);
-                controller.input(movementVector);
+                controller.input(this);
             }
         }
         else
@@ -138,16 +138,16 @@ public class DaPlayer extends MCGame
         }
         if (!flyModOn)
         {
-            getPlayer().capabilities.isFlying = false;
-            getPlayer().sendPlayerAbilities();
+            DaFlight.getMC().getPlayer().capabilities.isFlying = false;
+            DaFlight.getMC().getPlayer().sendPlayerAbilities();
             if (cineFlightOn)
             {
-                getGameSettings().smoothCamera = false;
+                DaFlight.getMC().getGameSettings().smoothCamera = false;
             }
         }
         if (flyModOn && cineFlightOn)
         {
-            getGameSettings().smoothCamera = true;
+            DaFlight.getMC().getGameSettings().smoothCamera = true;
         }
         notifyServer();
     }
@@ -157,7 +157,7 @@ public class DaPlayer extends MCGame
         if (flyModOn)
         {
             cineFlightOn = !cineFlightOn;
-            getMinecraft().gameSettings.smoothCamera = cineFlightOn;
+            DaFlight.getMC().getMinecraft().gameSettings.smoothCamera = cineFlightOn;
         }
         toggleFlightCommon();
     }
@@ -190,8 +190,8 @@ public class DaPlayer extends MCGame
         controller = getActiveController();
         if (!flyModOn && !cineFlightOn)
         {
-            getPlayer().capabilities.isFlying = false;
-            getPlayer().sendPlayerAbilities();
+            DaFlight.getMC().getPlayer().capabilities.isFlying = false;
+            DaFlight.getMC().getPlayer().sendPlayerAbilities();
         }
     }
 
@@ -199,10 +199,10 @@ public class DaPlayer extends MCGame
     {
         if (flyModOn || sprintModOn)
         {
-            PluginChannelUtil.dispatchPacket(PacketData.MOD_ON);
+            DaFlight.getChannelMessaging().dispatchMessage(PacketData.MOD_ON);
             return;
         }
-        PluginChannelUtil.dispatchPacket(PacketData.MOD_OFF);
+        DaFlight.getChannelMessaging().dispatchMessage(PacketData.MOD_OFF);
     }
 
     public void toggleFullbright()
@@ -216,15 +216,15 @@ public class DaPlayer extends MCGame
         else
         {
             fullBrightOn = true;
-            GlobalConfig.setBrightness(getMinecraft().gameSettings.gammaSetting);
+            GlobalConfig.setBrightness(DaFlight.getMC().getGameSettings().gammaSetting);
             GlobalConfig.saveSettings();
         }
-        getMinecraft().gameSettings.gammaSetting = brightness;
+        DaFlight.getMC().getGameSettings().gammaSetting = brightness;
     }
 
     public void disableAll()
     {
-        if (getMinecraft().inGameHasFocus)
+        if (DaFlight.getMC().getMinecraft().inGameHasFocus)
         {
             if (flyModOn)
             {
@@ -253,7 +253,7 @@ public class DaPlayer extends MCGame
         }
         flySpeed.setBoost(false);
         sprintSpeed.setBoost(false);
-        LiteModDaFlight.getHud().updateMsg();
+        DaFlight.getHud().updateMsg();
     }
 
     public boolean softFallOn()

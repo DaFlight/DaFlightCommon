@@ -22,12 +22,12 @@
 
 package me.dags.daflight.input.binds;
 
+import me.dags.daflight.DaFlight;
 import me.dags.daflight.input.actions.*;
-import me.dags.daflight.minecraft.MCGame;
 import me.dags.daflight.utils.Config;
 import org.lwjgl.input.Keyboard;
 
-public class KeyBinds extends MCGame
+public class KeyBinds
 {
     public static final MenuBind MENU_BINDING = new MenuBind("Quick Menu", Keyboard.KEY_F10, "DaFlight");
 
@@ -56,11 +56,11 @@ public class KeyBinds extends MCGame
 
     public void updateMovementKeys()
     {
-        forward.setKey(getMinecraft().gameSettings.keyBindForward.getKeyCode());
-        backward.setKey(getMinecraft().gameSettings.keyBindBack.getKeyCode());
-        left.setKey(getMinecraft().gameSettings.keyBindLeft.getKeyCode());
-        right.setKey(getMinecraft().gameSettings.keyBindRight.getKeyCode());
-        jump.setKey(getMinecraft().gameSettings.keyBindJump.getKeyCode());
+        forward.setKey(DaFlight.getMC().getGameSettings().keyBindForward.getKeyCode());
+        backward.setKey(DaFlight.getMC().getGameSettings().keyBindBack.getKeyCode());
+        left.setKey(DaFlight.getMC().getGameSettings().keyBindLeft.getKeyCode());
+        right.setKey(DaFlight.getMC().getGameSettings().keyBindRight.getKeyCode());
+        jump.setKey(DaFlight.getMC().getGameSettings().keyBindJump.getKeyCode());
     }
 
     public void initSettings()

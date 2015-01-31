@@ -30,7 +30,5 @@ import me.dags.daflightapi.ui.DaFlightUI;
 
 public interface DaFlightAPI
 {
-
     public DaFlightUI getDaFlightUI();
-
 }

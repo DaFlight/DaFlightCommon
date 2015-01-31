@@ -22,45 +22,53 @@
 
 package me.dags.daflight.player.controller;
 
-import me.dags.daflight.minecraft.MCGame;
+import me.dags.daflight.DaFlight;
+import me.dags.daflightapi.minecraft.MinecraftGame;
 import me.dags.daflight.player.DaPlayer;
 import me.dags.daflight.player.Vector;
 import me.dags.daflight.utils.Config;
 
-public class FlightController extends MCGame implements IController
+public class FlightController implements IController
 {
     @Override
-    public void input(Vector v)
+    public void input(DaPlayer daPlayer)
     {
+        MinecraftGame mc = DaFlight.getMC();
+        Vector v = daPlayer.movementVector;
         if (v.hasInput())
         {
-            getPlayer().setVelocity(v.getX(), v.getY(), v.getZ());
+
+            mc.getPlayer().setVelocity(v.getX(), v.getY(), v.getZ());
         }
         else
         {
             double smoothing = Config.getInstance().flySmoothing;
-            getPlayer().setVelocity(getPlayer().motionX * smoothing, 0, getPlayer().motionZ * smoothing);
+            mc.getPlayer().setVelocity(mc.getPlayer().motionX * smoothing, 0, mc.getPlayer().motionZ * smoothing);
         }
-        if (getPlayer().movementInput.jump && !jumpyKeyIsFlyUp())
-            getPlayer().motionY -= 0.15D;
-        if (getPlayer().movementInput.sneak && !sneakKeyIsFlyDown())
-            getPlayer().motionY += 0.15D;
+        if (mc.getPlayer().movementInput.jump && !jumpyKeyIsFlyUp())
+            mc.getPlayer().motionY -= 0.15D;
+        if (mc.getPlayer().movementInput.sneak && !sneakKeyIsFlyDown())
+            mc.getPlayer().motionY += 0.15D;
     }
 
     @Override
     public void unFocused()
     {
+        MinecraftGame mc = DaFlight.getMC();
         double smoothing = Config.getInstance().flySmoothing;
-        getPlayer().setVelocity(getPlayer().motionX * smoothing, getPlayer().motionY * smoothing, getPlayer().motionZ * smoothing);
+        double xMotion = mc.getPlayer().motionX;
+        double yMotion = mc.getPlayer().motionY;
+        double zMotion = mc.getPlayer().motionZ;
+        mc.getPlayer().setVelocity(xMotion * smoothing, yMotion * smoothing, zMotion * smoothing);
     }
 
     private boolean jumpyKeyIsFlyUp()
     {
-        return DaPlayer.KEY_BINDS.flyUp.getId() == getGameSettings().keyBindJump.getKeyCode();
+        return DaPlayer.KEY_BINDS.flyUp.getId() == DaFlight.getMC().getGameSettings().keyBindJump.getKeyCode();
     }
 
     private boolean sneakKeyIsFlyDown()
     {
-        return DaPlayer.KEY_BINDS.flyDown.getId() == getGameSettings().keyBindSneak.getKeyCode();
+        return DaPlayer.KEY_BINDS.flyDown.getId() == DaFlight.getMC().getGameSettings().keyBindSneak.getKeyCode();
     }
 }

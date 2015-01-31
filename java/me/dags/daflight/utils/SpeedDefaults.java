@@ -15,6 +15,7 @@ package me.dags.daflight.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
+import me.dags.daflight.DaFlight;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -45,13 +46,18 @@ public class SpeedDefaults
         return maxBaseSpeed;
     }
 
-    public float getDefaultMultiplieer()
+    public float getDefaultMaxMultiplier()
     {
         if (maxMultiplier <= 0F)
         {
             return 10F;
         }
         return maxMultiplier;
+    }
+
+    public boolean usingCustomSpeeds()
+    {
+        return maxBaseSpeed * maxMultiplier > 50.0F;
     }
 
     public static SpeedDefaults loadDefaults()

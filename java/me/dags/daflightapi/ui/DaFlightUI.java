@@ -61,5 +61,4 @@ public interface DaFlightUI
     public void setStatus(int id, String status);
 
     public void draw();
-
 }

@@ -22,9 +22,8 @@
 
 package me.dags.daflight.gui.hud;
 
-import me.dags.daflight.LiteModDaFlight;
+import me.dags.daflight.DaFlight;
 import me.dags.daflight.minecraft.Colour;
-import me.dags.daflight.minecraft.MCGame;
 import me.dags.daflight.player.DaPlayer;
 import me.dags.daflight.utils.Config;
 import me.dags.daflightapi.ui.DaFlightUI;
@@ -60,7 +59,7 @@ public class HUD implements DaFlightUI
 
     public void updateMsg()
     {
-        DaPlayer dp = LiteModDaFlight.DAPLAYER;
+        DaPlayer dp = DaFlight.get().daPlayer;
         boolean flyModifier = false;
         // Flight
         if (dp.flyModOn || DaPlayer.KEY_BINDS.enableFly.keyHeld())
@@ -75,7 +74,7 @@ public class HUD implements DaFlightUI
                     s = cine;
                 }
             }
-            if (DaPlayer.DF_PERMISSIONS.flyEnabled() && (dp.flySpeed.isBoost() || flyModifier))
+            if (DaPlayer.DF_PERMISSIONS.flyEnabled() && (dp.flySpeed.isBoosting() || flyModifier))
             {
                 s = s + modifier;
             }
@@ -90,7 +89,7 @@ public class HUD implements DaFlightUI
         if (DaPlayer.DF_PERMISSIONS.sprintEnabled() && (dp.sprintModOn || DaPlayer.KEY_BINDS.enableSprint.keyHeld()))
         {
             String s = run;
-            if (dp.sprintSpeed.isBoost() || (DaPlayer.KEY_BINDS.speedModifier.keyHeld() && !flyModifier))
+            if (dp.sprintSpeed.isBoosting() || (DaPlayer.KEY_BINDS.speedModifier.keyHeld() && !flyModifier))
             {
                 s = s + modifier;
             }
@@ -127,14 +126,15 @@ public class HUD implements DaFlightUI
         mods.get(3).setShow(b);
     }
 
-    public void render()
+    @Override
+    public void draw()
     {
         if (Config.getInstance().disabled)
         {
             return;
         }
         counter--;
-        if (Config.getInstance().showHud && MCGame.getMinecraft().inGameHasFocus && !MCGame.getMinecraft().gameSettings.showDebugInfo)
+        if (Config.getInstance().showHud && DaFlight.getMC().getMinecraft().inGameHasFocus && !DaFlight.getMC().getGameSettings().showDebugInfo)
         {
             int slot = 5;
             for (DFEntry d : mods)
@@ -143,11 +143,11 @@ public class HUD implements DaFlightUI
                 {
                     if (Config.getInstance().textShadow)
                     {
-                        MCGame.getMinecraft().fontRendererObj.drawStringWithShadow(d.getTitle(), 5, slot, 0xFFFFFF);
+                        DaFlight.getMC().getMinecraft().fontRendererObj.drawStringWithShadow(d.getTitle(), 5, slot, 0xFFFFFF);
                     }
                     else
                     {
-                        MCGame.getMinecraft().fontRendererObj.drawString(d.getTitle(), 5, slot, 0xFFFFFF);
+                        DaFlight.getMC().getMinecraft().fontRendererObj.drawString(d.getTitle(), 5, slot, 0xFFFFFF);
                     }
                     slot += 10;
                 }
@@ -157,11 +157,6 @@ public class HUD implements DaFlightUI
         {
             setTemp(false);
         }
-    }
-
-    @Override
-    public void draw()
-    {
     }
 
     @SuppressWarnings("unused")

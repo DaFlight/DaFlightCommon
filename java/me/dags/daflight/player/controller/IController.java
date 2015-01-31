@@ -22,11 +22,11 @@
 
 package me.dags.daflight.player.controller;
 
-import me.dags.daflight.player.Vector;
+import me.dags.daflight.player.DaPlayer;
 
 public interface IController
 {
-    public void input(Vector v);
+    public void input(DaPlayer daPlayer);
 
     public void unFocused();
 }

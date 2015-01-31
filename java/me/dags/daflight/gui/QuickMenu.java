@@ -22,7 +22,8 @@
 
 package me.dags.daflight.gui;
 
-import me.dags.daflight.minecraft.MCGame;
+import me.dags.daflight.DaFlight;
+import me.dags.daflightapi.ui.element.UIElement;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Mouse;
 
@@ -63,12 +64,12 @@ public class QuickMenu extends ConfigGui
 
     private void checkSizeChange()
     {
-        if (MCGame.screenSizeChanged())
+        if (DaFlight.getMC().screenSizeChanged())
         {
             save();
             super.maxYOffset = 0;
             super.yOffset = 0;
-            applySizeChange(MCGame.getScaledResolution().getScaledWidth(), MCGame.getScaledResolution().getScaledHeight());
+            applySizeChange(DaFlight.getMC().getScaledResolution().getScaledWidth(), DaFlight.getMC().getScaledResolution().getScaledHeight());
         }
     }
 
@@ -102,7 +103,7 @@ public class QuickMenu extends ConfigGui
     private void close()
     {
         save();
-        MCGame.getMinecraft().displayGuiScreen(super.parent);
-        MCGame.getMinecraft().setIngameFocus();
+        DaFlight.getMC().getMinecraft().displayGuiScreen(super.parent);
+        DaFlight.getMC().getMinecraft().setIngameFocus();
     }
 }

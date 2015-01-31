@@ -22,10 +22,13 @@
 
 package me.dags.daflight.player;
 
+import me.dags.daflight.utils.Config;
 import me.dags.daflight.utils.Tools;
 
 public class Speed
 {
+    private final SpeedType speedType;
+
     private boolean boost;
     private float baseSpeed;
     private float multiplier;
@@ -35,34 +38,73 @@ public class Speed
     private float maxMultiplier;
     private float maxSpeed;
 
-    public Speed()
+    public Speed(SpeedType type, float maxBase, float maxMult)
     {
-        baseSpeed = 0.11F;
-        multiplier = 1.0F;
-        totalSpeed = 1.0F;
-        maxBaseSpeed = 5F;
-        maxMultiplier = 10F;
-        maxSpeed = 50F;
-        boost = false;
+        speedType = type;
+        maxBaseSpeed = maxBase;
+        maxMultiplier = maxMult;
+        maxSpeed = maxBaseSpeed * maxMultiplier;
     }
 
-    public Speed setMaxBaseSpeed(float f)
+    public Speed resetMaxSpeed()
     {
-        maxBaseSpeed = f * 0.1F;
+        maxSpeed = maxBaseSpeed * maxMultiplier;
         return this;
     }
 
-    public Speed setMaxMultiplier(float f)
+    public Speed setBoost(boolean b)
     {
-        maxMultiplier = f;
+        boost = b;
         return this;
     }
 
     public Speed setMaxSpeed(float f)
     {
         maxSpeed = f;
-        update();
+        if (10F * baseSpeed * multiplier > maxSpeed)
+        {
+            multiplier = 1.0F;
+        }
+        if (10F * baseSpeed * multiplier > maxSpeed)
+        {
+            baseSpeed = 0.1F;
+        }
+        updateSpeed();
         return this;
+    }
+
+    public Speed setSpeedValues(float base, float mult)
+    {
+        baseSpeed = base;
+        multiplier = mult;
+        setMaxSpeed(maxSpeed);
+        return this;
+    }
+
+    public void toggleBoost()
+    {
+        boost = ! boost;
+        updateSpeed();
+    }
+
+    public SpeedType getType()
+    {
+        return speedType;
+    }
+
+    public boolean isBoosting()
+    {
+        return boost;
+    }
+
+    public float getBaseSpeed()
+    {
+        return baseSpeed;
+    }
+
+    public float getMultiplier()
+    {
+        return multiplier;
     }
 
     public float getTotalSpeed()
@@ -72,7 +114,7 @@ public class Speed
 
     public float getMaxBaseSpeed()
     {
-        return maxBaseSpeed * 10;
+        return maxBaseSpeed;
     }
 
     public float getMaxMultiplier()
@@ -80,73 +122,58 @@ public class Speed
         return maxMultiplier;
     }
 
-    public boolean isBoost()
-    {
-        return boost;
-    }
-
-    public void toggleBoost()
-    {
-        boost = !boost;
-        update();
-    }
-
-    public void setBoost(boolean b)
-    {
-        boost = b;
-        update();
-    }
-
     public float incBaseSpeed()
     {
-        float oldBase = baseSpeed;
-        baseSpeed = baseSpeed + 0.01F < maxBaseSpeed ? baseSpeed + 0.01F : maxBaseSpeed;
-        if (10F * baseSpeed * multiplier <= maxSpeed)
-            update();
-        else
-            baseSpeed = oldBase;
-        return Tools.round(baseSpeed);
+        float temp = maxSpeed / multiplier;
+        temp = temp > maxBaseSpeed ? maxBaseSpeed / 10F : temp / 10F;
+
+        if (baseSpeed + 0.01F <= temp)
+        {
+            baseSpeed += 0.01F;
+            updateSpeed();
+        }
+        return baseSpeed;
     }
 
     public float decBaseSpeed()
     {
-        baseSpeed = baseSpeed - 0.01F > 0.01F ? baseSpeed - 0.01F : baseSpeed;
-        update();
-        return Tools.round(baseSpeed);
+        baseSpeed = baseSpeed - 0.01F > 0 ? baseSpeed - 0.01F : baseSpeed;
+        updateSpeed();
+        return baseSpeed;
     }
 
     public float incMultiplier()
     {
-        float oldMult = multiplier;
-        multiplier = multiplier + 0.1F < maxMultiplier ? multiplier + 0.1F : maxMultiplier;
-        if (10F * baseSpeed * multiplier <= maxSpeed)
-            update();
-        else
-            multiplier = oldMult;
-        return Tools.round(multiplier);
+        float temp = maxSpeed / (10F * baseSpeed);
+        temp = temp > maxMultiplier ? maxMultiplier : temp;
+
+        if (multiplier + 0.1F <= temp)
+        {
+            multiplier += 0.1F;
+            updateSpeed();
+        }
+        return multiplier;
     }
 
     public float decMultiplier()
     {
-        multiplier = multiplier - 0.1F > 0.1F ? multiplier - 0.1F : multiplier;
-        update();
-        return Tools.round(multiplier);
+        multiplier = multiplier - 0.1F > 0 ? multiplier - 0.1F : multiplier;
+        updateSpeed();
+        return multiplier;
     }
 
-    public void setBaseSpeed(float f)
+    private void updateSpeed()
     {
-        baseSpeed = 10F * f * multiplier <= maxSpeed ? f : 0.11F;
-        update();
+        totalSpeed = boost ? 5.0F * baseSpeed * multiplier : 5.0F * baseSpeed;
+        baseSpeed = Tools.round(baseSpeed);
+        multiplier = Tools.round(multiplier);
+        Config.setSpeeds(this);
     }
 
-    public void setMultiplier(float f)
+    public enum SpeedType
     {
-        multiplier = 10F * baseSpeed * f <= maxSpeed ? f : 1.1F;
-        update();
-    }
-
-    private void update()
-    {
-        totalSpeed = boost ? baseSpeed * multiplier * 5F : baseSpeed * 5F;
+        FLY,
+        SPRINT,
+        ;
     }
 }

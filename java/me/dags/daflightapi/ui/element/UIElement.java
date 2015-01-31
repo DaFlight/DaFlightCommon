@@ -20,41 +20,33 @@
  * THE SOFTWARE.
  */
 
-package me.dags.daflight.input.binds;
+package me.dags.daflightapi.ui.element;
 
-import me.dags.daflight.DaFlight;
-import me.dags.daflight.gui.QuickMenu;
-import net.minecraft.client.settings.KeyBinding;
-import org.lwjgl.input.Keyboard;
+import me.dags.daflight.gui.uielements.ToolTip;
 
 /**
  * @author dags_ <dags@dags.me>
  */
 
-public class MenuBind extends KeyBinding
+public interface UIElement
 {
-    private boolean pressed;
+    public void drawElement(int mouseX, int mouseY);
 
-    public MenuBind(String name, int id, String mod)
-    {
-        super(name, id, mod);
-    }
+    public void renderToolTips(int mouseX, int mouseY);
 
-    public boolean isKeyPressed()
-    {
-        if (Keyboard.isKeyDown(this.getKeyCode()))
-        {
-            if (!pressed)
-            {
-                return pressed = true;
-            }
-            return false;
-        }
-        return pressed = false;
-    }
+    public void addToolTip(ToolTip t);
 
-    public void displayGui()
-    {
-        DaFlight.getMC().getMinecraft().displayGuiScreen(new QuickMenu());
-    }
+    public boolean mouseInput(int mouseX, int mouseY);
+
+    public boolean shiftClicked();
+
+    public void mouseUnpressed(int mouseX, int mouseY);
+
+    public boolean keyInput(char keyChar, int keyId);
+
+    public void setYOffset(int offset);
+
+    public void setYPos(int pos);
+
+    public void resetYOffset();
 }

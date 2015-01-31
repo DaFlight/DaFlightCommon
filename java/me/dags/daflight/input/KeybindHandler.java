@@ -22,7 +22,7 @@
 
 package me.dags.daflight.input;
 
-import me.dags.daflight.LiteModDaFlight;
+import me.dags.daflight.DaFlight;
 import me.dags.daflight.input.binds.KeyBind;
 import me.dags.daflight.input.binds.KeyBinds;
 import me.dags.daflight.player.DaPlayer;
@@ -52,6 +52,6 @@ public class KeybindHandler
                 result = kb.getAction().released(daPlayer) || result;
         }
         if (result)
-            LiteModDaFlight.getHud().updateMsg();
+            DaFlight.getHud().updateMsg();
     }
 }

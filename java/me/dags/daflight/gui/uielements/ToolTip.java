@@ -22,7 +22,7 @@
 
 package me.dags.daflight.gui.uielements;
 
-import me.dags.daflight.minecraft.MCGame;
+import me.dags.daflight.DaFlight;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -52,7 +52,7 @@ public class ToolTip extends Gui
 
             for (String s : lines)
             {
-                int var7 = MCGame.getMinecraft().fontRendererObj.getStringWidth(s);
+                int var7 = DaFlight.getMC().getMinecraft().fontRendererObj.getStringWidth(s);
                 if (var7 > var4)
                 {
                     var4 = var7;
@@ -84,7 +84,7 @@ public class ToolTip extends Gui
 
             for (int i = 0; i < lines.length; i++)
             {
-                MCGame.getMinecraft().fontRendererObj.drawStringWithShadow(lines[i], xPos, yPos, -1);
+                DaFlight.getMC().getMinecraft().fontRendererObj.drawStringWithShadow(lines[i], xPos, yPos, -1);
                 if (i == 0)
                     yPos += 2;
                 yPos += 10;

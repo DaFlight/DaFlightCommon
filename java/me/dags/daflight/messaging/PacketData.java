@@ -28,12 +28,23 @@ package me.dags.daflight.messaging;
 
 public enum PacketData
 {
+    // Client
     CONNECT(new byte[]{1}),
     MOD_ON(new byte[]{2, 1}),
     MOD_OFF(new byte[]{2, 2}),
+
+    // Server
+    FULLBRIGHT_OFF(new byte[]{1, 0}),
+    FULLBRIGHT_ON(new byte[]{1, 1}),
+    FLYMOD_OFF(new byte[]{2, 0}),
+    FLYMOD_ON(new byte[]{2, 1}),
+    SOFTFALL_OFF(new byte[]{3, 0}),
+    SOFTFALL_ON(new byte[]{3, 1}),
+    REFRESH(new byte[]{4, 0}),
+    SPEED(new byte[]{100, 0})
     ;
 
-    private byte[] data;
+    private final byte[] data;
 
     PacketData(byte[] b)
     {
@@ -43,5 +54,11 @@ public enum PacketData
     public byte[] getData()
     {
         return data;
+    }
+
+    public PacketData setCustomValue(byte b)
+    {
+        data[1] = b;
+        return this;
     }
 }

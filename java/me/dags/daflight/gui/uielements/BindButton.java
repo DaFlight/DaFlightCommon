@@ -22,8 +22,8 @@
 
 package me.dags.daflight.gui.uielements;
 
-import me.dags.daflight.gui.UIElement;
-import me.dags.daflight.minecraft.MCGame;
+import me.dags.daflight.DaFlight;
+import me.dags.daflightapi.ui.element.UIElement;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.input.Keyboard;
@@ -66,7 +66,7 @@ public class BindButton extends GuiButton implements UIElement
     @Override
     public void drawElement(int mouseX, int mouseY)
     {
-        super.drawButton(MCGame.getMinecraft(), mouseX, mouseY);
+        super.drawButton(DaFlight.getMC().getMinecraft(), mouseX, mouseY);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class BindButton extends GuiButton implements UIElement
     @Override
     public boolean mouseInput(int x, int y)
     {
-        this.active = super.mousePressed(MCGame.getMinecraft(), x, y);
+        this.active = super.mousePressed(DaFlight.getMC().getMinecraft(), x, y);
         super.displayString = getDisplayString();
         return active;
     }

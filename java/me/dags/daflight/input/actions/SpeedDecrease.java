@@ -13,7 +13,7 @@
 
 package me.dags.daflight.input.actions;
 
-import me.dags.daflight.LiteModDaFlight;
+import me.dags.daflight.DaFlight;
 import me.dags.daflight.gui.hud.HUD;
 import me.dags.daflight.player.DaPlayer;
 import me.dags.daflight.player.Speed;
@@ -47,34 +47,32 @@ public class SpeedDecrease extends SpeedAdjust
 
     private boolean decreaseFlySpeed(DaPlayer daPlayer)
     {
-        HUD r = LiteModDaFlight.getHud();
         Speed speed = daPlayer.flySpeed;
-        if (speed.isBoost())
+        if (speed.isBoosting())
         {
             Config.getInstance().flySpeedMult = speed.decMultiplier();
-            r.renderTemp("X" + Tools.round1Dp(Config.getInstance().flySpeedMult));
+            DaFlight.getHud().renderTemp("X" + Tools.round1Dp(Config.getInstance().flySpeedMult));
         }
         else
         {
             Config.getInstance().flySpeed = speed.decBaseSpeed();
-            r.renderTemp("x" + Tools.round1Dp(Config.getInstance().flySpeed * 10F));
+            DaFlight.getHud().renderTemp("x" + Tools.round1Dp(Config.getInstance().flySpeed * 10F));
         }
         return true;
     }
 
     private boolean decreaseSprintSpeed(DaPlayer daPlayer)
     {
-        HUD r = LiteModDaFlight.getHud();
         Speed speed = daPlayer.sprintSpeed;
-        if (speed.isBoost())
+        if (speed.isBoosting())
         {
             Config.getInstance().sprintSpeedMult = speed.decMultiplier();
-            r.renderTemp("X" + Tools.round1Dp(Config.getInstance().sprintSpeedMult));
+            DaFlight.getHud().renderTemp("X" + Tools.round1Dp(Config.getInstance().sprintSpeedMult));
         }
         else
         {
             Config.getInstance().sprintSpeed = speed.decBaseSpeed();
-            r.renderTemp("x" + Tools.round1Dp(Config.getInstance().sprintSpeed * 10F));
+            DaFlight.getHud().renderTemp("x" + Tools.round1Dp(Config.getInstance().sprintSpeed * 10F));
         }
         return true;
     }

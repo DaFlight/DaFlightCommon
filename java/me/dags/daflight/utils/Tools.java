@@ -22,9 +22,7 @@
 
 package me.dags.daflight.utils;
 
-import com.mumfrey.liteloader.core.LiteLoader;
-import com.mumfrey.liteloader.util.log.LiteLoaderLogger;
-import me.dags.daflight.minecraft.MCGame;
+import me.dags.daflight.DaFlight;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +30,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
-public class Tools extends MCGame
+public class Tools
 {
 
     private static DecimalFormat df1;
@@ -44,11 +42,6 @@ public class Tools extends MCGame
         dfs.setDecimalSeparator(".".charAt(0));
         df1 = new DecimalFormat("0.0", dfs);
         df2 = new DecimalFormat("0.00", dfs);
-    }
-
-    public static void log(String msg)
-    {
-        LiteLoaderLogger.info("[DaFlight] " + msg);
     }
 
     public static float round(float f)
@@ -66,25 +59,10 @@ public class Tools extends MCGame
         return df2.format(f);
     }
 
-    public static void tellPlayer(String msg)
-    {
-        getPlayer().addChatMessage(getMessage(msg));
-    }
-
-    private static File getDaFlightFolder()
-    {
-        File folder = new File(LiteLoader.getCommonConfigFolder(), "daflight");
-        if (!folder.exists())
-        {
-            folder.mkdirs();
-        }
-        return folder;
-    }
-
     public static String getOrCreateConfig(String folder, String server)
     {
         String fileName = server + ".json";
-        File serversFolder = new File(getDaFlightFolder(), folder);
+        File serversFolder = new File(DaFlight.getConfigFolder(), folder);
         if (!serversFolder.exists())
         {
             serversFolder.mkdirs();
@@ -107,7 +85,7 @@ public class Tools extends MCGame
     public static String createGlobalConfig()
     {
         String fileName = "global.json";
-        File configFile = new File(getDaFlightFolder(), fileName);
+        File configFile = new File(DaFlight.getConfigFolder(), fileName);
         if (!configFile.exists())
         {
             try

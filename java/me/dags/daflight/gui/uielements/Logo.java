@@ -22,9 +22,8 @@
 
 package me.dags.daflight.gui.uielements;
 
-import me.dags.daflight.gui.UIElement;
-import me.dags.daflight.minecraft.MCGame;
-import me.dags.daflight.utils.GLHelper;
+import me.dags.daflight.DaFlight;
+import me.dags.daflightapi.ui.element.UIElement;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -83,8 +82,8 @@ public class Logo implements UIElement
 
     public void draw()
     {
-        MCGame.getMinecraft().getTextureManager().bindTexture(LOGO);
-        GLHelper.glDrawTexturedRect(xPos, yPos, width, height, 1, 1, imageWidth, imageHeight);
+        DaFlight.getMC().getMinecraft().getTextureManager().bindTexture(LOGO);
+        DaFlight.getUIHelper().glDrawTexturedRect(xPos, yPos, width, height, 1, 1, imageWidth, imageHeight);
     }
 
     @Override

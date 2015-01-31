@@ -22,14 +22,13 @@
 
 package me.dags.daflight.player.controller;
 
-import me.dags.daflight.LiteModDaFlight;
-import me.dags.daflight.minecraft.MCGame;
+import me.dags.daflight.DaFlight;
+import me.dags.daflightapi.minecraft.MinecraftGame;
 import me.dags.daflight.player.DaPlayer;
 import me.dags.daflight.player.Direction;
-import me.dags.daflight.player.Vector;
 import me.dags.daflight.utils.Config;
 
-public class CineFlightController extends MCGame implements IController
+public class CineFlightController implements IController
 {
 
     private Config c = Config.getInstance();
@@ -54,15 +53,16 @@ public class CineFlightController extends MCGame implements IController
     }
 
     @Override
-    public void input(Vector v)
+    public void input(DaPlayer daPlayer)
     {
-        d.update((double) getPlayer().rotationYaw);
+        MinecraftGame mc = DaFlight.getMC();
+        d.update((double) mc.getPlayer().rotationYaw);
 
         double x = 0D;
         double y = 0D;
         double z = 0D;
 
-        double pitch = getPlayer().rotationPitch;
+        double pitch = mc.getPlayer().rotationPitch;
 
         // FORWARD
         if (DaPlayer.KEY_BINDS.forward.keyHeld())
@@ -155,19 +155,20 @@ public class CineFlightController extends MCGame implements IController
 
         if (x == 0 & y == 0 & z == 0)
         {
-            getPlayer().setVelocity(getPlayer().motionX * c.flySmoothing, getPlayer().motionY, getPlayer().motionZ * c.flySmoothing);
+            mc.getPlayer().setVelocity(mc.getPlayer().motionX * c.flySmoothing, mc.getPlayer().motionY, mc.getPlayer().motionZ * c.flySmoothing);
         }
         else
         {
-            double speed = LiteModDaFlight.DAPLAYER.getSpeed();
-            getPlayer().setVelocity(x * speed, y * speed, z * speed);
+            double speed = daPlayer.getSpeed();
+            mc.getPlayer().setVelocity(x * speed, y * speed, z * speed);
         }
     }
 
     @Override
     public void unFocused()
     {
-        getPlayer().setVelocity(getPlayer().motionX * c.flySmoothing, 0, getPlayer().motionZ * c.flySmoothing);
+        MinecraftGame mc = DaFlight.getMC();
+        mc.getPlayer().setVelocity(mc.getPlayer().motionX * c.flySmoothing, 0, mc.getPlayer().motionZ * c.flySmoothing);
     }
 
     private Double dec(Double d)

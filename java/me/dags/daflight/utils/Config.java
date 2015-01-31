@@ -28,16 +28,16 @@ import com.mumfrey.liteloader.core.LiteLoader;
 import com.mumfrey.liteloader.modconfig.ConfigStrategy;
 import com.mumfrey.liteloader.modconfig.Exposable;
 import com.mumfrey.liteloader.modconfig.ExposableOptions;
-import me.dags.daflight.LiteModDaFlight;
-import me.dags.daflight.minecraft.MCGame;
+import me.dags.daflight.DaFlight;
 import me.dags.daflight.player.DaPlayer;
+import me.dags.daflight.player.Speed;
 
 /**
  * @author dags_ <dags@dags.me>
  */
 
 @ExposableOptions(strategy = ConfigStrategy.Unversioned, filename = "daflight.json")
-public class Config extends MCGame implements Exposable
+public class Config implements Exposable
 {
     /**
      * KeyBinds
@@ -171,7 +171,7 @@ public class Config extends MCGame implements Exposable
 
     public static void loadServerConfig()
     {
-        instance = new Config(getServerData().serverIP.replace(":", "-"));
+        instance = new Config(DaFlight.getMC().getServerData().serverIP.replace(":", "-"));
     }
 
     public static void reloadConfig()
@@ -180,6 +180,22 @@ public class Config extends MCGame implements Exposable
         getInstance();
     }
 
+    public static void setSpeeds(Speed speed)
+    {
+        switch (speed.getType())
+        {
+            case FLY:
+                getInstance().flySpeed = speed.getBaseSpeed();
+                getInstance().flySpeedMult = speed.getMultiplier();
+                saveSettings();
+                break;
+            case SPRINT:
+                getInstance().sprintSpeed = speed.getBaseSpeed();
+                getInstance().sprintSpeedMult = speed.getMultiplier();
+                saveSettings();
+                break;
+        }
+    }
 
     public static void saveSettings()
     {
@@ -188,20 +204,18 @@ public class Config extends MCGame implements Exposable
 
     public static void applySettings()
     {
-        DaPlayer daPlayer = LiteModDaFlight.DAPLAYER;
+        DaPlayer daPlayer = DaFlight.get().daPlayer;
         Config c = getInstance();
         DaPlayer.KEY_BINDS.initSettings();
-        daPlayer.flySpeed.setBaseSpeed(c.flySpeed);
-        daPlayer.flySpeed.setMultiplier(c.flySpeedMult);
-        daPlayer.sprintSpeed.setBaseSpeed(c.sprintSpeed);
-        daPlayer.sprintSpeed.setMultiplier(c.sprintSpeedMult);
-        LiteModDaFlight.getHud().refreshStatuses();
+        daPlayer.flySpeed.setSpeedValues(c.flySpeed, c.flySpeedMult);
+        daPlayer.sprintSpeed.setSpeedValues(c.sprintSpeed, c.sprintSpeedMult);
+        DaFlight.getHud().refreshStatuses();
         if (!c.speedIsToggle)
         {
             daPlayer.flySpeed.setBoost(false);
             daPlayer.sprintSpeed.setBoost(false);
             DaPlayer.KEY_BINDS.speedModifier.setState(false);
-            LiteModDaFlight.getHud().updateMsg();
+            DaFlight.getHud().updateMsg();
         }
     }
 }

@@ -28,14 +28,15 @@ import com.mumfrey.liteloader.core.LiteLoader;
 import com.mumfrey.liteloader.modconfig.ConfigStrategy;
 import com.mumfrey.liteloader.modconfig.Exposable;
 import com.mumfrey.liteloader.modconfig.ExposableOptions;
-import me.dags.daflight.minecraft.MCGame;
+import me.dags.daflight.DaFlight;
+import me.dags.daflight.player.DaPlayer;
 
 /**
  * @author dags_ <dags@dags.me>
  */
 
 @ExposableOptions(strategy = ConfigStrategy.Unversioned, filename = "global.json")
-public class GlobalConfig extends MCGame implements Exposable
+public class GlobalConfig implements Exposable
 {
     private static GlobalConfig instance;
 
@@ -47,7 +48,7 @@ public class GlobalConfig extends MCGame implements Exposable
     public boolean configToolTips = true;
     @Expose
     @SerializedName("Brightness")
-    private float brightness = 0.5f;
+    private float brightness = -1.0F;
 
     public static GlobalConfig getInstance()
     {
@@ -68,8 +69,12 @@ public class GlobalConfig extends MCGame implements Exposable
     public static void applyDefaults()
     {
         GlobalConfig c = getInstance();
-        getGameSettings().gammaSetting = c.brightness;
-        getGameSettings().saveOptions();
+        if (c.brightness < 0F)
+        {
+            setBrightness(DaFlight.getMC().getGameSettings().gammaSetting);
+        }
+        DaFlight.getMC().getGameSettings().gammaSetting = c.brightness;
+        DaFlight.getMC().getGameSettings().saveOptions();
     }
 
     public static boolean perServerConfig()
@@ -94,7 +99,7 @@ public class GlobalConfig extends MCGame implements Exposable
 
     public static void setBrightness(float f)
     {
-        if (f < 1.0f)
+        if (f <= 1.0f)
         {
             getInstance().brightness = f;
             return;

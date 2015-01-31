@@ -13,13 +13,15 @@
 
 package me.dags.daflight.gui;
 
-import me.dags.daflight.LiteModDaFlight;
+import me.dags.daflight.DaFlight;
 import me.dags.daflight.gui.uielements.*;
 import me.dags.daflight.input.binds.KeyBinds;
-import me.dags.daflight.minecraft.MCGame;
 import me.dags.daflight.player.DaPlayer;
 import me.dags.daflight.utils.Config;
 import me.dags.daflight.utils.GlobalConfig;
+import me.dags.daflightapi.ui.element.IEntryBox;
+import me.dags.daflightapi.ui.element.UIElement;
+import me.dags.daflightapi.ui.UIHelper;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.input.Keyboard;
@@ -70,11 +72,11 @@ public abstract class ConfigGui extends GuiScreen
     private ToggleButton speedHold;
     private ToggleButton fbHold;
 
-    private EntryBox flyStatus;
-    private EntryBox cineStatus;
-    private EntryBox sprintStatus;
-    private EntryBox speedStatus;
-    private EntryBox fullbrightStatus;
+    private IEntryBox flyStatus;
+    private IEntryBox cineStatus;
+    private IEntryBox sprintStatus;
+    private IEntryBox speedStatus;
+    private IEntryBox fullbrightStatus;
 
     protected ScrollBar scrollBar;
 
@@ -86,14 +88,14 @@ public abstract class ConfigGui extends GuiScreen
     public ConfigGui()
     {
         uiElements = new ArrayList<UIElement>();
-        init(MCGame.getScaledResolution().getScaledWidth(), MCGame.getScaledResolution().getScaledHeight());
+        init(DaFlight.getMC().getScaledResolution().getScaledWidth(), DaFlight.getMC().getScaledResolution().getScaledHeight());
         this.parent = null;
     }
 
     public ConfigGui(GuiScreen parent)
     {
         uiElements = new ArrayList<UIElement>();
-        init(MCGame.getScaledResolution().getScaledWidth(), MCGame.getScaledResolution().getScaledHeight());
+        init(DaFlight.getMC().getScaledResolution().getScaledWidth(), DaFlight.getMC().getScaledResolution().getScaledHeight());
         this.parent = parent;
     }
 
@@ -143,13 +145,13 @@ public abstract class ConfigGui extends GuiScreen
         uiElements.add(fbHold = new ToggleButton(1, xLeft + w1 + 1, y, w2, 20, "Hold", config.fullbrightIsToggle, new String[]{"Hold", "Toggle"}));
         uiElements.add(cineKey = new BindButton(xLeft, y += 21, w1, 20, false, "CineFly", config.cineFlyKey, "C"));
         uiElements.add(flyUpKey = new BindButton(xLeft, y += 21, w1, 20, false, "FlyUp", config.upKey, "SPACE"));
-        uiElements.add(flyDownKey = new BindButton(xLeft, y += 21, w1, 20, false, "FlyDown", config.downKey, "SHIFT"));
-        uiElements.add(speedUpKey = new BindButton(xLeft, y += 21, w1, 20, false, "Speed++", config.speedUpKey, "LBRACKET"));
-        uiElements.add(speedDownKey = new BindButton(xLeft, y += 21, w1, 20, false, "Speed--", config.speedDownKey, "RBRACKET"));
+        uiElements.add(flyDownKey = new BindButton(xLeft, y += 21, w1, 20, false, "FlyDown", config.downKey, "LSHIFT"));
+        uiElements.add(speedUpKey = new BindButton(xLeft, y += 21, w1, 20, false, "Speed++", config.speedUpKey, "RBRACKET"));
+        uiElements.add(speedDownKey = new BindButton(xLeft, y += 21, w1, 20, false, "Speed--", config.speedDownKey, "LBRACKET"));
 
         // Right column
         y = singleColumn ? y + 31 : yTop;
-        DaPlayer daPlayer = LiteModDaFlight.DAPLAYER;
+        DaPlayer daPlayer = DaFlight.get().daPlayer;
         uiElements.add(new Label(xRight, y, "Modifiers").setColour(EnumChatFormatting.DARK_AQUA));
         uiElements.add(flySpeed = new Slider(1, xRight, y += 11, 0F, daPlayer.flySpeed.getMaxBaseSpeed(), 1F, 200).setDisplayString("FlySpeed").setDefaultValue(config.flySpeed * 10));
         uiElements.add(flyMultiplier = new Slider(1, xRight, y += 21, 0F, daPlayer.flySpeed.getMaxMultiplier(), 5F, 200).setDisplayString("FlySpeedMultiplier").setDefaultValue(config.flySpeedMult));
@@ -160,11 +162,12 @@ public abstract class ConfigGui extends GuiScreen
         uiElements.add(leftRightMultiplier = new Slider(1, xRight, y += 21, 0F, 1F, 0.85F, 200).setDisplayString("Left/RightMultiplier").setDefaultValue(config.lrModifier));
 
         uiElements.add(new Label(xRight, y += 31, "Statuses").setColour(EnumChatFormatting.DARK_AQUA));
-        uiElements.add(flyStatus = new EntryBox(xRight, y += 11, 200, 17, "Flight", "f", true).setString(config.flightStatus));
-        uiElements.add(cineStatus = new EntryBox(xRight, y += 21, 200, 17, "CineFlight", "c",true).setString(config.cineFlightStatus));
-        uiElements.add(sprintStatus = new EntryBox(xRight, y += 21, 200, 17, "Sprint", "r",true).setString(config.runStatus));
-        uiElements.add(speedStatus = new EntryBox(xRight, y += 21, 200, 17, "Speed", "*",true).setString(config.speedStatus));
-        uiElements.add(fullbrightStatus = new EntryBox(xRight, y + 21, 200, 17, "Fullbright", "fb",true).setString(config.fullBrightStatus));
+        UIHelper helper = DaFlight.getUIHelper();
+        uiElements.add(flyStatus = helper.getEntryBox(xRight, y += 11, 200, 17, "Flight", "f", true).setString(config.flightStatus));
+        uiElements.add(cineStatus = helper.getEntryBox(xRight, y += 21, 200, 17, "CineFlight", "c",true).setString(config.cineFlightStatus));
+        uiElements.add(sprintStatus = helper.getEntryBox(xRight, y += 21, 200, 17, "Sprint", "r",true).setString(config.runStatus));
+        uiElements.add(speedStatus = helper.getEntryBox(xRight, y += 21, 200, 17, "Speed", "*",true).setString(config.speedStatus));
+        uiElements.add(fullbrightStatus = helper.getEntryBox(xRight, y + 21, 200, 17, "Fullbright", "fb",true).setString(config.fullBrightStatus));
 
         uiElements.add(scrollBar = new ScrollBar(displayWidth - 4, 0, displayHeight, maxYOffset).setVisible(isScrollable));
         setToolTips();
@@ -331,6 +334,6 @@ public abstract class ConfigGui extends GuiScreen
         Config.saveSettings();
         Config.applySettings();
         GlobalConfig.saveSettings();
-        LiteModDaFlight.getHud().updateMsg();
+        DaFlight.getHud().updateMsg();
     }
 }

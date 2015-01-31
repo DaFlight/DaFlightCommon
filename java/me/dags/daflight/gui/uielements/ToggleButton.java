@@ -22,8 +22,8 @@
 
 package me.dags.daflight.gui.uielements;
 
-import me.dags.daflight.gui.UIElement;
-import me.dags.daflight.minecraft.MCGame;
+import me.dags.daflight.DaFlight;
+import me.dags.daflightapi.ui.element.UIElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 
@@ -61,7 +61,7 @@ public class ToggleButton extends GuiButton implements UIElement
     @Override
     public void drawElement(int mouseX, int mouseY)
     {
-        super.drawButton(MCGame.getMinecraft(), mouseX, mouseY);
+        super.drawButton(DaFlight.getMC().getMinecraft(), mouseX, mouseY);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class ToggleButton extends GuiButton implements UIElement
     @Override
     public boolean mouseInput(int x, int y)
     {
-        boolean result = super.mousePressed(MCGame.getMinecraft(), x, y);
+        boolean result = super.mousePressed(DaFlight.getMC().getMinecraft(), x, y);
         if (result)
         {
             this.toggle = !toggle;

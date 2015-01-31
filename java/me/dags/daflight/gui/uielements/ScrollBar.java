@@ -22,7 +22,7 @@
 
 package me.dags.daflight.gui.uielements;
 
-import me.dags.daflight.gui.UIElement;
+import me.dags.daflightapi.ui.element.UIElement;
 import net.minecraft.client.gui.Gui;
 
 /**
