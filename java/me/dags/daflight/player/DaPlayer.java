@@ -25,7 +25,7 @@ package me.dags.daflight.player;
 import me.dags.daflight.DaFlight;
 import me.dags.daflight.input.KeybindHandler;
 import me.dags.daflight.input.MovementHandler;
-import me.dags.daflight.input.binds.KeyBinds;
+import me.dags.daflight.input.Binds;
 import me.dags.daflight.player.controller.CineFlightController;
 import me.dags.daflight.player.controller.FlightController;
 import me.dags.daflight.player.controller.IController;
@@ -41,7 +41,7 @@ import me.dags.daflight.messaging.PacketData;
 
 public class DaPlayer
 {
-    public static final KeyBinds KEY_BINDS = new KeyBinds();
+    public static final Binds KEY_BINDS = new Binds();
     public static final DFPermissions DF_PERMISSIONS = new DFPermissions();
 
     public Speed sprintSpeed;

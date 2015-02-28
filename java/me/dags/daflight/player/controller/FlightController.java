@@ -64,11 +64,11 @@ public class FlightController implements IController
 
     private boolean jumpyKeyIsFlyUp()
     {
-        return DaPlayer.KEY_BINDS.flyUp.getId() == DaFlight.getMC().getGameSettings().keyBindJump.getKeyCode();
+        return DaPlayer.KEY_BINDS.flyUp.getBindId() == DaFlight.getMC().getGameSettings().keyBindJump.getKeyCode();
     }
 
     private boolean sneakKeyIsFlyDown()
     {
-        return DaPlayer.KEY_BINDS.flyDown.getId() == DaFlight.getMC().getGameSettings().keyBindSneak.getKeyCode();
+        return DaPlayer.KEY_BINDS.flyDown.getBindId() == DaFlight.getMC().getGameSettings().keyBindSneak.getKeyCode();
     }
 }

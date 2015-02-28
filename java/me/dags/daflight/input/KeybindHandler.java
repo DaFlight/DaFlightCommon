@@ -23,8 +23,7 @@
 package me.dags.daflight.input;
 
 import me.dags.daflight.DaFlight;
-import me.dags.daflight.input.binds.KeyBind;
-import me.dags.daflight.input.binds.KeyBinds;
+import me.dags.daflight.input.bind.AbstractBind;
 import me.dags.daflight.player.DaPlayer;
 
 /**
@@ -35,20 +34,20 @@ public class KeybindHandler
 {
     public static void checkMenuKey()
     {
-        if (KeyBinds.MENU_BINDING.isKeyPressed())
-            KeyBinds.MENU_BINDING.displayGui();
+        if (Binds.MENU_BINDING.isKeyPressed())
+            Binds.MENU_BINDING.displayGui();
     }
 
     public static void handleInput(DaPlayer daPlayer)
     {
         boolean result = false;
-        for (KeyBind kb : DaPlayer.KEY_BINDS.binds)
+        for (AbstractBind kb : DaPlayer.KEY_BINDS.binds)
         {
-            if (kb.keyPressed())
+            if (kb.bindPressed())
                 result = kb.getAction().pressed(daPlayer) || result;
-            else if (kb.keyHeld())
+            else if (kb.bindHeld())
                 result = kb.getAction().held(daPlayer) || result;
-            else if (kb.keyReleased())
+            else if (kb.bindReleased())
                 result = kb.getAction().released(daPlayer) || result;
         }
         if (result)

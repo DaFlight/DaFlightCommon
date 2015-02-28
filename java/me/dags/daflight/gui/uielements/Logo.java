@@ -36,30 +36,13 @@ public class Logo implements UIElement
     private int xPos;
     private int yPos;
     private int defaultY;
-    private int imageWidth;
-    private int imageHeight;
     private int width;
     private int height;
 
     public Logo()
     {
-        imageWidth = 512;
-        imageHeight = 512;
         width = 128;
-        height = 128;
-    }
-
-    ;
-
-    public Logo(int x, int y)
-    {
-        xPos = x;
-        yPos = y;
-        defaultY = y;
-        imageWidth = 512;
-        imageHeight = 512;
-        width = 128;
-        height = 128;
+        height = 32;
     }
 
     public Logo setXY(int x, int y)
@@ -83,7 +66,7 @@ public class Logo implements UIElement
     public void draw()
     {
         DaFlight.getMC().getMinecraft().getTextureManager().bindTexture(LOGO);
-        DaFlight.getUIHelper().glDrawTexturedRect(xPos, yPos, width, height, 1, 1, imageWidth, imageHeight);
+        DaFlight.getUIHelper().glDrawTexturedRect(xPos, yPos, width, height, 1, 1, 512, 512);
     }
 
     @Override
@@ -105,7 +88,7 @@ public class Logo implements UIElement
     }
 
     @Override
-    public boolean mouseInput(int mouseX, int mouseY)
+    public boolean mouseInput(int mouseX, int mouseY, int button)
     {
         return false;
     }

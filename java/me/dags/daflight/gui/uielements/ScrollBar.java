@@ -90,7 +90,7 @@ public class ScrollBar extends Gui implements UIElement
     }
 
     @Override
-    public boolean mouseInput(int mouseX, int mouseY)
+    public boolean mouseInput(int mouseX, int mouseY, int button)
     {
         return hovered && (active = true);
     }

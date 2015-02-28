@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-package me.dags.daflight.input.binds;
+package me.dags.daflight.input.bind;
 
 /**
  * @author dags_ <dags@dags.me>

@@ -78,7 +78,7 @@ public class ToggleButton extends GuiButton implements UIElement
     }
 
     @Override
-    public boolean mouseInput(int x, int y)
+    public boolean mouseInput(int x, int y, int button)
     {
         boolean result = super.mousePressed(DaFlight.getMC().getMinecraft(), x, y);
         if (result)

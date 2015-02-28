@@ -62,10 +62,10 @@ public class HUD implements DaFlightUI
         DaPlayer dp = DaFlight.get().daPlayer;
         boolean flyModifier = false;
         // Flight
-        if (dp.flyModOn || DaPlayer.KEY_BINDS.enableFly.keyHeld())
+        if (dp.flyModOn || DaPlayer.KEY_BINDS.enableFly.bindHeld())
         {
             String s = "";
-            flyModifier = DaPlayer.KEY_BINDS.speedModifier.keyHeld();
+            flyModifier = DaPlayer.KEY_BINDS.speedModifier.bindHeld();
             if (dp.flyModOn)
             {
                 s = flight;
@@ -86,10 +86,10 @@ public class HUD implements DaFlightUI
             mods.get(0).setShow(false);
         }
         // Sprint
-        if (DaPlayer.DF_PERMISSIONS.sprintEnabled() && (dp.sprintModOn || DaPlayer.KEY_BINDS.enableSprint.keyHeld()))
+        if (DaPlayer.DF_PERMISSIONS.sprintEnabled() && (dp.sprintModOn || DaPlayer.KEY_BINDS.enableSprint.bindHeld()))
         {
             String s = run;
-            if (dp.sprintSpeed.isBoosting() || (DaPlayer.KEY_BINDS.speedModifier.keyHeld() && !flyModifier))
+            if (dp.sprintSpeed.isBoosting() || (DaPlayer.KEY_BINDS.speedModifier.bindHeld() && !flyModifier))
             {
                 s = s + modifier;
             }

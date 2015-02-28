@@ -23,8 +23,8 @@
 package me.dags.daflight.input;
 
 import me.dags.daflight.DaFlight;
-import me.dags.daflight.input.binds.BindType;
-import me.dags.daflight.input.binds.KeyBind;
+import me.dags.daflight.input.bind.AbstractBind;
+import me.dags.daflight.input.bind.BindType;
 import me.dags.daflight.player.DaPlayer;
 import me.dags.daflight.player.Direction;
 import me.dags.daflight.player.Vector;
@@ -53,9 +53,9 @@ public class MovementHandler
 
         movementVector.setSpeed(daPlayer.getSpeed());
 
-        for (KeyBind kb : DaPlayer.KEY_BINDS.movementBinds)
+        for (AbstractBind kb : DaPlayer.KEY_BINDS.movementBinds)
         {
-            if (kb.keyHeld())
+            if (kb.bindHeld())
             {
                 movementVector.setHasInput(true);
 

@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-package me.dags.daflight.input.binds;
+package me.dags.daflight.input.bind;
 
 import me.dags.daflight.DaFlight;
 import me.dags.daflight.gui.QuickMenu;

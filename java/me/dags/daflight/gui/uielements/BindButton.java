@@ -83,10 +83,19 @@ public class BindButton extends GuiButton implements UIElement
     }
 
     @Override
-    public boolean mouseInput(int x, int y)
+    public boolean mouseInput(int x, int y, int button)
     {
-        this.active = super.mousePressed(DaFlight.getMC().getMinecraft(), x, y);
-        super.displayString = getDisplayString();
+        if (this.active)
+        {
+            setValue("MOUSE_" + button);
+            this.active = false;
+            super.displayString = getDisplayString();
+        }
+        else
+        {
+            this.active = super.mousePressed(DaFlight.getMC().getMinecraft(), x, y);
+            super.displayString = getDisplayString();
+        }
         return active;
     }
 

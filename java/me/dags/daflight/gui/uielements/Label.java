@@ -69,7 +69,7 @@ public class Label implements UIElement
     }
 
     @Override
-    public boolean mouseInput(int mouseX, int mouseY)
+    public boolean mouseInput(int mouseX, int mouseY, int button)
     {
         return false;
     }

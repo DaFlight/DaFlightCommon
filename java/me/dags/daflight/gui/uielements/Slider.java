@@ -93,7 +93,7 @@ public class Slider extends GuiOptionSlider implements UIElement
     }
 
     @Override
-    public boolean mouseInput(int mouseX, int mouseY)
+    public boolean mouseInput(int mouseX, int mouseY, int button)
     {
         return super.mousePressed(DaFlight.getMC().getMinecraft(), mouseX, mouseY);
     }

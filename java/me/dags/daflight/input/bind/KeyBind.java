@@ -20,33 +20,45 @@
  * THE SOFTWARE.
  */
 
-package me.dags.daflight.gui;
+package me.dags.daflight.input.bind;
 
-import me.dags.daflight.gui.uielements.ToolTip;
+import org.lwjgl.input.Keyboard;
 
-/**
- * @author dags_ <dags@dags.me>
- */
-
-public interface UIElement
+public class KeyBind extends AbstractBind
 {
-    public void drawElement(int mouseX, int mouseY);
 
-    public void renderToolTips(int mouseX, int mouseY);
+    public KeyBind(String controlName, String keyName)
+    {
+        super(controlName, Keyboard.getKeyIndex(keyName));
+    }
 
-    public void addToolTip(ToolTip t);
+    @Override
+    public AbstractBind setFromId(int id)
+    {
+        bindId = id;
+        return this;
+    }
 
-    public boolean mouseInput(int mouseX, int mouseY);
+    @Override
+    public AbstractBind setFromString(String stringName)
+    {
+        bindId = Keyboard.getKeyIndex(stringName);
+        return this;
+    }
 
-    public boolean shiftClicked();
+    @Override
+    public String getBindName()
+    {
+        if (bindId < 0)
+        {
+            return "NONE";
+        }
+        return Keyboard.getKeyName(bindId);
+    }
 
-    public void mouseUnpressed(int mouseX, int mouseY);
-
-    public boolean keyInput(char keyChar, int keyId);
-
-    public void setYOffset(int offset);
-
-    public void setYPos(int pos);
-
-    public void resetYOffset();
+    @Override
+    public boolean isBindDown()
+    {
+        return Keyboard.isKeyDown(bindId);
+    }
 }

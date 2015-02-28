@@ -15,7 +15,7 @@ package me.dags.daflight.gui;
 
 import me.dags.daflight.DaFlight;
 import me.dags.daflight.gui.uielements.*;
-import me.dags.daflight.input.binds.KeyBinds;
+import me.dags.daflight.input.Binds;
 import me.dags.daflight.player.DaPlayer;
 import me.dags.daflight.utils.Config;
 import me.dags.daflight.utils.GlobalConfig;
@@ -135,7 +135,7 @@ public abstract class ConfigGui extends GuiScreen
         int w1 = 156;
         int w2 = columnWidth - w1 - 1;
         uiElements.add(new Label(xLeft, y += 31, "KeyBinds").setColour(EnumChatFormatting.DARK_AQUA));
-        uiElements.add(flyKey = new BindButton(xLeft, y += 11, w1, 20, false, "FlyKey", config.flyKey, "F"));
+        uiElements.add(flyKey = new BindButton(xLeft, y += 11, w1, 20, false, "Fly", config.flyKey, "F"));
         uiElements.add(flyHold = new ToggleButton(1, xLeft + w1 + 1, y, w2, 20, "Hold", config.flyIsToggle, new String[]{"Hold", "Toggle"}));
         uiElements.add(sprintKey = new BindButton(xLeft, y += 21, w1, 20, false, "Sprint", config.sprintKey, "R"));
         uiElements.add(sprintHold = new ToggleButton(1, xLeft + w1 + 1, y, w2, 20, "Hold", config.sprintIsToggle, new String[]{"Hold", "Toggle"}));
@@ -218,7 +218,7 @@ public abstract class ConfigGui extends GuiScreen
     }
 
     @Override
-    public void mouseClicked(int x, int y, int f)
+    public void mouseClicked(int x, int y, int id)
     {
         mouseHeld = true;
         if (isShiftKeyDown())
@@ -228,7 +228,7 @@ public abstract class ConfigGui extends GuiScreen
         }
         else
             for (UIElement e : uiElements)
-                e.mouseInput(x, y);
+                e.mouseInput(x, y, id);
     }
 
     @Override
@@ -245,7 +245,7 @@ public abstract class ConfigGui extends GuiScreen
         for (UIElement e : uiElements)
             if (e.keyInput(keyChar, keyId))
                 exit = false;
-        return exit || KeyBinds.MENU_BINDING.isKeyPressed();
+        return exit || Binds.MENU_BINDING.isKeyPressed();
     }
 
     public void handleScrollbar(int mouseX, int mouseY)

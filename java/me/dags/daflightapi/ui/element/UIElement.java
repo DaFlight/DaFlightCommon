@@ -36,7 +36,7 @@ public interface UIElement
 
     public void addToolTip(ToolTip t);
 
-    public boolean mouseInput(int mouseX, int mouseY);
+    public boolean mouseInput(int mouseX, int mouseY, int mouseButton);
 
     public boolean shiftClicked();
 
