@@ -16,7 +16,6 @@ public abstract class AbstractBind
 
     protected boolean canHold;
     protected boolean isToggle;
-    protected boolean toggleState;
     protected boolean press;
     protected boolean held;
 
@@ -57,12 +56,6 @@ public abstract class AbstractBind
         return this;
     }
 
-    public AbstractBind setState(boolean b)
-    {
-        toggleState = b;
-        return this;
-    }
-
     public AbstractBind setMods(int x, int y, int z)
     {
         modX = x;
@@ -97,21 +90,6 @@ public abstract class AbstractBind
         return type;
     }
 
-    public boolean canHold()
-    {
-        return canHold;
-    }
-
-    public boolean isToggle()
-    {
-        return isToggle;
-    }
-
-    public boolean getToggleState()
-    {
-        return toggleState;
-    }
-
     public int getModX()
     {
         return modX;
@@ -131,20 +109,9 @@ public abstract class AbstractBind
     {
         if (isBindDown())
         {
-            if (press)
-            {
-                return false;
-            }
-            if (isToggle)
-            {
-                toggleState = !toggleState;
-            }
-            press = true;
-            held = true;
-            return true;
+            return !press && (held = press = true);
         }
-        press = false;
-        return false;
+        return press = false;
     }
 
     public boolean bindHeld()
@@ -156,14 +123,9 @@ public abstract class AbstractBind
     {
         if (!isToggle)
         {
-            if (bindId < 0)
-            {
-                return false;
-            }
             if (held && !bindHeld())
             {
-                held = false;
-                return true;
+                return !(held = false);
             }
         }
         return false;

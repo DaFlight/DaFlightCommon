@@ -121,7 +121,7 @@ public class BindButton extends GuiButton implements UIElement
             active = false;
             if (keyId == Keyboard.KEY_ESCAPE)
             {
-                value = "";
+                setValue("NONE");
                 super.displayString = getDisplayString();
                 return true;
             }

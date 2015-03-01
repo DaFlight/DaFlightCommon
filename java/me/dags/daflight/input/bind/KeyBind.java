@@ -49,7 +49,7 @@ public class KeyBind extends AbstractBind
     @Override
     public String getBindName()
     {
-        if (bindId < 0)
+        if (bindId == 0)
         {
             return "NONE";
         }
@@ -59,6 +59,6 @@ public class KeyBind extends AbstractBind
     @Override
     public boolean isBindDown()
     {
-        return Keyboard.isKeyDown(bindId);
+        return bindId != 0 && Keyboard.isKeyDown(bindId);
     }
 }

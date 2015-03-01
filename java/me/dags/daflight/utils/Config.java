@@ -214,7 +214,6 @@ public class Config implements Exposable
         {
             daPlayer.flySpeed.setBoost(false);
             daPlayer.sprintSpeed.setBoost(false);
-            DaPlayer.KEY_BINDS.speedModifier.setState(false);
             DaFlight.getHud().updateMsg();
         }
     }

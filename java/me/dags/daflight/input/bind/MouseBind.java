@@ -39,30 +39,9 @@ public class MouseBind extends AbstractBind
         return "MOUSE_" + bindId;
     }
 
-    @Override
-    public boolean bindPressed()
-    {
-        if (isBindDown())
-        {
-            if (press)
-            {
-                return false;
-            }
-            if (isToggle)
-            {
-                toggleState = !toggleState;
-            }
-            press = true;
-            held = true;
-            return true;
-        }
-        press = false;
-        return false;
-    }
-
     public boolean isBindDown()
     {
-        return Mouse.isButtonDown(bindId);
+        return bindId > -1 && Mouse.isButtonDown(bindId);
     }
 
     private static int getBindFromString(String s)
