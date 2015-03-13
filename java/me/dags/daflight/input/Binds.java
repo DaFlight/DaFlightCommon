@@ -66,7 +66,7 @@ public class Binds
 
     public void initSettings()
     {
-        Config c = Config.getInstance();
+        Config c = DaFlight.getConfig();
         fullBright = getBind("FullBright", c.fullBrightKey).setType(BindType.FULLBRIGHT).setAction(new ToggleFullbright());
         fullBright.setToggle(c.fullbrightIsToggle);
         fullBright.setCanHold(true);

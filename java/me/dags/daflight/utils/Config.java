@@ -22,23 +22,28 @@
 
 package me.dags.daflight.utils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.mumfrey.liteloader.core.LiteLoader;
-import com.mumfrey.liteloader.modconfig.ConfigStrategy;
-import com.mumfrey.liteloader.modconfig.Exposable;
-import com.mumfrey.liteloader.modconfig.ExposableOptions;
 import me.dags.daflight.DaFlight;
 import me.dags.daflight.player.DaPlayer;
 import me.dags.daflight.player.Speed;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * @author dags_ <dags@dags.me>
  */
 
-@ExposableOptions(strategy = ConfigStrategy.Unversioned, filename = "daflight.json")
-public class Config implements Exposable
+public class Config
 {
+    private static final Gson GSON = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
+    private static final String FILE_NAME = "daflight.json";
+
     /**
      * KeyBinds
      */
@@ -146,75 +151,92 @@ public class Config implements Exposable
     @SerializedName("Status_Shadow")
     public boolean textShadow = true;
 
-    private static Config instance;
+    private File saveFile;
 
     private Config()
     {
-        LiteLoader.getInstance().registerExposable(this, "daflight.json");
     }
 
-    private Config(String server)
+    public Config setSaveFile(File file)
     {
-        String fileName = Tools.getOrCreateConfig("servers", server);
-        LiteLoader.getInstance().registerExposable(this, fileName);
-        saveSettings();
+        saveFile = file;
+        return this;
     }
 
-    public static Config getInstance()
-    {
-        if (instance == null)
-        {
-            instance = new Config();
-        }
-        return instance;
-    }
-
-    public static void loadServerConfig()
-    {
-        instance = new Config(DaFlight.getMC().getServerData().serverIP.replace(":", "-"));
-    }
-
-    public static void reloadConfig()
-    {
-        instance = null;
-        getInstance();
-    }
-
-    public static void setSpeeds(Speed speed)
+    public void setSpeeds(Speed speed)
     {
         switch (speed.getType())
         {
             case FLY:
-                getInstance().flySpeed = speed.getBaseSpeed();
-                getInstance().flySpeedMult = speed.getMultiplier();
-                saveSettings();
+                flySpeed = speed.getBaseSpeed();
+                flySpeedMult = speed.getMultiplier();
+                saveConfig();
                 break;
             case SPRINT:
-                getInstance().sprintSpeed = speed.getBaseSpeed();
-                getInstance().sprintSpeedMult = speed.getMultiplier();
-                saveSettings();
+                sprintSpeed = speed.getBaseSpeed();
+                sprintSpeedMult = speed.getMultiplier();
+                saveConfig();
                 break;
         }
     }
 
-    public static void saveSettings()
-    {
-        LiteLoader.getInstance().writeConfig(getInstance());
-    }
-
-    public static void applySettings()
+    public void applySettings()
     {
         DaPlayer daPlayer = DaFlight.get().daPlayer;
-        Config c = getInstance();
         DaPlayer.KEY_BINDS.initSettings();
-        daPlayer.flySpeed.setSpeedValues(c.flySpeed, c.flySpeedMult);
-        daPlayer.sprintSpeed.setSpeedValues(c.sprintSpeed, c.sprintSpeedMult);
+        daPlayer.flySpeed.setSpeedValues(flySpeed, flySpeedMult);
+        daPlayer.sprintSpeed.setSpeedValues(sprintSpeed, sprintSpeedMult);
         DaFlight.getHud().refreshStatuses();
-        if (!c.speedIsToggle)
+        if (!speedIsToggle)
         {
             daPlayer.flySpeed.setBoost(false);
             daPlayer.sprintSpeed.setBoost(false);
             DaFlight.getHud().updateMsg();
+        }
+    }
+
+    public Config saveConfig()
+    {
+        try
+        {
+            if (!saveFile.exists())
+                saveFile.createNewFile();
+            FileWriter writer = new FileWriter(saveFile);
+            writer.write(GSON.toJson(this));
+            writer.flush();
+            writer.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return this;
+    }
+
+    public static Config getDefaultConfig()
+    {
+        File file = new File(DaFlight.getConfigFolder(), Config.FILE_NAME);
+        try
+        {
+            Config config = GSON.fromJson(new FileReader(file), Config.class);
+            if (config != null)
+                return config.setSaveFile(file);
+        }
+        catch (IOException e)
+        {}
+        return new Config().setSaveFile(file).saveConfig();
+    }
+
+    public static Config getServerConfig()
+    {
+        File file = new File(Tools.getOrCreateFolder(DaFlight.getConfigFolder(), "servers"), DaFlight.getMC().getServerData().serverIP.replace(":", "-") + ".json");
+        try
+        {
+            return GSON.fromJson(new FileReader(file), Config.class).setSaveFile(file);
+        }
+        catch (IOException e)
+        {
+            return new Config().setSaveFile(file).saveConfig();
         }
     }
 }

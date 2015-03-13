@@ -23,10 +23,9 @@
 package me.dags.daflight.player.controller;
 
 import me.dags.daflight.DaFlight;
-import me.dags.daflightapi.minecraft.MinecraftGame;
 import me.dags.daflight.player.DaPlayer;
 import me.dags.daflight.player.Vector;
-import me.dags.daflight.utils.Config;
+import me.dags.daflightapi.minecraft.MinecraftGame;
 
 public class FlightController implements IController
 {
@@ -42,20 +41,16 @@ public class FlightController implements IController
         }
         else
         {
-            double smoothing = Config.getInstance().flySmoothing;
+            double smoothing = DaFlight.getConfig().flySmoothing;
             mc.getPlayer().setVelocity(mc.getPlayer().motionX * smoothing, 0, mc.getPlayer().motionZ * smoothing);
         }
-        if (mc.getPlayer().movementInput.jump && !jumpyKeyIsFlyUp())
-            mc.getPlayer().motionY -= 0.15D;
-        if (mc.getPlayer().movementInput.sneak && !sneakKeyIsFlyDown())
-            mc.getPlayer().motionY += 0.15D;
     }
 
     @Override
     public void unFocused()
     {
         MinecraftGame mc = DaFlight.getMC();
-        double smoothing = Config.getInstance().flySmoothing;
+        double smoothing = DaFlight.getConfig().flySmoothing;
         double xMotion = mc.getPlayer().motionX;
         double yMotion = mc.getPlayer().motionY;
         double zMotion = mc.getPlayer().motionZ;

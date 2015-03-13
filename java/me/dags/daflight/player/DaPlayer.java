@@ -23,17 +23,16 @@
 package me.dags.daflight.player;
 
 import me.dags.daflight.DaFlight;
+import me.dags.daflight.input.Binds;
 import me.dags.daflight.input.KeybindHandler;
 import me.dags.daflight.input.MovementHandler;
-import me.dags.daflight.input.Binds;
+import me.dags.daflight.messaging.PacketData;
 import me.dags.daflight.player.controller.CineFlightController;
 import me.dags.daflight.player.controller.FlightController;
 import me.dags.daflight.player.controller.IController;
 import me.dags.daflight.player.controller.SprintController;
 import me.dags.daflight.utils.Config;
-import me.dags.daflight.utils.GlobalConfig;
 import me.dags.daflight.utils.SpeedDefaults;
-import me.dags.daflight.messaging.PacketData;
 
 /**
  * @author dags_ <dags@dags.me>
@@ -63,14 +62,15 @@ public class DaPlayer
 
     public DaPlayer()
     {
+        Config config = DaFlight.getConfig();
         SpeedDefaults speedDefaults = SpeedDefaults.loadDefaults();
         direction = new Direction();
         movementVector = new Vector();
         customSpeeds = speedDefaults.usingCustomSpeeds();
         flySpeed = new Speed(Speed.SpeedType.FLY, speedDefaults.getDefaultMaxBaseSpeed(), speedDefaults.getDefaultMaxMultiplier());
-        flySpeed.setSpeedValues(Config.getInstance().flySpeed, Config.getInstance().flySpeedMult);
+        flySpeed.setSpeedValues(config.flySpeed, config.flySpeedMult);
         sprintSpeed = new Speed(Speed.SpeedType.SPRINT, speedDefaults.getDefaultMaxBaseSpeed(), speedDefaults.getDefaultMaxMultiplier());
-        sprintSpeed.setSpeedValues(Config.getInstance().sprintSpeed, Config.getInstance().sprintSpeedMult);
+        sprintSpeed.setSpeedValues(config.sprintSpeed, config.sprintSpeedMult);
     }
 
     public void onGameJoin()
@@ -132,7 +132,7 @@ public class DaPlayer
     {
         flyModOn = DF_PERMISSIONS.flyEnabled() && !flyModOn;
         toggleFlightCommon();
-        if (!flyModOn && !Config.getInstance().speedIsToggle)
+        if (!flyModOn && !DaFlight.getConfig().speedIsToggle)
         {
             flySpeed.setBoost(false);
         }
@@ -166,7 +166,7 @@ public class DaPlayer
     {
         sprintModOn = DF_PERMISSIONS.sprintEnabled() && !sprintModOn;
         controller = getActiveController();
-        if (!sprintModOn && !Config.getInstance().speedIsToggle)
+        if (!sprintModOn && !DaFlight.getConfig().speedIsToggle)
         {
             sprintSpeed.setBoost(false);
         }
@@ -211,13 +211,13 @@ public class DaPlayer
         if (fullBrightOn || !DF_PERMISSIONS.fbEnabled())
         {
             fullBrightOn = false;
-            brightness = GlobalConfig.getBrightness();
+            brightness = DaFlight.getGlobalConfig().getBrightness();
         }
         else
         {
             fullBrightOn = true;
-            GlobalConfig.setBrightness(DaFlight.getMC().getGameSettings().gammaSetting);
-            GlobalConfig.saveSettings();
+            DaFlight.getGlobalConfig().setBrightness(DaFlight.getMC().getGameSettings().gammaSetting);
+            DaFlight.getGlobalConfig().saveConfig();
         }
         DaFlight.getMC().getGameSettings().gammaSetting = brightness;
     }
@@ -258,7 +258,7 @@ public class DaPlayer
 
     public boolean softFallOn()
     {
-        if (Config.getInstance().disabled || !DF_PERMISSIONS.noFallDamageEnabled())
+        if (DaFlight.getConfig().disabled || !DF_PERMISSIONS.noFallDamageEnabled())
         {
             return false;
         }
@@ -281,7 +281,7 @@ public class DaPlayer
 
     public boolean is3DFlightOn()
     {
-        return Config.getInstance().threeDFlight;
+        return DaFlight.getConfig().threeDFlight;
     }
 
     public double getSpeed()

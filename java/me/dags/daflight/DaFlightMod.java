@@ -2,10 +2,8 @@ package me.dags.daflight;
 
 import me.dags.daflight.input.KeybindHandler;
 import me.dags.daflight.messaging.ChannelMessaging;
-import me.dags.daflightapi.minecraft.MinecraftGame;
-import me.dags.daflight.utils.Config;
-import me.dags.daflight.utils.GlobalConfig;
 import me.dags.daflightapi.IDaFlightMod;
+import me.dags.daflightapi.minecraft.MinecraftGame;
 import me.dags.daflightapi.ui.UIHelper;
 
 import java.io.File;
@@ -29,16 +27,15 @@ public class DaFlightMod implements IDaFlightMod
     @Override
     public String getVersion()
     {
-        return "2.2r1";
+        return "2.3r1";
     }
 
     @Override
     public void onInit(MinecraftGame mcGame, ChannelMessaging channelMessaging, UIHelper uiHelper, File configFolder)
     {
         DaFlight.init(mcGame, channelMessaging, uiHelper, configFolder);
-        Config.getInstance();
-        Config.applySettings();
-        GlobalConfig.applyDefaults();
+        DaFlight.getConfig().applySettings();
+        DaFlight.getGlobalConfig().applyDefaults();
     }
 
     @Override
@@ -50,13 +47,13 @@ public class DaFlightMod implements IDaFlightMod
             if (!inGame && wasInGame)
             {
                 wasInGame = false;
-                Config.reloadConfig();
-                Config.applySettings();
+                DaFlight.reloadConfig();
+                DaFlight.getConfig().applySettings();
             }
-            if (Config.getInstance().disabled)
+            if (DaFlight.getConfig().disabled)
                 DaFlight.get().daPlayer.disableAll();
         }
-        if (inGame && !Config.getInstance().disabled)
+        if (inGame && !DaFlight.getConfig().disabled)
         {
             DaFlight.get().daPlayer.update();
             wasInGame = true;
@@ -75,10 +72,10 @@ public class DaFlightMod implements IDaFlightMod
     public void onJoinGame()
     {
         DaFlight.get().daPlayer.onGameJoin();
-        if (GlobalConfig.perServerConfig() && !DaFlight.getMC().getMinecraft().isSingleplayer())
+        if (DaFlight.getGlobalConfig().perServerConfig() && !DaFlight.getMC().getMinecraft().isSingleplayer())
         {
-            Config.loadServerConfig();
-            Config.applySettings();
+            DaFlight.getServerConfig();
+            DaFlight.getConfig().applySettings();
             DaFlight.getMC().tellPlayer("Server config loaded for: " + DaFlight.getMC().getServerData().serverIP);
         }
     }

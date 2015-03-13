@@ -44,13 +44,13 @@ public class SpeedIncrease extends SpeedAdjust
         Speed speed = daPlayer.flySpeed;
         if (speed.isBoosting())
         {
-            Config.getInstance().flySpeedMult = speed.incMultiplier();
-            DaFlight.getHud().renderTemp("X" + Tools.round1Dp(Config.getInstance().flySpeedMult));
+            DaFlight.getConfig().flySpeedMult = speed.incMultiplier();
+            DaFlight.getHud().renderTemp("X" + Tools.round1Dp(DaFlight.getConfig().flySpeedMult));
         }
         else
         {
-            Config.getInstance().flySpeed = speed.incBaseSpeed();
-            DaFlight.getHud().renderTemp("x" + Tools.round1Dp(Config.getInstance().flySpeed * 10F));
+            DaFlight.getConfig().flySpeed = speed.incBaseSpeed();
+            DaFlight.getHud().renderTemp("x" + Tools.round1Dp(DaFlight.getConfig().flySpeed * 10F));
         }
         return true;
     }
@@ -60,13 +60,13 @@ public class SpeedIncrease extends SpeedAdjust
         Speed speed = daPlayer.sprintSpeed;
         if (speed.isBoosting())
         {
-            Config.getInstance().sprintSpeedMult = speed.incMultiplier();
-            DaFlight.getHud().renderTemp("X" + Tools.round1Dp(Config.getInstance().sprintSpeedMult));
+            DaFlight.getConfig().sprintSpeedMult = speed.incMultiplier();
+            DaFlight.getHud().renderTemp("X" + Tools.round1Dp(DaFlight.getConfig().sprintSpeedMult));
         }
         else
         {
-            Config.getInstance().sprintSpeed = speed.incBaseSpeed();
-            DaFlight.getHud().renderTemp("x" + Tools.round1Dp(Config.getInstance().sprintSpeed * 10F));
+            DaFlight.getConfig().sprintSpeed = speed.incBaseSpeed();
+            DaFlight.getHud().renderTemp("x" + Tools.round1Dp(DaFlight.getConfig().sprintSpeed * 10F));
         }
         return true;
     }

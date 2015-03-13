@@ -22,23 +22,25 @@
 
 package me.dags.daflight.utils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.mumfrey.liteloader.core.LiteLoader;
-import com.mumfrey.liteloader.modconfig.ConfigStrategy;
-import com.mumfrey.liteloader.modconfig.Exposable;
-import com.mumfrey.liteloader.modconfig.ExposableOptions;
 import me.dags.daflight.DaFlight;
-import me.dags.daflight.player.DaPlayer;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * @author dags_ <dags@dags.me>
  */
 
-@ExposableOptions(strategy = ConfigStrategy.Unversioned, filename = "global.json")
-public class GlobalConfig implements Exposable
+public class GlobalConfig
 {
-    private static GlobalConfig instance;
+    private static final Gson GSON = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
+    private static final String FILE_NAME = "global.json";
 
     @Expose
     @SerializedName("Per_server_Configs")
@@ -50,60 +52,82 @@ public class GlobalConfig implements Exposable
     @SerializedName("Brightness")
     private float brightness = -1.0F;
 
-    public static GlobalConfig getInstance()
-    {
-        if (instance == null)
-        {
-            instance = new GlobalConfig();
-        }
-        return instance;
-    }
+    private File saveFile;
 
     private GlobalConfig()
     {
-        String fileName = Tools.createGlobalConfig();
-        LiteLoader.getInstance().registerExposable(this, fileName);
-        LiteLoader.getInstance().writeConfig(this);
     }
 
-    public static void applyDefaults()
+    public GlobalConfig setSaveFile(File file)
     {
-        GlobalConfig c = getInstance();
-        if (c.brightness < 0F)
-        {
-            setBrightness(DaFlight.getMC().getGameSettings().gammaSetting);
-        }
-        DaFlight.getMC().getGameSettings().gammaSetting = c.brightness;
-        DaFlight.getMC().getGameSettings().saveOptions();
+        saveFile = file;
+        return this;
     }
 
-    public static boolean perServerConfig()
+    public boolean perServerConfig()
     {
-        return getInstance().perServerConfigs;
+        return perServerConfigs;
     }
 
-    public static void setPerServerConfig(boolean b)
+    public float getBrightness()
     {
-        getInstance().perServerConfigs = b;
+        return brightness;
     }
 
-    public static void saveSettings()
+    public void setPerServerConfig(boolean b)
     {
-        LiteLoader.getInstance().writeConfig(getInstance());
+        perServerConfigs = b;
     }
 
-    public static float getBrightness()
-    {
-        return getInstance().brightness;
-    }
-
-    public static void setBrightness(float f)
+    public void setBrightness(float f)
     {
         if (f <= 1.0f)
         {
-            getInstance().brightness = f;
+            brightness = f;
             return;
         }
-        getInstance().brightness = 0.5F;
+        brightness = 0.5F;
+    }
+
+    public void applyDefaults()
+    {
+        if (brightness < 0F)
+        {
+            setBrightness(DaFlight.getMC().getGameSettings().gammaSetting);
+        }
+        DaFlight.getMC().getGameSettings().gammaSetting = brightness;
+        DaFlight.getMC().getGameSettings().saveOptions();
+    }
+
+    public GlobalConfig saveConfig()
+    {
+        try
+        {
+            if (!saveFile.exists())
+                saveFile.createNewFile();
+            FileWriter writer = new FileWriter(saveFile);
+            writer.write(GSON.toJson(this));
+            writer.flush();
+            writer.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return this;
+    }
+
+    public static GlobalConfig loadGlobalConfig()
+    {
+        File file = new File(DaFlight.getConfigFolder(), GlobalConfig.FILE_NAME);
+        try
+        {
+            GlobalConfig config =  GSON.fromJson(new FileReader(file), GlobalConfig.class);
+            if (config != null)
+                return config.setSaveFile(file);
+        }
+        catch (IOException e)
+        {}
+        return new GlobalConfig().setSaveFile(file).saveConfig();
     }
 }

@@ -18,7 +18,6 @@ import me.dags.daflight.gui.uielements.*;
 import me.dags.daflight.input.Binds;
 import me.dags.daflight.player.DaPlayer;
 import me.dags.daflight.utils.Config;
-import me.dags.daflight.utils.GlobalConfig;
 import me.dags.daflightapi.ui.UIHelper;
 import me.dags.daflightapi.ui.element.IEntryBox;
 import me.dags.daflightapi.ui.element.UIElement;
@@ -36,7 +35,7 @@ import java.util.List;
 public abstract class ConfigGui extends GuiScreen
 {
     protected final GuiScreen parent;
-    protected final Config config = Config.getInstance();
+    protected final Config config = DaFlight.getConfig();
 
     protected final List<UIElement> uiElements;
     protected boolean singleColumnMode;
@@ -128,8 +127,8 @@ public abstract class ConfigGui extends GuiScreen
         uiElements.add(disable = new ToggleButton(1, xLeft, y += 11, 100, 20, "Disabled", config.disabled));
         uiElements.add(flight3D = new ToggleButton(1, xLeft + 102, y, 99, 20, "3DFlight", config.threeDFlight));
         uiElements.add(showHud = new ToggleButton(1, xLeft, y += 21, 100, 20, "ShowHUD", config.showHud));
-        uiElements.add(showToolTips = new ToggleButton(1, xLeft + 102, y, 99, 20, "ToolTips", GlobalConfig.getInstance().configToolTips));
-        uiElements.add(perServer = new ToggleButton(1, xLeft, y += 21, 100, 20, "PerServer", GlobalConfig.perServerConfig()));
+        uiElements.add(showToolTips = new ToggleButton(1, xLeft + 102, y, 99, 20, "ToolTips", DaFlight.getGlobalConfig().configToolTips));
+        uiElements.add(perServer = new ToggleButton(1, xLeft, y += 21, 100, 20, "PerServer", DaFlight.getGlobalConfig().perServerConfig()));
         uiElements.add(textShadow = new ToggleButton(1, xLeft + 102, y, 99, 20, "TextShadow", config.textShadow));
 
         int w1 = 156;
@@ -295,8 +294,8 @@ public abstract class ConfigGui extends GuiScreen
 
     public void save()
     {
-        GlobalConfig.getInstance().perServerConfigs = perServer.getToggleState();
-        GlobalConfig.getInstance().configToolTips = showToolTips.getToggleState();
+        DaFlight.getGlobalConfig().perServerConfigs = perServer.getToggleState();
+        DaFlight.getGlobalConfig().configToolTips = showToolTips.getToggleState();
 
         config.disabled = disable.getToggleState();
         config.threeDFlight = flight3D.getToggleState();
@@ -331,9 +330,9 @@ public abstract class ConfigGui extends GuiScreen
         config.speedStatus = speedStatus.getValue();
         config.fullBrightStatus = fullbrightStatus.getValue();
 
-        Config.saveSettings();
-        Config.applySettings();
-        GlobalConfig.saveSettings();
+        DaFlight.getConfig().saveConfig();
+        DaFlight.getConfig().applySettings();
+        DaFlight.getGlobalConfig().saveConfig();
         DaFlight.getHud().updateMsg();
     }
 }

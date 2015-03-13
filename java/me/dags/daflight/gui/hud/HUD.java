@@ -25,7 +25,6 @@ package me.dags.daflight.gui.hud;
 import me.dags.daflight.DaFlight;
 import me.dags.daflight.minecraft.Colour;
 import me.dags.daflight.player.DaPlayer;
-import me.dags.daflight.utils.Config;
 import me.dags.daflightapi.ui.DaFlightUI;
 
 import java.util.ArrayList;
@@ -53,7 +52,7 @@ public class HUD implements DaFlightUI
         mods = new ArrayList<DFEntry>();
         mods.add(0, new DFEntry("", false));
         mods.add(1, new DFEntry("", false));
-        mods.add(2, new DFEntry(Colour.addColour(Config.getInstance().fullBrightStatus), false));
+        mods.add(2, new DFEntry(Colour.addColour(DaFlight.getConfig().fullBrightStatus), false));
         mods.add(3, new DFEntry("", false));
     }
 
@@ -107,11 +106,11 @@ public class HUD implements DaFlightUI
 
     public void refreshStatuses()
     {
-        flight = Colour.getColouredString(Config.getInstance().flightStatus);
-        cine = Colour.getColouredString(Config.getInstance().cineFlightStatus);
-        run = Colour.getColouredString(Config.getInstance().runStatus);
-        modifier = Colour.getColouredString(Config.getInstance().speedStatus);
-        fb = Colour.getColouredString(Config.getInstance().fullBrightStatus);
+        flight = Colour.getColouredString(DaFlight.getConfig().flightStatus);
+        cine = Colour.getColouredString(DaFlight.getConfig().cineFlightStatus);
+        run = Colour.getColouredString(DaFlight.getConfig().runStatus);
+        modifier = Colour.getColouredString(DaFlight.getConfig().speedStatus);
+        fb = Colour.getColouredString(DaFlight.getConfig().fullBrightStatus);
     }
 
     public void renderTemp(String s)
@@ -129,19 +128,19 @@ public class HUD implements DaFlightUI
     @Override
     public void draw()
     {
-        if (Config.getInstance().disabled)
+        if (DaFlight.getConfig().disabled)
         {
             return;
         }
         counter--;
-        if (Config.getInstance().showHud && DaFlight.getMC().getMinecraft().inGameHasFocus && !DaFlight.getMC().getGameSettings().showDebugInfo)
+        if (DaFlight.getConfig().showHud && DaFlight.getMC().getMinecraft().inGameHasFocus && !DaFlight.getMC().getGameSettings().showDebugInfo)
         {
             int slot = 5;
             for (DFEntry d : mods)
             {
                 if (d.isShown())
                 {
-                    if (Config.getInstance().textShadow)
+                    if (DaFlight.getConfig().textShadow)
                     {
                         DaFlight.getMC().getMinecraft().fontRendererObj.drawStringWithShadow(d.getTitle(), 5, slot, 0xFFFFFF);
                     }

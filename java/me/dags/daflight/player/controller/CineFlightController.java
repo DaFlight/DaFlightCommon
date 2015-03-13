@@ -31,7 +31,7 @@ import me.dags.daflight.utils.Config;
 public class CineFlightController implements IController
 {
 
-    private Config c = Config.getInstance();
+    private Config c = DaFlight.getConfig();
     private Double up;
     private Double down;
     private Double forward;

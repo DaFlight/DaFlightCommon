@@ -2,9 +2,11 @@ package me.dags.daflight;
 
 import me.dags.daflight.gui.hud.HUD;
 import me.dags.daflight.messaging.ChannelMessaging;
-import me.dags.daflightapi.minecraft.MinecraftGame;
 import me.dags.daflight.player.DaPlayer;
+import me.dags.daflight.utils.Config;
+import me.dags.daflight.utils.GlobalConfig;
 import me.dags.daflightapi.DaFlightAPI;
+import me.dags.daflightapi.minecraft.MinecraftGame;
 import me.dags.daflightapi.ui.DaFlightUI;
 import me.dags.daflightapi.ui.UIHelper;
 
@@ -24,6 +26,9 @@ public class DaFlight implements DaFlightAPI
     private UIHelper uiHelper;
     private ChannelMessaging channelMessaging;
     private HUD hud;
+
+    private Config config;
+    private GlobalConfig globalConfig;
 
     private DaFlight()
     {}
@@ -85,5 +90,52 @@ public class DaFlight implements DaFlightAPI
     public DaFlightUI getDaFlightUI()
     {
         return hud;
+    }
+
+    public static Config getConfig()
+    {
+        return get().config();
+    }
+
+    public static Config getServerConfig()
+    {
+        return get().serverConfig();
+    }
+
+    public static Config reloadConfig()
+    {
+        return get().reload();
+    }
+
+    public static GlobalConfig getGlobalConfig()
+    {
+        return get().globalConfig();
+    }
+
+    private Config config()
+    {
+        if (config == null)
+        {
+            config = Config.getDefaultConfig();
+        }
+        return config;
+    }
+
+    private Config serverConfig()
+    {
+        return config = Config.getServerConfig();
+    }
+
+    private Config reload()
+    {
+        config = null;
+        return config();
+    }
+
+    private GlobalConfig globalConfig()
+    {
+        if (globalConfig == null)
+            globalConfig = GlobalConfig.loadGlobalConfig();
+        return globalConfig;
     }
 }

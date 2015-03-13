@@ -22,6 +22,7 @@
 
 package me.dags.daflight.player;
 
+import me.dags.daflight.DaFlight;
 import me.dags.daflight.utils.Config;
 import me.dags.daflight.utils.Tools;
 
@@ -167,7 +168,7 @@ public class Speed
         totalSpeed = boost ? 5.0F * baseSpeed * multiplier : 5.0F * baseSpeed;
         baseSpeed = Tools.round(baseSpeed);
         multiplier = Tools.round(multiplier);
-        Config.setSpeeds(this);
+        DaFlight.getConfig().setSpeeds(this);
     }
 
     public enum SpeedType

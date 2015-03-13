@@ -28,7 +28,6 @@ import me.dags.daflight.input.bind.BindType;
 import me.dags.daflight.player.DaPlayer;
 import me.dags.daflight.player.Direction;
 import me.dags.daflight.player.Vector;
-import me.dags.daflight.utils.Config;
 
 /**
  * @author dags_ <dags@dags.me>
@@ -43,7 +42,7 @@ public class MovementHandler
     {
         double yaw = DaFlight.getMC().getPlayer().rotationYaw;
         double pitch = DaFlight.getMC().getPlayer().rotationPitch;
-        double lrMod = Config.getInstance().lrModifier;
+        double lrMod = DaFlight.getConfig().lrModifier;
 
         Vector movementVector = new Vector();
         Direction direction = daPlayer.direction.update(yaw);

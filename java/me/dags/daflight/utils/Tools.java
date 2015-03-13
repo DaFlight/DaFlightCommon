@@ -59,27 +59,29 @@ public class Tools
         return df2.format(f);
     }
 
-    public static String getOrCreateConfig(String folder, String server)
+    public static File getOrCreateFile(File folder, String fileName)
     {
-        String fileName = server + ".json";
-        File serversFolder = new File(DaFlight.getConfigFolder(), folder);
-        if (!serversFolder.exists())
-        {
-            serversFolder.mkdirs();
-        }
-        File configFile = new File(serversFolder, fileName);
-        if (!configFile.exists())
+        folder.mkdirs();
+        File file = new File(folder, fileName);
+        if (!file.exists())
         {
             try
             {
-                configFile.createNewFile();
+                file.createNewFile();
             }
             catch (IOException e)
             {
                 e.printStackTrace();
             }
         }
-        return "daflight/servers/" + fileName;
+        return file;
+    }
+
+    public static File getOrCreateFolder(File parent, String name)
+    {
+        File folder = new File(parent, name);
+        folder.mkdirs();
+        return folder;
     }
 
     public static String createGlobalConfig()
