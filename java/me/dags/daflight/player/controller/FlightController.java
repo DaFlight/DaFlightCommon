@@ -56,14 +56,4 @@ public class FlightController implements IController
         double zMotion = mc.getPlayer().motionZ;
         mc.getPlayer().setVelocity(xMotion * smoothing, yMotion * smoothing, zMotion * smoothing);
     }
-
-    private boolean jumpyKeyIsFlyUp()
-    {
-        return DaPlayer.KEY_BINDS.flyUp.getBindId() == DaFlight.getMC().getGameSettings().keyBindJump.getKeyCode();
-    }
-
-    private boolean sneakKeyIsFlyDown()
-    {
-        return DaPlayer.KEY_BINDS.flyDown.getBindId() == DaFlight.getMC().getGameSettings().keyBindSneak.getKeyCode();
-    }
 }
