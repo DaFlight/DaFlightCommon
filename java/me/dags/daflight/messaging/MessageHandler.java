@@ -80,7 +80,7 @@ public class MessageHandler implements PluginMessageHandler
     {
         if (DaFlight.get().daPlayer.flyModOn || DaFlight.get().daPlayer.sprintModOn)
         {
-            DaFlight.getChannelMessaging().dispatchMessage(PacketData.FLYMOD_ON);
+            DaFlight.getChannelMessaging().dispatchMessage(PacketData.MOD_ON);
         }
     }
 

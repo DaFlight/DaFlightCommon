@@ -28,16 +28,11 @@ package me.dags.daflight.messaging;
 
 public enum PacketData
 {
-    // Client
     CONNECT(new byte[]{1}),
-    MOD_ON(new byte[]{2, 1}),
-    MOD_OFF(new byte[]{2, 2}),
-
-    // Server
     FULLBRIGHT_OFF(new byte[]{1, 0}),
     FULLBRIGHT_ON(new byte[]{1, 1}),
-    FLYMOD_OFF(new byte[]{2, 0}),
-    FLYMOD_ON(new byte[]{2, 1}),
+    MOD_ON(new byte[]{2, 1}),
+    MOD_OFF(new byte[]{2, 2}),
     SOFTFALL_OFF(new byte[]{3, 0}),
     SOFTFALL_ON(new byte[]{3, 1}),
     REFRESH(new byte[]{4, 0}),
