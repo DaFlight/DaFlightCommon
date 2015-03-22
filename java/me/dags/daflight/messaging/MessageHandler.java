@@ -28,6 +28,7 @@ public class MessageHandler implements PluginMessageHandler
                 DaFlight.getMC().tellPlayer("Fullbright disabled!");
             }
             DaPlayer.DF_PERMISSIONS.setFullbrightEnabled(false);
+            DaFlight.get().daPlayer.toggleFullbright();
         }
     }
 
@@ -79,7 +80,7 @@ public class MessageHandler implements PluginMessageHandler
     {
         if (DaFlight.get().daPlayer.flyModOn || DaFlight.get().daPlayer.sprintModOn)
         {
-            DaFlight.getChannelMessaging().dispatchMessage(PacketData.CONNECT);
+            DaFlight.getChannelMessaging().dispatchMessage(PacketData.FLYMOD_ON);
         }
     }
 
