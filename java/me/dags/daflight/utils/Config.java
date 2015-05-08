@@ -27,7 +27,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import me.dags.daflight.DaFlight;
-import me.dags.daflight.player.DaPlayer;
+import me.dags.daflight.player.DFController;
 import me.dags.daflight.player.Speed;
 
 import java.io.File;
@@ -69,6 +69,9 @@ public class Config
     @SerializedName("CineFlight_Key")
     public String cineFlyKey = "C";
     @Expose
+    @SerializedName("NoClip_Key")
+    public String noClipKey = "N";
+    @Expose
     @SerializedName("SpeedUp_Key")
     public String speedUpKey = "RBRACKET";
     @Expose
@@ -90,6 +93,9 @@ public class Config
     @Expose
     @SerializedName("FullBright_Is_Toggle")
     public boolean fullbrightIsToggle = true;
+    @Expose
+    @SerializedName("NoClip_Is_Toggle")
+    public boolean noCLipIsToggle = true;
 
     /**
      * Preferences
@@ -148,6 +154,9 @@ public class Config
     @SerializedName("Speed_Status")
     public String speedStatus = "*";
     @Expose
+    @SerializedName("NoClip_Status")
+    public String noClipStatus = "n";
+    @Expose
     @SerializedName("Status_Shadow")
     public boolean textShadow = true;
 
@@ -182,15 +191,15 @@ public class Config
 
     public void applySettings()
     {
-        DaPlayer daPlayer = DaFlight.get().daPlayer;
-        DaPlayer.KEY_BINDS.initSettings();
-        daPlayer.flySpeed.setSpeedValues(flySpeed, flySpeedMult);
-        daPlayer.sprintSpeed.setSpeedValues(sprintSpeed, sprintSpeedMult);
+        DFController DFController = DaFlight.get().DFController;
+        DFController.KEY_BINDS.initSettings();
+        DFController.flySpeed.setSpeedValues(flySpeed, flySpeedMult);
+        DFController.sprintSpeed.setSpeedValues(sprintSpeed, sprintSpeedMult);
         DaFlight.getHud().refreshStatuses();
         if (!speedIsToggle)
         {
-            daPlayer.flySpeed.setBoost(false);
-            daPlayer.sprintSpeed.setBoost(false);
+            DFController.flySpeed.setBoost(false);
+            DFController.sprintSpeed.setBoost(false);
             DaFlight.getHud().updateMsg();
         }
     }

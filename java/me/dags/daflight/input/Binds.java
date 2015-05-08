@@ -43,6 +43,7 @@ public class Binds
     public AbstractBind enableSprint;
     public AbstractBind speedModifier;
     public AbstractBind cineFlight;
+    public AbstractBind noClip;
 
     public AbstractBind forward;
     public AbstractBind backward;
@@ -81,6 +82,7 @@ public class Binds
         enableFly = getBind("Fly", c.flyKey).setType(BindType.FLY).setAction(new ToggleFlight()).setCanHold(true).setToggle(c.flyIsToggle);
         enableSprint = getBind("Sprint", c.sprintKey).setType(BindType.SPRINT).setAction(new ToggleSprint()).setCanHold(true).setToggle(c.sprintIsToggle);
         speedModifier = getBind("SpeedMod", c.speedKey).setType(BindType.MODIFIER).setAction(new ToggleSpeed()).setCanHold(true).setToggle(c.speedIsToggle);
+        noClip = getBind("NoClip", c.noClipKey).setType(BindType.NO_CLIP).setAction(new ToggleNoClip()).setToggle(c.noCLipIsToggle);
         cineFlight = getBind("CineFlight", c.cineFlyKey).setType(BindType.CINEFLIGHT).setAction(new ToggleCineFlight());
 
         forward = getBind("Forward", "W").setType(BindType.MOVE).setMods(1, 0, 1).setCanHold(true).setToggle(false);
@@ -90,7 +92,7 @@ public class Binds
         jump = getBind("Jump", "SPACE").setType(BindType.GENERIC).setCanHold(true).setToggle(false);
         updateMovementKeys();
 
-        binds = new AbstractBind[]{enableFly, enableSprint, speedModifier, fullBright, cineFlight, flyUp, flyDown, speedUp, speedDown};
+        binds = new AbstractBind[]{enableFly, enableSprint, speedModifier, fullBright, cineFlight, noClip, flyUp, flyDown, speedUp, speedDown};
         movementBinds = new AbstractBind[]{forward, backward, left, right, flyUp, flyDown};
     }
 

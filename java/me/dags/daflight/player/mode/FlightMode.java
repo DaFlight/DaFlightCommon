@@ -20,20 +20,20 @@
  * THE SOFTWARE.
  */
 
-package me.dags.daflight.player.controller;
+package me.dags.daflight.player.mode;
 
 import me.dags.daflight.DaFlight;
-import me.dags.daflight.player.DaPlayer;
+import me.dags.daflight.player.DFController;
 import me.dags.daflight.player.Vector;
 import me.dags.daflightapi.minecraft.MinecraftGame;
 
-public class FlightController implements IController
+public class FlightMode implements IMode
 {
     @Override
-    public void input(DaPlayer daPlayer)
+    public void input(DFController DFController)
     {
         MinecraftGame mc = DaFlight.getMC();
-        Vector v = daPlayer.movementVector;
+        Vector v = DFController.movementVector;
         if (v.hasInput())
         {
 

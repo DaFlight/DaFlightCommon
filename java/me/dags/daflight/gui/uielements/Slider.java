@@ -23,8 +23,8 @@
 package me.dags.daflight.gui.uielements;
 
 import me.dags.daflight.DaFlight;
-import me.dags.daflightapi.ui.element.UIElement;
 import me.dags.daflight.utils.Tools;
+import me.dags.daflightapi.ui.element.UIElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiOptionSlider;
 import net.minecraft.client.settings.GameSettings;

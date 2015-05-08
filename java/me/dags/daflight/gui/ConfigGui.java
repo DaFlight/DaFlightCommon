@@ -16,7 +16,7 @@ package me.dags.daflight.gui;
 import me.dags.daflight.DaFlight;
 import me.dags.daflight.gui.uielements.*;
 import me.dags.daflight.input.Binds;
-import me.dags.daflight.player.DaPlayer;
+import me.dags.daflight.player.DFController;
 import me.dags.daflight.utils.Config;
 import me.dags.daflightapi.ui.UIHelper;
 import me.dags.daflightapi.ui.element.IEntryBox;
@@ -39,7 +39,7 @@ public abstract class ConfigGui extends GuiScreen
 
     protected final List<UIElement> uiElements;
     protected boolean singleColumnMode;
-    protected int columnHeight = 320;
+    protected int columnHeight = 340;
 
     private ToggleButton disable;
     private ToggleButton flight3D;
@@ -65,15 +65,18 @@ public abstract class ConfigGui extends GuiScreen
     private BindButton speedUpKey;
     private BindButton speedDownKey;
     private BindButton fullBrightKey;
+    private BindButton noClipKey;
 
     private ToggleButton flyHold;
     private ToggleButton sprintHold;
     private ToggleButton speedHold;
     private ToggleButton fbHold;
+    private ToggleButton noClipHold;
 
     private IEntryBox flyStatus;
     private IEntryBox cineStatus;
     private IEntryBox sprintStatus;
+    private IEntryBox noClipStatus;
     private IEntryBox speedStatus;
     private IEntryBox fullbrightStatus;
 
@@ -142,6 +145,9 @@ public abstract class ConfigGui extends GuiScreen
         uiElements.add(speedHold = new ToggleButton(1, xLeft + w1 + 1, y, w2, 20, "Hold", config.speedIsToggle, new String[]{"Hold", "Toggle"}));
         uiElements.add(fullBrightKey = new BindButton(xLeft, y += 21, w1, 20, false, "FullBright", config.fullBrightKey, "MINUS"));
         uiElements.add(fbHold = new ToggleButton(1, xLeft + w1 + 1, y, w2, 20, "Hold", config.fullbrightIsToggle, new String[]{"Hold", "Toggle"}));
+        uiElements.add(noClipKey = new BindButton(xLeft, y += 21, w1, 20, false, "NoClip", config.noClipKey, "N"));
+        uiElements.add(noClipHold = new ToggleButton(1, xLeft + w1 + 1, y, w2, 20, "Hold", config.noCLipIsToggle, new String[]{"Hold", "Toggle"}));
+
         uiElements.add(cineKey = new BindButton(xLeft, y += 21, w1, 20, false, "CineFly", config.cineFlyKey, "C"));
         uiElements.add(flyUpKey = new BindButton(xLeft, y += 21, w1, 20, false, "FlyUp", config.upKey, "SPACE"));
         uiElements.add(flyDownKey = new BindButton(xLeft, y += 21, w1, 20, false, "FlyDown", config.downKey, "LSHIFT"));
@@ -150,13 +156,13 @@ public abstract class ConfigGui extends GuiScreen
 
         // Right column
         y = singleColumn ? y + 31 : yTop;
-        DaPlayer daPlayer = DaFlight.get().daPlayer;
+        DFController DFController = DaFlight.get().DFController;
         uiElements.add(new Label(xRight, y, "Modifiers").setColour(EnumChatFormatting.DARK_AQUA));
-        uiElements.add(flySpeed = new Slider(1, xRight, y += 11, 0F, daPlayer.flySpeed.getMaxBaseSpeed(), 1F, 200).setDisplayString("FlySpeed").setDefaultValue(config.flySpeed * 10));
-        uiElements.add(flyMultiplier = new Slider(1, xRight, y += 21, 0F, daPlayer.flySpeed.getMaxMultiplier(), 5F, 200).setDisplayString("FlySpeedMultiplier").setDefaultValue(config.flySpeedMult));
+        uiElements.add(flySpeed = new Slider(1, xRight, y += 11, 0F, DFController.flySpeed.getMaxBaseSpeed(), 1F, 200).setDisplayString("FlySpeed").setDefaultValue(config.flySpeed * 10));
+        uiElements.add(flyMultiplier = new Slider(1, xRight, y += 21, 0F, DFController.flySpeed.getMaxMultiplier(), 5F, 200).setDisplayString("FlySpeedMultiplier").setDefaultValue(config.flySpeedMult));
         uiElements.add(flySmoothing = new Slider(1, xRight, y += 21, 0F, 1F, 0.7F, 200).setDisplayString("FlySmoothing").setDefaultValue(config.flySmoothing));
-        uiElements.add(sprintSpeed = new Slider(1, xRight, y += 21, 0F, daPlayer.sprintSpeed.getMaxBaseSpeed(), 1F, 200).setDisplayString("SprintSpeed").setDefaultValue(config.sprintSpeed * 10));
-        uiElements.add(sprintMultiplier = new Slider(1, xRight, y += 21, 0F, daPlayer.sprintSpeed.getMaxMultiplier(), 5F, 200).setDisplayString("SprintSpeedMultiplier").setDefaultValue(config.sprintSpeedMult));
+        uiElements.add(sprintSpeed = new Slider(1, xRight, y += 21, 0F, DFController.sprintSpeed.getMaxBaseSpeed(), 1F, 200).setDisplayString("SprintSpeed").setDefaultValue(config.sprintSpeed * 10));
+        uiElements.add(sprintMultiplier = new Slider(1, xRight, y += 21, 0F, DFController.sprintSpeed.getMaxMultiplier(), 5F, 200).setDisplayString("SprintSpeedMultiplier").setDefaultValue(config.sprintSpeedMult));
         uiElements.add(jumpMultiplier = new Slider(1, xRight, y += 21, 0F, 1F, 0.75F, 200).setDisplayString("JumpMultiplier").setDefaultValue(config.jumpModifier));
         uiElements.add(leftRightMultiplier = new Slider(1, xRight, y += 21, 0F, 1F, 0.85F, 200).setDisplayString("Left/RightMultiplier").setDefaultValue(config.lrModifier));
 
@@ -165,6 +171,7 @@ public abstract class ConfigGui extends GuiScreen
         uiElements.add(flyStatus = helper.getEntryBox(xRight, y += 11, 200, 17, "Flight", "f", true).setString(config.flightStatus));
         uiElements.add(cineStatus = helper.getEntryBox(xRight, y += 21, 200, 17, "CineFlight", "c",true).setString(config.cineFlightStatus));
         uiElements.add(sprintStatus = helper.getEntryBox(xRight, y += 21, 200, 17, "Sprint", "r",true).setString(config.runStatus));
+        uiElements.add(noClipStatus = helper.getEntryBox(xRight, y += 21, 200, 17, "NoClip", "n", true).setString(config.noClipStatus));
         uiElements.add(speedStatus = helper.getEntryBox(xRight, y += 21, 200, 17, "Speed", "*",true).setString(config.speedStatus));
         uiElements.add(fullbrightStatus = helper.getEntryBox(xRight, y + 21, 200, 17, "Fullbright", "fb",true).setString(config.fullBrightStatus));
 
@@ -185,6 +192,7 @@ public abstract class ConfigGui extends GuiScreen
         sprintKey.addToolTip(new ToolTip("Sprint", new String[]{"Enable/Disable SprintMod with this key. Is only", "active whilst FlyMod is off."}));
         speedKey.addToolTip(new ToolTip("Speed", new String[]{"Enable/Disable the speed boost for FlyMod or", "SprintMod depending on which is active."}));
         cineKey.addToolTip(new ToolTip("CineFly", new String[]{"Enable/Disable cinematic flight mode. Is only", "active whilst FlyMod is on."}));
+        noClipKey.addToolTip(new ToolTip("NoClip", new String[]{"Enable/Disable no-clip. Currently only works", "in single-player creative mode."}));
         fullBrightKey.addToolTip(new ToolTip("FullBright", new String[]{"Enable/Disable: Lights the entire world to full brightness."}));
         flyUpKey.addToolTip(new ToolTip("FlyUp", new String[]{"The key you hold to fly upwards."}));
         flyDownKey.addToolTip(new ToolTip("FlyDown", new String[]{"The key you hold to fly downwards."}));
@@ -315,6 +323,8 @@ public abstract class ConfigGui extends GuiScreen
         config.sprintKey = sprintKey.getValue();
         config.sprintIsToggle = sprintHold.getToggleState();
         config.speedKey = speedKey.getValue();
+        config.noClipKey = noClipKey.getValue();
+        config.noCLipIsToggle = noClipHold.getToggleState();
         config.speedIsToggle = speedHold.getToggleState();
         config.fullBrightKey = fullBrightKey.getValue();
         config.fullbrightIsToggle = fbHold.getToggleState();
@@ -327,6 +337,7 @@ public abstract class ConfigGui extends GuiScreen
         config.flightStatus = flyStatus.getValue();
         config.cineFlightStatus = cineStatus.getValue();
         config.runStatus = sprintStatus.getValue();
+        config.noClipStatus = noClipStatus.getValue();
         config.speedStatus = speedStatus.getValue();
         config.fullBrightStatus = fullbrightStatus.getValue();
 

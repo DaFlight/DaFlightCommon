@@ -15,7 +15,6 @@ package me.dags.daflight.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
-import me.dags.daflight.DaFlight;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;

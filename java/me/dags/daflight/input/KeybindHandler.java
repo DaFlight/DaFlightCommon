@@ -24,7 +24,7 @@ package me.dags.daflight.input;
 
 import me.dags.daflight.DaFlight;
 import me.dags.daflight.input.bind.AbstractBind;
-import me.dags.daflight.player.DaPlayer;
+import me.dags.daflight.player.DFController;
 
 /**
  * @author dags_ <dags@dags.me>
@@ -38,17 +38,17 @@ public class KeybindHandler
             Binds.MENU_BINDING.displayGui();
     }
 
-    public static void handleInput(DaPlayer daPlayer)
+    public static void handleInput(DFController DFController)
     {
         boolean result = false;
-        for (AbstractBind kb : DaPlayer.KEY_BINDS.binds)
+        for (AbstractBind kb : DFController.KEY_BINDS.binds)
         {
             if (kb.bindPressed())
-                result = kb.getAction().pressed(daPlayer) || result;
+                result = kb.getAction().pressed(DFController) || result;
             else if (kb.bindHeld())
-                result = kb.getAction().held(daPlayer) || result;
+                result = kb.getAction().held(DFController) || result;
             else if (kb.bindReleased())
-                result = kb.getAction().released(daPlayer) || result;
+                result = kb.getAction().released(DFController) || result;
         }
         if (result)
             DaFlight.getHud().updateMsg();

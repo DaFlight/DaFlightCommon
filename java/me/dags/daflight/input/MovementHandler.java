@@ -25,7 +25,7 @@ package me.dags.daflight.input;
 import me.dags.daflight.DaFlight;
 import me.dags.daflight.input.bind.AbstractBind;
 import me.dags.daflight.input.bind.BindType;
-import me.dags.daflight.player.DaPlayer;
+import me.dags.daflight.player.DFController;
 import me.dags.daflight.player.Direction;
 import me.dags.daflight.player.Vector;
 
@@ -38,21 +38,21 @@ public class MovementHandler
 
     private static final double sr = 1 / Math.sqrt(2);
 
-    public static void handleMovementInput(DaPlayer daPlayer)
+    public static void handleMovementInput(DFController DFController)
     {
         double yaw = DaFlight.getMC().getPlayer().rotationYaw;
         double pitch = DaFlight.getMC().getPlayer().rotationPitch;
         double lrMod = DaFlight.getConfig().lrModifier;
 
         Vector movementVector = new Vector();
-        Direction direction = daPlayer.direction.update(yaw);
+        Direction direction = DFController.direction.update(yaw);
 
         boolean b1 = false;
         boolean b2 = false;
 
-        movementVector.setSpeed(daPlayer.getSpeed());
+        movementVector.setSpeed(DFController.getSpeed());
 
-        for (AbstractBind kb : DaPlayer.KEY_BINDS.movementBinds)
+        for (AbstractBind kb : DFController.KEY_BINDS.movementBinds)
         {
             if (kb.bindHeld())
             {
@@ -81,7 +81,7 @@ public class MovementHandler
                     {
                         movementVector.setHasLateralInput(true);
                     }
-                    if (daPlayer.cineFlightOn || daPlayer.is3DFlightOn())
+                    if (DFController.cineFlightOn || DFController.is3DFlightOn())
                     {
                         y += (0 - kb.getModX()) * movementVector.getSpeed() * (pitch / 90);
                     }
@@ -93,7 +93,7 @@ public class MovementHandler
         {
             movementVector.multiply(sr);
         }
-        daPlayer.direction = direction;
-        daPlayer.movementVector = movementVector;
+        DFController.direction = direction;
+        DFController.movementVector = movementVector;
     }
 }

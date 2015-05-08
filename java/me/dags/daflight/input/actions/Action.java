@@ -13,7 +13,7 @@
 
 package me.dags.daflight.input.actions;
 
-import me.dags.daflight.player.DaPlayer;
+import me.dags.daflight.player.DFController;
 
 /**
  * @author dags_ <dags@dags.me>
@@ -21,7 +21,7 @@ import me.dags.daflight.player.DaPlayer;
 
 public interface Action
 {
-    public boolean pressed(DaPlayer daPlayer);
-    public boolean held(DaPlayer daPlayer);
-    public boolean released(DaPlayer daPlayer);
+    public boolean pressed(DFController DFController);
+    public boolean held(DFController DFController);
+    public boolean released(DFController DFController);
 }

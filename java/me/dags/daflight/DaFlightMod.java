@@ -27,7 +27,7 @@ public class DaFlightMod implements IDaFlightMod
     @Override
     public String getVersion()
     {
-        return "2.3r2";
+        return "2.4r1";
     }
 
     @Override
@@ -51,14 +51,14 @@ public class DaFlightMod implements IDaFlightMod
                 DaFlight.getConfig().applySettings();
             }
             if (DaFlight.getConfig().disabled)
-                DaFlight.get().daPlayer.disableAll();
+                DaFlight.get().DFController.disableAll();
         }
         if (inGame && !DaFlight.getConfig().disabled)
         {
-            DaFlight.get().daPlayer.update();
+            DaFlight.get().DFController.update();
             wasInGame = true;
             if (clock)
-                DaFlight.get().daPlayer.tickUpdate();
+                DaFlight.get().DFController.tickUpdate();
         }
     }
 
@@ -71,7 +71,7 @@ public class DaFlightMod implements IDaFlightMod
     @Override
     public void onJoinGame()
     {
-        DaFlight.get().daPlayer.onGameJoin();
+        DaFlight.get().DFController.onGameJoin();
         if (DaFlight.getGlobalConfig().perServerConfig() && !DaFlight.getMC().getMinecraft().isSingleplayer())
         {
             DaFlight.getServerConfig();

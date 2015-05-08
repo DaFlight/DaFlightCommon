@@ -13,7 +13,7 @@
 
 package me.dags.daflight.input.actions;
 
-import me.dags.daflight.player.DaPlayer;
+import me.dags.daflight.player.DFController;
 
 /**
  * @author dags_ <dags@dags.me>
@@ -22,29 +22,29 @@ import me.dags.daflight.player.DaPlayer;
 public class ToggleFlight implements Action
 {
     @Override
-    public boolean pressed(DaPlayer daPlayer)
+    public boolean pressed(DFController DFController)
     {
-        daPlayer.toggleFlight();
+        DFController.toggleFlight();
         return true;
     }
 
     @Override
-    public boolean held(DaPlayer daPlayer)
+    public boolean held(DFController DFController)
     {
-        if (!daPlayer.flyModOn)
+        if (!DFController.flyModOn)
         {
-            daPlayer.toggleFlight();
+            DFController.toggleFlight();
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean released(DaPlayer daPlayer)
+    public boolean released(DFController DFController)
     {
-        if (daPlayer.flyModOn)
+        if (DFController.flyModOn)
         {
-            daPlayer.toggleFlight();
+            DFController.toggleFlight();
             return true;
         }
         return false;

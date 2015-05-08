@@ -23,7 +23,6 @@
 package me.dags.daflight.player;
 
 import me.dags.daflight.DaFlight;
-import me.dags.daflight.utils.Config;
 import me.dags.daflight.utils.Tools;
 
 public class Speed

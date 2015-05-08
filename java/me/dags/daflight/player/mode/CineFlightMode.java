@@ -20,15 +20,15 @@
  * THE SOFTWARE.
  */
 
-package me.dags.daflight.player.controller;
+package me.dags.daflight.player.mode;
 
 import me.dags.daflight.DaFlight;
-import me.dags.daflightapi.minecraft.MinecraftGame;
-import me.dags.daflight.player.DaPlayer;
+import me.dags.daflight.player.DFController;
 import me.dags.daflight.player.Direction;
 import me.dags.daflight.utils.Config;
+import me.dags.daflightapi.minecraft.MinecraftGame;
 
-public class CineFlightController implements IController
+public class CineFlightMode implements IMode
 {
 
     private Config c = DaFlight.getConfig();
@@ -41,7 +41,7 @@ public class CineFlightController implements IController
 
     private Direction d;
 
-    public CineFlightController()
+    public CineFlightMode()
     {
         d = new Direction();
         up = 0D;
@@ -53,7 +53,7 @@ public class CineFlightController implements IController
     }
 
     @Override
-    public void input(DaPlayer daPlayer)
+    public void input(DFController DFController)
     {
         MinecraftGame mc = DaFlight.getMC();
         d.update((double) mc.getPlayer().rotationYaw);
@@ -65,7 +65,7 @@ public class CineFlightController implements IController
         double pitch = mc.getPlayer().rotationPitch;
 
         // FORWARD
-        if (DaPlayer.KEY_BINDS.forward.bindHeld())
+        if (DFController.KEY_BINDS.forward.bindHeld())
         {
             back = dec(back);
             if (back <= 0)
@@ -85,7 +85,7 @@ public class CineFlightController implements IController
                 y = -1.1 * (pitch / 90);
         }
         // BACK
-        if (DaPlayer.KEY_BINDS.backward.bindHeld())
+        if (DFController.KEY_BINDS.backward.bindHeld())
         {
             forward = dec(forward);
             if (forward <= 0)
@@ -103,7 +103,7 @@ public class CineFlightController implements IController
             z += -d.getZ() * back;
         }
         // LEFT
-        if (DaPlayer.KEY_BINDS.left.bindHeld())
+        if (DFController.KEY_BINDS.left.bindHeld())
         {
             right = dec(right);
             left = inc(left);
@@ -117,7 +117,7 @@ public class CineFlightController implements IController
             z += -d.getX() * c.lrModifier * left;
         }
         // RIGHT
-        if (DaPlayer.KEY_BINDS.right.bindHeld())
+        if (DFController.KEY_BINDS.right.bindHeld())
         {
             left = dec(left);
             right = inc(right);
@@ -131,7 +131,7 @@ public class CineFlightController implements IController
             z += d.getX() * c.lrModifier * right;
         }
         // UP
-        if (DaPlayer.KEY_BINDS.flyUp.bindHeld())
+        if (DFController.KEY_BINDS.flyUp.bindHeld())
         {
             up = inc(up);
             y += 1.1D * up;
@@ -142,7 +142,7 @@ public class CineFlightController implements IController
             y += 1.1D * up;
         }
         // DOWN
-        if (DaPlayer.KEY_BINDS.flyDown.bindHeld())
+        if (DFController.KEY_BINDS.flyDown.bindHeld())
         {
             down = inc(down);
             y += -1.1D * down;
@@ -159,7 +159,7 @@ public class CineFlightController implements IController
         }
         else
         {
-            double speed = daPlayer.getSpeed();
+            double speed = DFController.getSpeed();
             mc.getPlayer().setVelocity(x * speed, y * speed, z * speed);
         }
     }

@@ -2,7 +2,7 @@ package me.dags.daflight;
 
 import me.dags.daflight.gui.hud.HUD;
 import me.dags.daflight.messaging.ChannelMessaging;
-import me.dags.daflight.player.DaPlayer;
+import me.dags.daflight.player.DFController;
 import me.dags.daflight.utils.Config;
 import me.dags.daflight.utils.GlobalConfig;
 import me.dags.daflightapi.DaFlightAPI;
@@ -20,7 +20,7 @@ public class DaFlight implements DaFlightAPI
 {
     private static DaFlight instance;
 
-    public DaPlayer daPlayer;
+    public DFController DFController;
     private File configFolder;
     private MinecraftGame minecraftGame;
     private UIHelper uiHelper;
@@ -39,7 +39,7 @@ public class DaFlight implements DaFlightAPI
         get().channelMessaging = messenging;
         get().uiHelper = uiHelper;
         get().configFolder = folder;
-        get().daPlayer = new DaPlayer();
+        get().DFController = new DFController();
         get().hud = new HUD();
         return get();
     }

@@ -1,7 +1,7 @@
 package me.dags.daflight.messaging;
 
 import me.dags.daflight.DaFlight;
-import me.dags.daflight.player.DaPlayer;
+import me.dags.daflight.player.DFController;
 import me.dags.daflightapi.messaging.PluginMessageHandler;
 
 /**
@@ -15,20 +15,20 @@ public class MessageHandler implements PluginMessageHandler
     {
         if (enable)
         {
-            if (!DaPlayer.DF_PERMISSIONS.fbEnabled())
+            if (!DFController.DF_PERMISSIONS.fbEnabled())
             {
                 DaFlight.getMC().tellPlayer("Fullbright enabled!");
             }
-            DaPlayer.DF_PERMISSIONS.setFullbrightEnabled(true);
+            DFController.DF_PERMISSIONS.setFullbrightEnabled(true);
         }
         else
         {
-            if (DaPlayer.DF_PERMISSIONS.fbEnabled())
+            if (DFController.DF_PERMISSIONS.fbEnabled())
             {
                 DaFlight.getMC().tellPlayer("Fullbright disabled!");
             }
-            DaPlayer.DF_PERMISSIONS.setFullbrightEnabled(false);
-            DaFlight.get().daPlayer.toggleFullbright();
+            DFController.DF_PERMISSIONS.setFullbrightEnabled(false);
+            DaFlight.get().DFController.toggleFullbright();
         }
     }
 
@@ -37,20 +37,20 @@ public class MessageHandler implements PluginMessageHandler
     {
         if (enable)
         {
-            if (!DaPlayer.DF_PERMISSIONS.flyEnabled())
+            if (!DFController.DF_PERMISSIONS.flyEnabled())
             {
                 DaFlight.getMC().tellPlayer("Fly/Sprint mod enabled!");
             }
-            DaPlayer.DF_PERMISSIONS.setMovementModsEnabled(true);
+            DFController.DF_PERMISSIONS.setMovementModsEnabled(true);
         }
         else
         {
-            if (DaPlayer.DF_PERMISSIONS.flyEnabled())
+            if (DFController.DF_PERMISSIONS.flyEnabled())
             {
                 DaFlight.getMC().tellPlayer("Fly/Sprint mod disabled!");
             }
-            DaPlayer.DF_PERMISSIONS.setMovementModsEnabled(false);
-            DaFlight.get().daPlayer.disableMovementMods();
+            DFController.DF_PERMISSIONS.setMovementModsEnabled(false);
+            DaFlight.get().DFController.disableMovementMods();
         }
     }
 
@@ -59,26 +59,26 @@ public class MessageHandler implements PluginMessageHandler
     {
         if (enable)
         {
-            if (!DaPlayer.DF_PERMISSIONS.noFallDamageEnabled())
+            if (!DFController.DF_PERMISSIONS.noFallDamageEnabled())
             {
                 DaFlight.getMC().tellPlayer("Survival SoftFall enabled!");
             }
-            DaPlayer.DF_PERMISSIONS.setNoFallDamage(true);
+            DFController.DF_PERMISSIONS.setNoFallDamage(true);
         }
         else
         {
-            if (DaPlayer.DF_PERMISSIONS.noFallDamageEnabled())
+            if (DFController.DF_PERMISSIONS.noFallDamageEnabled())
             {
                 DaFlight.getMC().tellPlayer("Survival SoftFall disabled!");
             }
-            DaPlayer.DF_PERMISSIONS.setNoFallDamage(false);
+            DFController.DF_PERMISSIONS.setNoFallDamage(false);
         }
     }
 
     @Override
     public void refresh(byte value)
     {
-        if (DaFlight.get().daPlayer.flyModOn || DaFlight.get().daPlayer.sprintModOn)
+        if (DaFlight.get().DFController.flyModOn || DaFlight.get().DFController.sprintModOn)
         {
             DaFlight.getChannelMessaging().dispatchMessage(PacketData.MOD_ON);
         }
@@ -88,8 +88,8 @@ public class MessageHandler implements PluginMessageHandler
     public void setSpeed(int value)
     {
         DaFlight.getMC().tellPlayer("Max speed set by server! " + value);
-        DaFlight.get().daPlayer.flySpeed.setMaxSpeed(value);
-        DaFlight.get().daPlayer.sprintSpeed.setMaxSpeed(value);
+        DaFlight.get().DFController.flySpeed.setMaxSpeed(value);
+        DaFlight.get().DFController.sprintSpeed.setMaxSpeed(value);
         DaFlight.getHud().updateMsg();
     }
 }

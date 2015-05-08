@@ -27,10 +27,10 @@ import me.dags.daflight.input.Binds;
 import me.dags.daflight.input.KeybindHandler;
 import me.dags.daflight.input.MovementHandler;
 import me.dags.daflight.messaging.PacketData;
-import me.dags.daflight.player.controller.CineFlightController;
-import me.dags.daflight.player.controller.FlightController;
-import me.dags.daflight.player.controller.IController;
-import me.dags.daflight.player.controller.SprintController;
+import me.dags.daflight.player.mode.CineFlightMode;
+import me.dags.daflight.player.mode.FlightMode;
+import me.dags.daflight.player.mode.IMode;
+import me.dags.daflight.player.mode.SprintMode;
 import me.dags.daflight.utils.Config;
 import me.dags.daflight.utils.SpeedDefaults;
 
@@ -38,7 +38,7 @@ import me.dags.daflight.utils.SpeedDefaults;
  * @author dags_ <dags@dags.me>
  */
 
-public class DaPlayer
+public class DFController
 {
     public static final Binds KEY_BINDS = new Binds();
     public static final DFPermissions DF_PERMISSIONS = new DFPermissions();
@@ -50,17 +50,18 @@ public class DaPlayer
     public boolean sprintModOn = false;
     public boolean cineFlightOn = false;
     public boolean fullBrightOn = false;
+    public boolean noClipOn = false;
 
     public Direction direction;
     public Vector movementVector;
-    private IController controller;
+    private IMode controller;
 
     private boolean customSpeeds = false;
     private boolean inMenus = true;
     private boolean wasFlying = false;
     private int softFallTicks = 0;
 
-    public DaPlayer()
+    public DFController()
     {
         Config config = DaFlight.getConfig();
         SpeedDefaults speedDefaults = SpeedDefaults.loadDefaults();
@@ -126,6 +127,13 @@ public class DaPlayer
                 controller.unFocused();
             }
         }
+    }
+
+    public void toggleNoClip()
+    {
+        noClipOn = !noClipOn;
+        PacketData data = noClipOn ? PacketData.NOCLIP_ON : PacketData.NOCLIP_OFF;
+        DaFlight.getChannelMessaging().dispatchMessage(data);
     }
 
     public void toggleFlight()
@@ -269,9 +277,9 @@ public class DaPlayer
         return wasFlying || softFallTicks > 0 || (wasFlying = false);
     }
 
-    private IController getActiveController()
+    private IMode getActiveController()
     {
-        return flyModOn && cineFlightOn ? new CineFlightController() : flyModOn ? new FlightController() : sprintModOn ? new SprintController() : null;
+        return flyModOn && cineFlightOn ? new CineFlightMode() : flyModOn ? new FlightMode() : sprintModOn ? new SprintMode() : null;
     }
 
     private boolean isModOn()

@@ -24,7 +24,7 @@ package me.dags.daflight.gui.hud;
 
 import me.dags.daflight.DaFlight;
 import me.dags.daflight.minecraft.Colour;
-import me.dags.daflight.player.DaPlayer;
+import me.dags.daflight.player.DFController;
 import me.dags.daflightapi.ui.DaFlightUI;
 
 import java.util.ArrayList;
@@ -44,6 +44,7 @@ public class HUD implements DaFlightUI
     private String flight = "f";
     private String cine = "c";
     private String run = "r";
+    private String clip = "n";
     private String modifier = "*";
     private String fb = "fb";
 
@@ -52,19 +53,20 @@ public class HUD implements DaFlightUI
         mods = new ArrayList<DFEntry>();
         mods.add(0, new DFEntry("", false));
         mods.add(1, new DFEntry("", false));
-        mods.add(2, new DFEntry(Colour.addColour(DaFlight.getConfig().fullBrightStatus), false));
-        mods.add(3, new DFEntry("", false));
+        mods.add(2, new DFEntry("", false));
+        mods.add(3, new DFEntry(Colour.addColour(DaFlight.getConfig().fullBrightStatus), false));
+        mods.add(4, new DFEntry("", false));
     }
 
     public void updateMsg()
     {
-        DaPlayer dp = DaFlight.get().daPlayer;
+        DFController dp = DaFlight.get().DFController;
         boolean flyModifier = false;
         // Flight
-        if (dp.flyModOn || DaPlayer.KEY_BINDS.enableFly.bindHeld())
+        if (dp.flyModOn || DFController.KEY_BINDS.enableFly.bindHeld())
         {
             String s = "";
-            flyModifier = DaPlayer.KEY_BINDS.speedModifier.bindHeld();
+            flyModifier = DFController.KEY_BINDS.speedModifier.bindHeld();
             if (dp.flyModOn)
             {
                 s = flight;
@@ -73,7 +75,7 @@ public class HUD implements DaFlightUI
                     s = cine;
                 }
             }
-            if (DaPlayer.DF_PERMISSIONS.flyEnabled() && (dp.flySpeed.isBoosting() || flyModifier))
+            if (DFController.DF_PERMISSIONS.flyEnabled() && (dp.flySpeed.isBoosting() || flyModifier))
             {
                 s = s + modifier;
             }
@@ -85,10 +87,10 @@ public class HUD implements DaFlightUI
             mods.get(0).setShow(false);
         }
         // Sprint
-        if (DaPlayer.DF_PERMISSIONS.sprintEnabled() && (dp.sprintModOn || DaPlayer.KEY_BINDS.enableSprint.bindHeld()))
+        if (DFController.DF_PERMISSIONS.sprintEnabled() && (dp.sprintModOn || DFController.KEY_BINDS.enableSprint.bindHeld()))
         {
             String s = run;
-            if (dp.sprintSpeed.isBoosting() || (DaPlayer.KEY_BINDS.speedModifier.bindHeld() && !flyModifier))
+            if (dp.sprintSpeed.isBoosting() || (DFController.KEY_BINDS.speedModifier.bindHeld() && !flyModifier))
             {
                 s = s + modifier;
             }
@@ -99,9 +101,12 @@ public class HUD implements DaFlightUI
         {
             mods.get(1).setShow(false);
         }
+        // noClip
+        mods.get(2).setTitle(clip);
+        mods.get(2).setShow(dp.noClipOn);
         // FullBright
-        mods.get(2).setTitle(fb);
-        mods.get(2).setShow(dp.fullBrightOn);
+        mods.get(3).setTitle(fb);
+        mods.get(3).setShow(dp.fullBrightOn);
     }
 
     public void refreshStatuses()
@@ -110,6 +115,7 @@ public class HUD implements DaFlightUI
         cine = Colour.getColouredString(DaFlight.getConfig().cineFlightStatus);
         run = Colour.getColouredString(DaFlight.getConfig().runStatus);
         modifier = Colour.getColouredString(DaFlight.getConfig().speedStatus);
+        clip = Colour.getColouredString(DaFlight.getConfig().noClipStatus);
         fb = Colour.getColouredString(DaFlight.getConfig().fullBrightStatus);
     }
 

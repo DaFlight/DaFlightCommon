@@ -33,8 +33,8 @@ public enum PacketData
     FULLBRIGHT_ON(new byte[]{1, 1}),
     MOD_ON(new byte[]{2, 1}),
     MOD_OFF(new byte[]{2, 2}),
-    SOFTFALL_OFF(new byte[]{3, 0}),
-    SOFTFALL_ON(new byte[]{3, 1}),
+    NOCLIP_OFF(new byte[]{3, 0}),
+    NOCLIP_ON(new byte[]{3, 1}),
     REFRESH(new byte[]{4, 0}),
     SPEED(new byte[]{100, 0})
     ;

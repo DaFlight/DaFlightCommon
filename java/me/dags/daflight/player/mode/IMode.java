@@ -20,26 +20,13 @@
  * THE SOFTWARE.
  */
 
-package me.dags.daflight.player.controller;
+package me.dags.daflight.player.mode;
 
-import me.dags.daflight.DaFlight;
-import me.dags.daflight.player.DaPlayer;
-import me.dags.daflight.player.Vector;
+import me.dags.daflight.player.DFController;
 
-public class SprintController implements IController
+public interface IMode
 {
-    @Override
-    public void input(DaPlayer daPlayer)
-    {
-        Vector v = daPlayer.movementVector;
-        if (v.hasLateralInput())
-        {
-            DaFlight.getMC().getPlayer().setVelocity(v.getX(), DaFlight.getMC().getPlayer().motionY, v.getZ());
-        }
-    }
+    public void input(DFController DFController);
 
-    @Override
-    public void unFocused()
-    {
-    }
+    public void unFocused();
 }

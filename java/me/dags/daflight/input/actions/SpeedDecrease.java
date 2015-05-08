@@ -14,10 +14,8 @@
 package me.dags.daflight.input.actions;
 
 import me.dags.daflight.DaFlight;
-import me.dags.daflight.gui.hud.HUD;
-import me.dags.daflight.player.DaPlayer;
+import me.dags.daflight.player.DFController;
 import me.dags.daflight.player.Speed;
-import me.dags.daflight.utils.Config;
 import me.dags.daflight.utils.Tools;
 
 /**
@@ -27,27 +25,27 @@ import me.dags.daflight.utils.Tools;
 public class SpeedDecrease extends SpeedAdjust
 {
     @Override
-    public boolean pressed(DaPlayer daPlayer)
+    public boolean pressed(DFController DFController)
     {
         return false;
     }
 
     @Override
-    public boolean held(DaPlayer daPlayer)
+    public boolean held(DFController DFController)
     {
         if (tick())
         {
-            if (daPlayer.flyModOn)
-                return decreaseFlySpeed(daPlayer);
-            else if (daPlayer.sprintModOn)
-                return decreaseSprintSpeed(daPlayer);
+            if (DFController.flyModOn)
+                return decreaseFlySpeed(DFController);
+            else if (DFController.sprintModOn)
+                return decreaseSprintSpeed(DFController);
         }
         return false;
     }
 
-    private boolean decreaseFlySpeed(DaPlayer daPlayer)
+    private boolean decreaseFlySpeed(DFController DFController)
     {
-        Speed speed = daPlayer.flySpeed;
+        Speed speed = DFController.flySpeed;
         if (speed.isBoosting())
         {
             DaFlight.getConfig().flySpeedMult = speed.decMultiplier();
@@ -61,9 +59,9 @@ public class SpeedDecrease extends SpeedAdjust
         return true;
     }
 
-    private boolean decreaseSprintSpeed(DaPlayer daPlayer)
+    private boolean decreaseSprintSpeed(DFController DFController)
     {
-        Speed speed = daPlayer.sprintSpeed;
+        Speed speed = DFController.sprintSpeed;
         if (speed.isBoosting())
         {
             DaFlight.getConfig().sprintSpeedMult = speed.decMultiplier();

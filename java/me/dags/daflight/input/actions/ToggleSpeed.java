@@ -13,7 +13,7 @@
 
 package me.dags.daflight.input.actions;
 
-import me.dags.daflight.player.DaPlayer;
+import me.dags.daflight.player.DFController;
 
 /**
  * @author dags_ <dags@dags.me>
@@ -22,37 +22,37 @@ import me.dags.daflight.player.DaPlayer;
 public class ToggleSpeed implements Action
 {
     @Override
-    public boolean pressed(DaPlayer daPlayer)
+    public boolean pressed(DFController DFController)
     {
-        daPlayer.toggleSpeedModifier();
+        DFController.toggleSpeedModifier();
         return true;
     }
 
     @Override
-    public boolean held(DaPlayer daPlayer)
+    public boolean held(DFController DFController)
     {
-        if (daPlayer.flyModOn)
+        if (DFController.flyModOn)
         {
-            if (!daPlayer.flySpeed.isBoosting())
+            if (!DFController.flySpeed.isBoosting())
             {
-                daPlayer.toggleSpeedModifier();
+                DFController.toggleSpeedModifier();
                 return true;
             }
         }
-        else if (daPlayer.sprintModOn && !daPlayer.sprintSpeed.isBoosting())
+        else if (DFController.sprintModOn && !DFController.sprintSpeed.isBoosting())
         {
-            daPlayer.toggleSpeedModifier();
+            DFController.toggleSpeedModifier();
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean released(DaPlayer daPlayer)
+    public boolean released(DFController DFController)
     {
-        if (daPlayer.flyModOn && daPlayer.flySpeed.isBoosting() || daPlayer.sprintModOn && daPlayer.sprintSpeed.isBoosting())
+        if (DFController.flyModOn && DFController.flySpeed.isBoosting() || DFController.sprintModOn && DFController.sprintSpeed.isBoosting())
         {
-            daPlayer.toggleSpeedModifier();
+            DFController.toggleSpeedModifier();
             return true;
         }
         return false;

@@ -13,7 +13,7 @@
 
 package me.dags.daflight.input.actions;
 
-import me.dags.daflight.player.DaPlayer;
+import me.dags.daflight.player.DFController;
 
 /**
  * @author dags_ <dags@dags.me>
@@ -22,19 +22,19 @@ import me.dags.daflight.player.DaPlayer;
 public class Dummy implements Action
 {
     @Override
-    public boolean pressed(DaPlayer daPlayer)
+    public boolean pressed(DFController DFController)
     {
         return false;
     }
 
     @Override
-    public boolean held(DaPlayer daPlayer)
+    public boolean held(DFController DFController)
     {
         return false;
     }
 
     @Override
-    public boolean released(DaPlayer daPlayer)
+    public boolean released(DFController DFController)
     {
         return false;
     }
