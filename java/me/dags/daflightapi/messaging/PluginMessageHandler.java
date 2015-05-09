@@ -12,6 +12,8 @@ public interface PluginMessageHandler
 
     public void softFall(boolean enable);
 
+    public void noClip(boolean enable);
+
     public void refresh(byte value);
 
     public void setSpeed(int value);

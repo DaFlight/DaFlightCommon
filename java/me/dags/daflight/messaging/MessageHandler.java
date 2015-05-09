@@ -2,6 +2,7 @@ package me.dags.daflight.messaging;
 
 import me.dags.daflight.DaFlight;
 import me.dags.daflight.player.DFController;
+import me.dags.daflight.player.DFPermissions;
 import me.dags.daflightapi.messaging.PluginMessageHandler;
 
 /**
@@ -10,69 +11,59 @@ import me.dags.daflightapi.messaging.PluginMessageHandler;
 
 public class MessageHandler implements PluginMessageHandler
 {
+    private DFPermissions getPerms()
+    {
+        return DFController.DF_PERMISSIONS;
+    }
+
     @Override
     public void fullBright(boolean enable)
     {
-        if (enable)
+        String message = enable ? "Fullbright allowed!" : "Fullbright not allowed!";
+        if (getPerms().fbEnabled() && !enable || !getPerms().fbEnabled() && enable)
         {
-            if (!DFController.DF_PERMISSIONS.fbEnabled())
-            {
-                DaFlight.getMC().tellPlayer("Fullbright enabled!");
-            }
-            DFController.DF_PERMISSIONS.setFullbrightEnabled(true);
+            DaFlight.getMC().tellPlayer(message);
         }
-        else
-        {
-            if (DFController.DF_PERMISSIONS.fbEnabled())
-            {
-                DaFlight.getMC().tellPlayer("Fullbright disabled!");
-            }
-            DFController.DF_PERMISSIONS.setFullbrightEnabled(false);
+        DFController.DF_PERMISSIONS.setFullbrightEnabled(enable);
+        if (!enable && DaFlight.get().DFController.fullBrightOn)
             DaFlight.get().DFController.toggleFullbright();
-        }
     }
 
     @Override
     public void flyMod(boolean enable)
     {
-        if (enable)
+        String message = enable ? "Fly/Sprint mod allowed!" : "Fly/Sprint mod not allowed!";
+        if (getPerms().flyEnabled() && !enable || !getPerms().flyEnabled() && enable)
         {
-            if (!DFController.DF_PERMISSIONS.flyEnabled())
-            {
-                DaFlight.getMC().tellPlayer("Fly/Sprint mod enabled!");
-            }
-            DFController.DF_PERMISSIONS.setMovementModsEnabled(true);
+            DaFlight.getMC().tellPlayer(message);
         }
-        else
-        {
-            if (DFController.DF_PERMISSIONS.flyEnabled())
-            {
-                DaFlight.getMC().tellPlayer("Fly/Sprint mod disabled!");
-            }
-            DFController.DF_PERMISSIONS.setMovementModsEnabled(false);
+        DFController.DF_PERMISSIONS.setMovementModsEnabled(enable);
+        if (!enable)
             DaFlight.get().DFController.disableMovementMods();
-        }
     }
 
     @Override
     public void softFall(boolean enable)
     {
-        if (enable)
+        String message = enable ? "Survival SoftFall allowed!" : "Survival SoftFall not allowed!";
+        if (getPerms().noFallDamageEnabled() && !enable || !getPerms().noFallDamageEnabled() && enable)
         {
-            if (!DFController.DF_PERMISSIONS.noFallDamageEnabled())
-            {
-                DaFlight.getMC().tellPlayer("Survival SoftFall enabled!");
-            }
-            DFController.DF_PERMISSIONS.setNoFallDamage(true);
+            DaFlight.getMC().tellPlayer(message);
         }
-        else
+        DFController.DF_PERMISSIONS.setNoFallDamage(enable);
+    }
+
+    @Override
+    public void noClip(boolean enable)
+    {
+        String message = enable ? "NoClip allowed!" : "NoClip not allowed!";
+        if (getPerms().noClipEnabled() && !enable || !getPerms().noClipEnabled() && enable)
         {
-            if (DFController.DF_PERMISSIONS.noFallDamageEnabled())
-            {
-                DaFlight.getMC().tellPlayer("Survival SoftFall disabled!");
-            }
-            DFController.DF_PERMISSIONS.setNoFallDamage(false);
+            DaFlight.getMC().tellPlayer(message);
         }
+        DFController.DF_PERMISSIONS.setNoClipEnabled(enable);
+        if (!enable && DaFlight.get().DFController.noClipOn)
+            DaFlight.get().DFController.toggleNoClip();
     }
 
     @Override
@@ -80,7 +71,11 @@ public class MessageHandler implements PluginMessageHandler
     {
         if (DaFlight.get().DFController.flyModOn || DaFlight.get().DFController.sprintModOn)
         {
-            DaFlight.getChannelMessaging().dispatchMessage(PacketData.MOD_ON);
+            DaFlight.getChannelMessaging().dispatchMessage(DFData.getBooleanData(DFData.FLY_MOD, true));
+        }
+        if (DaFlight.get().DFController.noClipOn)
+        {
+            DaFlight.getChannelMessaging().dispatchMessage(DFData.getBooleanData(DFData.NOCLIP, true));
         }
     }
 

@@ -37,6 +37,11 @@ import java.util.List;
  */
 public class HUD implements DaFlightUI
 {
+    private static final int FLIGHT = 0;
+    private static final int SPRINT = 1;
+    private static final int NO_CLIP = 2;
+    private static final int FULLBRIGHT = 3;
+    private static final int TEMP = 4;
 
     private List<DFEntry> mods;
     private int counter = 50;
@@ -51,11 +56,11 @@ public class HUD implements DaFlightUI
     public HUD()
     {
         mods = new ArrayList<DFEntry>();
-        mods.add(0, new DFEntry("", false));
-        mods.add(1, new DFEntry("", false));
-        mods.add(2, new DFEntry("", false));
-        mods.add(3, new DFEntry(Colour.addColour(DaFlight.getConfig().fullBrightStatus), false));
-        mods.add(4, new DFEntry("", false));
+        mods.add(FLIGHT, new DFEntry("", false));
+        mods.add(SPRINT, new DFEntry("", false));
+        mods.add(NO_CLIP, new DFEntry("", false));
+        mods.add(FULLBRIGHT, new DFEntry(Colour.addColour(DaFlight.getConfig().fullBrightStatus), false));
+        mods.add(TEMP, new DFEntry("", false));
     }
 
     public void updateMsg()
@@ -79,12 +84,12 @@ public class HUD implements DaFlightUI
             {
                 s = s + modifier;
             }
-            mods.get(0).setTitle(s);
-            mods.get(0).setShow(true);
+            mods.get(FLIGHT).setTitle(s);
+            mods.get(FLIGHT).setShow(true);
         }
         else
         {
-            mods.get(0).setShow(false);
+            mods.get(FLIGHT).setShow(false);
         }
         // Sprint
         if (DFController.DF_PERMISSIONS.sprintEnabled() && (dp.sprintModOn || DFController.KEY_BINDS.enableSprint.bindHeld()))
@@ -94,19 +99,19 @@ public class HUD implements DaFlightUI
             {
                 s = s + modifier;
             }
-            mods.get(1).setTitle(s);
-            mods.get(1).setShow(true);
+            mods.get(SPRINT).setTitle(s);
+            mods.get(SPRINT).setShow(true);
         }
         else
         {
-            mods.get(1).setShow(false);
+            mods.get(SPRINT).setShow(false);
         }
         // noClip
-        mods.get(2).setTitle(clip);
-        mods.get(2).setShow(dp.noClipOn);
+        mods.get(NO_CLIP).setTitle(clip);
+        mods.get(NO_CLIP).setShow(dp.noClipOn);
         // FullBright
-        mods.get(3).setTitle(fb);
-        mods.get(3).setShow(dp.fullBrightOn);
+        mods.get(FULLBRIGHT).setTitle(fb);
+        mods.get(FULLBRIGHT).setShow(dp.fullBrightOn);
     }
 
     public void refreshStatuses()
@@ -122,13 +127,13 @@ public class HUD implements DaFlightUI
     public void renderTemp(String s)
     {
         counter = 50;
-        mods.get(3).setTitle(s);
-        mods.get(3).setShow(true);
+        mods.get(TEMP).setTitle(s);
+        mods.get(TEMP).setShow(true);
     }
 
     public void setTemp(Boolean b)
     {
-        mods.get(3).setShow(b);
+        mods.get(TEMP).setShow(b);
     }
 
     @Override

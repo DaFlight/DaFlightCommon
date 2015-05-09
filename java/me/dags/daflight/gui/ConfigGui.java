@@ -39,7 +39,7 @@ public abstract class ConfigGui extends GuiScreen
 
     protected final List<UIElement> uiElements;
     protected boolean singleColumnMode;
-    protected int columnHeight = 340;
+    protected int columnHeight = 345;
 
     private ToggleButton disable;
     private ToggleButton flight3D;
@@ -192,7 +192,7 @@ public abstract class ConfigGui extends GuiScreen
         sprintKey.addToolTip(new ToolTip("Sprint", new String[]{"Enable/Disable SprintMod with this key. Is only", "active whilst FlyMod is off."}));
         speedKey.addToolTip(new ToolTip("Speed", new String[]{"Enable/Disable the speed boost for FlyMod or", "SprintMod depending on which is active."}));
         cineKey.addToolTip(new ToolTip("CineFly", new String[]{"Enable/Disable cinematic flight mode. Is only", "active whilst FlyMod is on."}));
-        noClipKey.addToolTip(new ToolTip("NoClip", new String[]{"Enable/Disable no-clip. Currently only works", "in single-player creative mode."}));
+        noClipKey.addToolTip(new ToolTip("NoClip", new String[]{"Enable/Disable NoClip mode while flying (allows", "you to fly through solid blocks). Currently", "only works in single-player creative mode."}));
         fullBrightKey.addToolTip(new ToolTip("FullBright", new String[]{"Enable/Disable: Lights the entire world to full brightness."}));
         flyUpKey.addToolTip(new ToolTip("FlyUp", new String[]{"The key you hold to fly upwards."}));
         flyDownKey.addToolTip(new ToolTip("FlyDown", new String[]{"The key you hold to fly downwards."}));

@@ -26,27 +26,30 @@ public class ChannelMessaging
             final byte value = data[1];
             switch (type)
             {
-                case 1:
-                    handler.fullBright(value == 1);
+                case DFData.NOCLIP:
+                    handler.noClip(DFData.getBoolFor(value));
                     break;
-                case 2:
-                    handler.flyMod(value == 1);
+                case DFData.FULL_BRIGHT:
+                    handler.fullBright(DFData.getBoolFor(value));
                     break;
-                case 3:
-                    handler.softFall(value == 1);
+                case DFData.FLY_MOD:
+                    handler.flyMod(DFData.getBoolFor(value));
                     break;
-                case 4:
+                case DFData.NO_FALL_DAMAGE:
+                    handler.softFall(DFData.getBoolFor(value));
+                    break;
+                case DFData.REFRESH:
                     handler.refresh(value);
                     break;
-                case 100:
+                case DFData.SPEED:
                     handler.setSpeed(value);
                     break;
             }
         }
     }
 
-    public void dispatchMessage(PacketData packetData)
+    public void dispatchMessage(byte[] data)
     {
-        dispatcher.dispatchMessage(packetData);
+        dispatcher.dispatchMessage(data);
     }
 }

@@ -33,6 +33,7 @@ public class DFPermissions
     private boolean canSprint = true;
     private boolean canFullbright = true;
     private boolean noFallDamage = true;
+    private boolean canNoClip = false;
 
     public boolean flyEnabled()
     {
@@ -54,12 +55,18 @@ public class DFPermissions
         return noFallDamage;
     }
 
+    public boolean noClipEnabled()
+    {
+        return canNoClip;
+    }
+
     public void resetPermissions()
     {
         canFly = true;
         canSprint = true;
         canFullbright = true;
         noFallDamage = true;
+        canNoClip = false;
     }
 
     public void setMovementModsEnabled(boolean b)
@@ -76,5 +83,10 @@ public class DFPermissions
     public void setNoFallDamage(boolean b)
     {
         noFallDamage = b;
+    }
+
+    public void setNoClipEnabled(boolean b)
+    {
+        canNoClip = b;
     }
 }

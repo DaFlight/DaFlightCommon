@@ -26,7 +26,7 @@ import me.dags.daflight.DaFlight;
 import me.dags.daflight.input.Binds;
 import me.dags.daflight.input.KeybindHandler;
 import me.dags.daflight.input.MovementHandler;
-import me.dags.daflight.messaging.PacketData;
+import me.dags.daflight.messaging.DFData;
 import me.dags.daflight.player.mode.CineFlightMode;
 import me.dags.daflight.player.mode.FlightMode;
 import me.dags.daflight.player.mode.IMode;
@@ -79,12 +79,14 @@ public class DFController
         flySpeed.resetMaxSpeed();
         sprintSpeed.resetMaxSpeed();
         DF_PERMISSIONS.resetPermissions();
-        DaFlight.getChannelMessaging().dispatchMessage(PacketData.CONNECT);
+        DaFlight.getChannelMessaging().dispatchMessage(DFData.getPingData());
         if (customSpeeds)
         {
             DaFlight.getMC().tellPlayer("WARNING - Using extreme speeds can cause your game to lag, or even crash!");
             customSpeeds = false;
         }
+        boolean singleplayer = DaFlight.getMC().getMinecraft().isSingleplayer();
+        DaFlight.getChannelMessaging().onPacketReceived("DaFlight", DFData.getBooleanData(DFData.NOCLIP, singleplayer));
     }
 
     public void tickUpdate()
@@ -131,9 +133,9 @@ public class DFController
 
     public void toggleNoClip()
     {
-        noClipOn = !noClipOn;
-        PacketData data = noClipOn ? PacketData.NOCLIP_ON : PacketData.NOCLIP_OFF;
-        DaFlight.getChannelMessaging().dispatchMessage(data);
+        noClipOn = DF_PERMISSIONS.noClipEnabled() && !noClipOn;
+        DaFlight.getChannelMessaging().dispatchMessage(DFData.getBooleanData(DFData.NOCLIP, noClipOn));
+        DaFlight.getHud().updateMsg();
     }
 
     public void toggleFlight()
@@ -205,12 +207,7 @@ public class DFController
 
     private void notifyServer()
     {
-        if (flyModOn || sprintModOn)
-        {
-            DaFlight.getChannelMessaging().dispatchMessage(PacketData.MOD_ON);
-            return;
-        }
-        DaFlight.getChannelMessaging().dispatchMessage(PacketData.MOD_OFF);
+        DaFlight.getChannelMessaging().dispatchMessage(DFData.getBooleanData(DFData.FLY_MOD, flyModOn || sprintModOn));
     }
 
     public void toggleFullbright()
