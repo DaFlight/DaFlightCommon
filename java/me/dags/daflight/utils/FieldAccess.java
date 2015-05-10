@@ -12,20 +12,20 @@ public class FieldAccess<T>
     private String[] fieldNames;
     private int attempt = 0;
 
-    public FieldAccess(Object owner, String[] obfNames)
+    public FieldAccess(Class owner, String[] obfNames)
     {
         this.fieldNames = obfNames;
         this.field = getField(owner);
     }
 
-    private Field getField(Object owner)
+    private Field getField(Class owner)
     {
         if (this.attempt >= this.fieldNames.length)
             return null;
         Field f;
         try
         {
-            f = owner.getClass().getDeclaredField(this.fieldNames[this.attempt]);
+            f = owner.getDeclaredField(this.fieldNames[this.attempt]);
             f.setAccessible(true);
         }
         catch (NoSuchFieldException e)
