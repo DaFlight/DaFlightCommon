@@ -27,7 +27,7 @@ public class DaFlightMod implements IDaFlightMod
     @Override
     public String getVersion()
     {
-        return "2.4r1";
+        return DaFlight.VERSION;
     }
 
     @Override

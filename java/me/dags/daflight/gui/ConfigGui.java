@@ -94,13 +94,6 @@ public abstract class ConfigGui extends GuiScreen
         this.parent = null;
     }
 
-    public ConfigGui(GuiScreen parent)
-    {
-        uiElements = new ArrayList<UIElement>();
-        init(DaFlight.getMC().getScaledResolution().getScaledWidth(), DaFlight.getMC().getScaledResolution().getScaledHeight());
-        this.parent = parent;
-    }
-
     public void init(int displayWidth, int displayHeight)
     {
         init(displayWidth, displayHeight, false);

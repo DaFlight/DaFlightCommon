@@ -1,10 +1,10 @@
-package me.dags.daflight.messaging;
+package me.dags.daflightapi.messaging;
 
 /**
  * @author dags_ <dags@dags.me>
  */
 
-public class DFData
+public final class DFData
 {
     // state
     public static final byte DISABLED = 0;

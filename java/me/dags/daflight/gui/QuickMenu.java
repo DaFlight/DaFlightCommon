@@ -24,7 +24,6 @@ package me.dags.daflight.gui;
 
 import me.dags.daflight.DaFlight;
 import me.dags.daflightapi.ui.element.UIElement;
-import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Mouse;
 
 /**
@@ -33,15 +32,9 @@ import org.lwjgl.input.Mouse;
 
 public class QuickMenu extends ConfigGui
 {
-
     public QuickMenu()
     {
         super();
-    }
-
-    public QuickMenu(GuiScreen parent)
-    {
-        super(parent);
     }
 
     @Override
@@ -73,6 +66,11 @@ public class QuickMenu extends ConfigGui
         }
     }
 
+    private int scale()
+    {
+        return DaFlight.getMC().getScaledResolution().getScaleFactor();
+    }
+
     public void handleScrolling()
     {
         if (Mouse.hasWheel() && super.isScrollable)
@@ -81,9 +79,9 @@ public class QuickMenu extends ConfigGui
             int i = Mouse.getDWheel();
             Mouse.getDWheel();
             if (i > 0)
-                offset = 10;
+                offset = 5 * scale();
             else if (i < 0)
-                offset = -10;
+                offset = -5 * scale();
             if (offset != 0)
             {
                 if (super.yOffset + offset > 0 || super.yOffset + offset < super.maxYOffset)

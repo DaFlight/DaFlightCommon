@@ -26,7 +26,7 @@ import me.dags.daflight.DaFlight;
 import me.dags.daflight.input.Binds;
 import me.dags.daflight.input.KeybindHandler;
 import me.dags.daflight.input.MovementHandler;
-import me.dags.daflight.messaging.DFData;
+import me.dags.daflightapi.messaging.DFData;
 import me.dags.daflight.player.mode.CineFlightMode;
 import me.dags.daflight.player.mode.FlightMode;
 import me.dags.daflight.player.mode.IMode;
@@ -85,8 +85,8 @@ public class DFController
             DaFlight.getMC().tellPlayer("WARNING - Using extreme speeds can cause your game to lag, or even crash!");
             customSpeeds = false;
         }
-        boolean singleplayer = DaFlight.getMC().getMinecraft().isSingleplayer();
-        DaFlight.getChannelMessaging().onPacketReceived("DaFlight", DFData.getBooleanData(DFData.NOCLIP, singleplayer));
+        if (DaFlight.getMC().getMinecraft().isSingleplayer())
+            DF_PERMISSIONS.setNoClipEnabled(true);
     }
 
     public void tickUpdate()

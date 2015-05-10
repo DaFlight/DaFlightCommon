@@ -3,6 +3,7 @@ package me.dags.daflight.messaging;
 import me.dags.daflight.DaFlight;
 import me.dags.daflight.player.DFController;
 import me.dags.daflight.player.DFPermissions;
+import me.dags.daflightapi.messaging.DFData;
 import me.dags.daflightapi.messaging.PluginMessageHandler;
 
 /**
@@ -57,7 +58,7 @@ public class MessageHandler implements PluginMessageHandler
     public void noClip(boolean enable)
     {
         String message = enable ? "NoClip allowed!" : "NoClip not allowed!";
-        if (getPerms().noClipEnabled() && !enable || !getPerms().noClipEnabled() && enable)
+        if ((getPerms().noClipEnabled() && !enable) || (!getPerms().noClipEnabled() && enable))
         {
             DaFlight.getMC().tellPlayer(message);
         }

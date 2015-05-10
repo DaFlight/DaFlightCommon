@@ -1,5 +1,6 @@
 package me.dags.daflight.messaging;
 
+import me.dags.daflightapi.messaging.DFData;
 import me.dags.daflightapi.messaging.PluginMessageDispatcher;
 import me.dags.daflightapi.messaging.PluginMessageHandler;
 
