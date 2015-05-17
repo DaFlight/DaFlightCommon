@@ -125,7 +125,8 @@ public class Speed
     public float incBaseSpeed()
     {
         float temp = maxSpeed / multiplier;
-        temp = temp > maxBaseSpeed ? maxBaseSpeed / 10F : temp / 10F;
+        float max = maxBaseSpeed < maxSpeed ? maxBaseSpeed : maxSpeed;
+        temp = temp > max ? max / 10F : temp / 10F;
 
         if (baseSpeed + 0.01F <= temp)
         {

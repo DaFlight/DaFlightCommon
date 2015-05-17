@@ -21,7 +21,7 @@ public class MessageHandler implements PluginMessageHandler
     public void fullBright(boolean enable)
     {
         String message = enable ? "Fullbright allowed!" : "Fullbright not allowed!";
-        if (getPerms().fbEnabled() && !enable || !getPerms().fbEnabled() && enable)
+        if (getPerms().fbEnabled() != enable)
         {
             DaFlight.getMC().tellPlayer(message);
         }
@@ -34,7 +34,7 @@ public class MessageHandler implements PluginMessageHandler
     public void flyMod(boolean enable)
     {
         String message = enable ? "Fly/Sprint mod allowed!" : "Fly/Sprint mod not allowed!";
-        if (getPerms().flyEnabled() && !enable || !getPerms().flyEnabled() && enable)
+        if (getPerms().flyEnabled() != enable)
         {
             DaFlight.getMC().tellPlayer(message);
         }
@@ -47,7 +47,7 @@ public class MessageHandler implements PluginMessageHandler
     public void softFall(boolean enable)
     {
         String message = enable ? "Survival SoftFall allowed!" : "Survival SoftFall not allowed!";
-        if (getPerms().noFallDamageEnabled() && !enable || !getPerms().noFallDamageEnabled() && enable)
+        if (getPerms().noFallDamageEnabled() != enable)
         {
             DaFlight.getMC().tellPlayer(message);
         }
@@ -58,7 +58,7 @@ public class MessageHandler implements PluginMessageHandler
     public void noClip(boolean enable)
     {
         String message = enable ? "NoClip allowed!" : "NoClip not allowed!";
-        if ((getPerms().noClipEnabled() && !enable) || (!getPerms().noClipEnabled() && enable))
+        if (getPerms().noClipEnabled() != enable)
         {
             DaFlight.getMC().tellPlayer(message);
         }
