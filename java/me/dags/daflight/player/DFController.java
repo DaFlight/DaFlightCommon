@@ -26,13 +26,13 @@ import me.dags.daflight.DaFlight;
 import me.dags.daflight.input.Binds;
 import me.dags.daflight.input.KeybindHandler;
 import me.dags.daflight.input.MovementHandler;
-import me.dags.daflightapi.messaging.DFData;
 import me.dags.daflight.player.mode.CineFlightMode;
 import me.dags.daflight.player.mode.FlightMode;
 import me.dags.daflight.player.mode.IMode;
 import me.dags.daflight.player.mode.SprintMode;
 import me.dags.daflight.utils.Config;
 import me.dags.daflight.utils.SpeedDefaults;
+import me.dags.daflightapi.messaging.DFData;
 
 /**
  * @author dags_ <dags@dags.me>
@@ -141,7 +141,12 @@ public class DFController
     public void toggleFlight()
     {
         flyModOn = DF_PERMISSIONS.flyEnabled() && !flyModOn;
-        toggleFlightCommon();
+        controller = getActiveController();
+        if (!flyModOn && !cineFlightOn)
+        {
+            DaFlight.getMC().getPlayer().capabilities.isFlying = false;
+            DaFlight.getMC().getPlayer().sendPlayerAbilities();
+        }
         if (!flyModOn && !DaFlight.getConfig().speedIsToggle)
         {
             flySpeed.setBoost(false);
@@ -169,7 +174,12 @@ public class DFController
             cineFlightOn = !cineFlightOn;
             DaFlight.getMC().getMinecraft().gameSettings.smoothCamera = cineFlightOn;
         }
-        toggleFlightCommon();
+        controller = getActiveController();
+        if (!flyModOn && !cineFlightOn)
+        {
+            DaFlight.getMC().getPlayer().capabilities.isFlying = false;
+            DaFlight.getMC().getPlayer().sendPlayerAbilities();
+        }
     }
 
     public void toggleSprint()
@@ -192,16 +202,6 @@ public class DFController
         else if (sprintModOn)
         {
             sprintSpeed.toggleBoost();
-        }
-    }
-
-    private void toggleFlightCommon()
-    {
-        controller = getActiveController();
-        if (!flyModOn && !cineFlightOn)
-        {
-            DaFlight.getMC().getPlayer().capabilities.isFlying = false;
-            DaFlight.getMC().getPlayer().sendPlayerAbilities();
         }
     }
 

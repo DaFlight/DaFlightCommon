@@ -34,7 +34,7 @@ public class ToolTip extends Gui
 {
     private String[] lines;
 
-    public ToolTip(String title, String[] lines)
+    public ToolTip(String title, String... lines)
     {
         this.lines = new String[lines.length + 1];
         this.lines[0] = EnumChatFormatting.DARK_AQUA + title;

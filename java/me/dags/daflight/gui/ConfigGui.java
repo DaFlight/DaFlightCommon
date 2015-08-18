@@ -39,7 +39,7 @@ public abstract class ConfigGui extends GuiScreen
 
     protected final List<UIElement> uiElements;
     protected boolean singleColumnMode;
-    protected int columnHeight = 345;
+    protected int columnHeight = 365;
 
     private ToggleButton disable;
     private ToggleButton flight3D;
@@ -47,6 +47,7 @@ public abstract class ConfigGui extends GuiScreen
     private ToggleButton showToolTips;
     private ToggleButton perServer;
     private ToggleButton textShadow;
+    private ToggleButton disableFov;
 
     private Slider flySpeed;
     private Slider flyMultiplier;
@@ -126,6 +127,7 @@ public abstract class ConfigGui extends GuiScreen
         uiElements.add(showToolTips = new ToggleButton(1, xLeft + 102, y, 99, 20, "ToolTips", DaFlight.getGlobalConfig().configToolTips));
         uiElements.add(perServer = new ToggleButton(1, xLeft, y += 21, 100, 20, "PerServer", DaFlight.getGlobalConfig().perServerConfig()));
         uiElements.add(textShadow = new ToggleButton(1, xLeft + 102, y, 99, 20, "TextShadow", config.textShadow));
+        uiElements.add(disableFov = new ToggleButton(1, xLeft, y += 21, 100, 20, "DisableFOV", config.disableFov));
 
         int w1 = 156;
         int w2 = columnWidth - w1 - 1;
@@ -174,37 +176,38 @@ public abstract class ConfigGui extends GuiScreen
 
     public void setToolTips()
     {
-        disable.addToolTip(new ToolTip("Enable/Disable", new String[]{"Quickly disable all features of the mod."}));
-        flight3D.addToolTip(new ToolTip("3DFlight", new String[]{"Control your vertical movement by looking", "up/down whilst flying forwards."}));
-        showHud.addToolTip(new ToolTip("ShowHud", new String[]{"Shows the status messages in the top left", "of the screen when mods are enabled."}));
-        showToolTips.addToolTip(new ToolTip("ShowToolTips", new String[]{"Show tooltips like this in the settings menu."}));
-        perServer.addToolTip(new ToolTip("PerServerConfigs", new String[]{"Creates a unique settings 'profile' for each", "server that you visit."}));
-        textShadow.addToolTip(new ToolTip("StatusTextShadow", new String[]{"Draw the mod statuses with or", "without text shadow."}));
+        disable.addToolTip(new ToolTip("Enable/Disable", "Quickly disable all features of the mod."));
+        flight3D.addToolTip(new ToolTip("3DFlight", "Control your vertical movement by looking", "up/down whilst flying forwards."));
+        showHud.addToolTip(new ToolTip("ShowHud", "Shows the status messages in the top left", "of the screen when mods are enabled."));
+        showToolTips.addToolTip(new ToolTip("ShowToolTips", "Show tooltips like this in the settings menu."));
+        perServer.addToolTip(new ToolTip("PerServerConfigs", "Creates a unique settings 'profile' for each", "server that you visit."));
+        textShadow.addToolTip(new ToolTip("StatusTextShadow", "Draw the mod statuses with or", "without text shadow."));
+        disableFov.addToolTip(new ToolTip("DisableFov", "Prevents the FOV from changing", "when flight is toggled on/off."));
 
-        flyKey.addToolTip(new ToolTip("Fly", new String[]{"Enable/Disable FlyMod with this key."}));
-        sprintKey.addToolTip(new ToolTip("Sprint", new String[]{"Enable/Disable SprintMod with this key. Is only", "active whilst FlyMod is off."}));
-        speedKey.addToolTip(new ToolTip("Speed", new String[]{"Enable/Disable the speed boost for FlyMod or", "SprintMod depending on which is active."}));
-        cineKey.addToolTip(new ToolTip("CineFly", new String[]{"Enable/Disable cinematic flight mode. Is only", "active whilst FlyMod is on."}));
-        noClipKey.addToolTip(new ToolTip("NoClip", new String[]{"Enable/Disable NoClip mode while flying (allows", "you to fly through solid blocks). Currently", "only works in single-player creative mode."}));
-        fullBrightKey.addToolTip(new ToolTip("FullBright", new String[]{"Enable/Disable: Lights the entire world to full brightness."}));
-        flyUpKey.addToolTip(new ToolTip("FlyUp", new String[]{"The key you hold to fly upwards."}));
-        flyDownKey.addToolTip(new ToolTip("FlyDown", new String[]{"The key you hold to fly downwards."}));
-        speedUpKey.addToolTip(new ToolTip("SpeedUp", new String[]{"Hold this to increase your speed whilst in-game.", "If speed boost is enabled, it will increase the multiplier.", "FlyMod takes priority over SprintMod if both are enabled."}));
-        speedDownKey.addToolTip(new ToolTip("SpeedDown", new String[]{"Hold this to decrease your speed whilst in-game.", "If speed boost is enabled, it will increase the multiplier.", "FlyMod takes priority over SprintMod if both are enabled."}));
+        flyKey.addToolTip(new ToolTip("Fly", "Enable/Disable FlyMod with this key."));
+        sprintKey.addToolTip(new ToolTip("Sprint", "Enable/Disable SprintMod with this key. Is only", "active whilst FlyMod is off."));
+        speedKey.addToolTip(new ToolTip("Speed", "Enable/Disable the speed boost for FlyMod or", "SprintMod depending on which is active."));
+        cineKey.addToolTip(new ToolTip("CineFly", "Enable/Disable cinematic flight mode. Is only", "active whilst FlyMod is on."));
+        noClipKey.addToolTip(new ToolTip("NoClip", "Enable/Disable NoClip mode while flying (allows", "you to fly through solid blocks). Currently", "only works in single-player creative mode."));
+        fullBrightKey.addToolTip(new ToolTip("FullBright", "Enable/Disable: Lights the entire world to full brightness."));
+        flyUpKey.addToolTip(new ToolTip("FlyUp", "The key you hold to fly upwards."));
+        flyDownKey.addToolTip(new ToolTip("FlyDown", "The key you hold to fly downwards."));
+        speedUpKey.addToolTip(new ToolTip("SpeedUp", "Hold this to increase your speed whilst in-game.", "If speed boost is enabled, it will increase the multiplier.", "FlyMod takes priority over SprintMod if both are enabled."));
+        speedDownKey.addToolTip(new ToolTip("SpeedDown", "Hold this to decrease your speed whilst in-game.", "If speed boost is enabled, it will increase the multiplier.", "FlyMod takes priority over SprintMod if both are enabled."));
 
-        ToolTip hold = new ToolTip("Hold/Toggle", new String[]{"Select whether this key should act as a", "toggle or if it should only be active whilst", "held down."});
+        ToolTip hold = new ToolTip("Hold/Toggle", "Select whether this key should act as a", "toggle or if it should only be active whilst", "held down.");
         flyHold.addToolTip(hold);
         sprintHold.addToolTip(hold);
         speedHold.addToolTip(hold);
         fbHold.addToolTip(hold);
 
-        flySpeed.addToolTip(new ToolTip("FlySpeed", new String[]{"Set the base fly speed."}));
-        flyMultiplier.addToolTip(new ToolTip("FlySpeedMultiplier", new String[]{"Set the boosted fly speed (toggled", "by the speed key)"}));
-        flySmoothing.addToolTip(new ToolTip("FlySmoothing", new String[]{"Set the amount of momentum to be applied", "when flying."}));
-        sprintSpeed.addToolTip(new ToolTip("SprintSpeed", new String[]{"Set the base sprint speed."}));
-        sprintMultiplier.addToolTip(new ToolTip("SprintSpeedMultiplier", new String[]{"Set the boosted sprint speed (toggled by", "the speed key)."}));
-        jumpMultiplier.addToolTip(new ToolTip("JumpMultiplier", new String[]{"Adjust the amount of vertical speed to", "be applied when jumping with sprint mod", "on."}));
-        leftRightMultiplier.addToolTip(new ToolTip("Left/RightMultiplier", new String[]{"Adjust the amount of side-to-side speed", "to be applied when strafing with sprint or", "fly mod on."}));
+        flySpeed.addToolTip(new ToolTip("FlySpeed", "Set the base fly speed."));
+        flyMultiplier.addToolTip(new ToolTip("FlySpeedMultiplier", "Set the boosted fly speed (toggled", "by the speed key)"));
+        flySmoothing.addToolTip(new ToolTip("FlySmoothing", "Set the amount of momentum to be applied", "when flying."));
+        sprintSpeed.addToolTip(new ToolTip("SprintSpeed", "Set the base sprint speed."));
+        sprintMultiplier.addToolTip(new ToolTip("SprintSpeedMultiplier", "Set the boosted sprint speed (toggled by", "the speed key)."));
+        jumpMultiplier.addToolTip(new ToolTip("JumpMultiplier", "Adjust the amount of vertical speed to", "be applied when jumping with sprint mod", "on."));
+        leftRightMultiplier.addToolTip(new ToolTip("Left/RightMultiplier", "Adjust the amount of side-to-side speed", "to be applied when strafing with sprint or", "fly mod on."));
     }
 
     @Override
@@ -302,6 +305,7 @@ public abstract class ConfigGui extends GuiScreen
         config.threeDFlight = flight3D.getToggleState();
         config.showHud = showHud.getToggleState();
         config.textShadow = textShadow.getToggleState();
+        config.disableFov = disableFov.getToggleState();
 
         config.flySpeed = flySpeed.getValue() / 10F;
         config.flySpeedMult = flyMultiplier.getValue();

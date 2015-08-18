@@ -109,6 +109,9 @@ public class Config
     @Expose
     @SerializedName("Show_Hud")
     public boolean showHud = true;
+    @Expose
+    @SerializedName("Disable_FOV")
+    public boolean disableFov = true;
 
     /**
      * Parameters
@@ -191,15 +194,15 @@ public class Config
 
     public void applySettings()
     {
-        DFController DFController = DaFlight.get().DFController;
+        DFController dFController = DaFlight.get().DFController;
         DFController.KEY_BINDS.initSettings();
-        DFController.flySpeed.setSpeedValues(flySpeed, flySpeedMult);
-        DFController.sprintSpeed.setSpeedValues(sprintSpeed, sprintSpeedMult);
+        dFController.flySpeed.setSpeedValues(flySpeed, flySpeedMult);
+        dFController.sprintSpeed.setSpeedValues(sprintSpeed, sprintSpeedMult);
         DaFlight.getHud().refreshStatuses();
         if (!speedIsToggle)
         {
-            DFController.flySpeed.setBoost(false);
-            DFController.sprintSpeed.setBoost(false);
+            dFController.flySpeed.setBoost(false);
+            dFController.sprintSpeed.setBoost(false);
             DaFlight.getHud().updateMsg();
         }
     }
@@ -232,7 +235,9 @@ public class Config
                 return config.setSaveFile(file);
         }
         catch (IOException e)
-        {}
+        {
+            e.printStackTrace();
+        }
         return new Config().setSaveFile(file).saveConfig();
     }
 

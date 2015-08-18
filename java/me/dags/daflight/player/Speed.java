@@ -55,6 +55,7 @@ public class Speed
     public Speed setBoost(boolean b)
     {
         boost = b;
+        updateSpeed();
         return this;
     }
 
@@ -81,10 +82,10 @@ public class Speed
         return this;
     }
 
-    public void toggleBoost()
+    public Speed toggleBoost()
     {
-        boost = ! boost;
-        updateSpeed();
+        setBoost(!boost);
+        return this;
     }
 
     public SpeedType getType()

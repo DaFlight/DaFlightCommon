@@ -18,7 +18,7 @@ import java.io.File;
 
 public class DaFlight implements DaFlightAPI
 {
-    public static final String VERSION = "2.4r4";
+    public static final String VERSION = "2.4r7";
     private static DaFlight instance;
 
     public DFController DFController;
