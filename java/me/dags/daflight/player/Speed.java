@@ -84,8 +84,7 @@ public class Speed
 
     public Speed toggleBoost()
     {
-        setBoost(!boost);
-        return this;
+        return setBoost(!boost);
     }
 
     public SpeedType getType()
