@@ -136,6 +136,10 @@ public class DFController
         noClipOn = DF_PERMISSIONS.noClipEnabled() && !noClipOn;
         DaFlight.getChannelMessaging().dispatchMessage(DFData.getBooleanData(DFData.NOCLIP, noClipOn));
         DaFlight.getHud().updateMsg();
+        if (DaFlight.getMC().isSinglePlayer())
+        {
+            DaFlight.getMC().setInvulnerable(noClipOn);
+        }
     }
 
     public void toggleFlight()

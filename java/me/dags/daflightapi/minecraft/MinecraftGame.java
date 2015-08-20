@@ -21,9 +21,13 @@ public interface MinecraftGame
 
     public ServerData getServerData();
 
+    public boolean isSinglePlayer();
+
     public boolean onSolidBlock();
 
     public IChatComponent getMessage(String s);
+
+    public void setInvulnerable(boolean invulnerable);
 
     public void tellPlayer(String msg);
 
